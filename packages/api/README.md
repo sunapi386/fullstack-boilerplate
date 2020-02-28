@@ -11,3 +11,9 @@ Steps to run this project:
 `
 
 https://github.com/typeorm/typeorm/blob/master/docs/using-cli.md#installing-cli
+
+
+# Database
+As `createdb fullstack-boilerplate` creates the db, verify that it was created
+`psql fullstack-boilerplate`
+Then `\dt`
