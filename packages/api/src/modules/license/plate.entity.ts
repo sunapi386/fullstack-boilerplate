@@ -6,12 +6,12 @@ import { StringField } from "../shared/fields"
 
 @ObjectType()
 @Entity()
-export class LicensePlate extends BaseEntity<LicensePlate> {
+export class Plate extends BaseEntity<Plate> {
   @StringField({ unique: true })
-  plate: string
+  plate_serial: string
 
   @StringField()
   state: string
 
-  // LicensePlate can have multiple Complaints; many-to-many
+  // Plate can have multiple Complaints; many-to-many
 }
