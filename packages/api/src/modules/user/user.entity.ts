@@ -1,5 +1,5 @@
 import { Entity, BeforeInsert, OneToMany } from "typeorm"
-import { ObjectType } from "type-graphql"
+import { Field, ObjectType } from "type-graphql"
 import bcrypt from "bcryptjs"
 
 import { BaseEntity } from "../shared/base.entity"
@@ -22,6 +22,7 @@ export class User extends BaseEntity<User> {
   lastName: string
 
   // user may have written many complaints
+  @Field(type => [Complaint])
   @OneToMany(
     type => Complaint,
     complaint => complaint.user,

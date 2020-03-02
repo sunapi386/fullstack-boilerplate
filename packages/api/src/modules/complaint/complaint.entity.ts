@@ -1,5 +1,5 @@
 import { Entity, JoinTable, ManyToMany, ManyToOne } from "typeorm"
-import { ObjectType } from "type-graphql"
+import { Field, ObjectType } from "type-graphql"
 
 import { BaseEntity } from "../shared/base.entity"
 import { StringField } from "../shared/fields"
@@ -17,15 +17,21 @@ export class Complaint extends BaseEntity<Complaint> {
   )
   user: User
 
-  // Complaint can have multiple LicensePlates, and each LicensePlates can have multiple Complaints.
-  // A complaint must have at least 1 Plate
-  @ManyToMany(() => Plate)
-  @JoinTable()
-  plates: Plate[]
+  // Complaint is against a single Plate, but Plates can have multiple Complaints.
+  // this covers the majority of cases, we tend to want to complain against a specific driver
+  // rather than a collection of drivers (which is more rare, if ever)
+  @ManyToOne(
+    () => Plate,
+    plate => plate.complaints,
+  )
+  @Field(() => Plate)
+  plate: Plate
 
-  // complaint description
   @StringField()
   description: string
+
+  @StringField()
+  title: string
 
   // todo: add photo or video
 }
