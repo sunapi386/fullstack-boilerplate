@@ -1,31 +1,37 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql"
+import {
+  Arg,
+  Authorized,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root,
+} from "type-graphql"
 import { Inject } from "typedi"
 
 import { Complaint } from "./complaint.entity"
 import { ComplaintService } from "./complaint.service"
 import { UserInputError } from "apollo-server-express"
 import { CreateComplaintInput } from "./inputs/createcomplaint.input"
-import { Repository } from "typeorm"
-import { Plate } from "../license/plate.entity"
-import { PlateService } from "../license/plate.service"
+import { User } from "../user/user.entity"
 
 @Resolver(() => Complaint)
 export class ComplaintResolver {
   @Inject(() => ComplaintService)
   complaintService: ComplaintService
 
-  // QUERY ALL COMPLAINTS
-  @Query(() => [Complaint], { nullable: true })
-  async getAllComplaints() {
+  // anyone can read complaints collection
+  @Query(() => [Complaint])
+  async getAllComplaints(): Promise<Complaint[]> {
     return await this.complaintService.findAll()
   }
 
-  // QUERY A SPECIFIC Complaint BY Complaint_NUMBER
-  @Query(() => Complaint, { nullable: true })
+  // anyone can read a specific Complaint
+  @Query(() => Complaint)
   async findByComplaint(
     @Arg("state") state: string,
     @Arg("plate_serial") plate_serial: string,
-  ) {
+  ): Promise<Complaint> {
     const complaint = await this.complaintService.find(state, plate_serial)
     if (complaint === undefined) {
       throw new UserInputError(
@@ -35,17 +41,22 @@ export class ComplaintResolver {
     return complaint
   }
 
-  // CREATE A Complaint, MUST BE A USER?
+  @Authorized() // only logged in users can add complaints
   @Mutation(() => Complaint)
   async createComplaint(@Arg("data") input: CreateComplaintInput) {
     return this.complaintService.create(input)
   }
 
-  // // DELETE Complaint, MUST BE USER?
-  // @Mutation(() => Boolean)
-  // async destroyComplaintNumber(
-  //   @Arg("data") data: CreateComplaintInput,
-  // ): Promise<boolean> {
-  //   return this.service.destroy(data.id)
-  // }
+  @FieldResolver(returns => User)
+  async author(@Root() complaint: Complaint) {
+    const author = await User.find(complaint.author)
+    if (!author) throw new UserInputError("User not found")
+    return author
+  }
+
+  @Authorized("ADMIN") // only admin can delete stuff
+  @Mutation(() => Boolean)
+  async deleteComplaintNumber(@Arg("id") id: string): Promise<boolean> {
+    return this.complaintService.destroy(id)
+  }
 }

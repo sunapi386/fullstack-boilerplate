@@ -25,7 +25,7 @@ export class User extends BaseEntity<User> {
   @Field(type => [Complaint])
   @OneToMany(
     type => Complaint,
-    complaint => complaint.user,
+    complaint => complaint.author,
   )
   complaints: Complaint[]
 

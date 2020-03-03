@@ -11,7 +11,7 @@ export class PlateService {
   async createPlate(data: CreatePlateInput) {
     await this.checkPlateExists(data)
     const plate = Plate.create(data)
-    plate.complaints = data.complaints === undefined ? [] : data.complaints
+    plate.complaints = []
     return await plate.save()
   }
 
@@ -27,12 +27,12 @@ export class PlateService {
     return found.update(data)
   }
 
-  async destroyPlate(PlateId: string): Promise<boolean> {
-    const plate = await Plate.findOneOrFail({ plate_serial: PlateId })
+  async destroyPlate(id: string): Promise<boolean> {
+    const plate = await Plate.findOneOrFail({ id: id })
     return plate.destroy()
   }
 
-  async findByPlateNumberAndState(args: GetPlateArgs) {
+  async findByPlateSerialAndState(args: GetPlateArgs) {
     return (
       Plate.getRepository()
         // .find({

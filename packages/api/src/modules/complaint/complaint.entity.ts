@@ -1,4 +1,4 @@
-import { Entity, JoinTable, ManyToMany, ManyToOne } from "typeorm"
+import { Entity, ManyToOne } from "typeorm"
 import { Field, ObjectType } from "type-graphql"
 
 import { BaseEntity } from "../shared/base.entity"
@@ -12,10 +12,10 @@ export class Complaint extends BaseEntity<Complaint> {
   // user can have multiple complaints
   // but each complaint is owned by one single user (who is the author)
   @ManyToOne(
-    () => User,
+    returns => User,
     user => user.complaints,
   )
-  user: User
+  author: User
 
   // Complaint is against a single Plate, but Plates can have multiple Complaints.
   // this covers the majority of cases, we tend to want to complain against a specific driver

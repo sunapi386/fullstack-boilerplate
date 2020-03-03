@@ -7,6 +7,7 @@ import {
   Root,
   ResolverInterface,
   Args,
+  Authorized,
 } from "type-graphql"
 import { Inject } from "typedi"
 
@@ -15,15 +16,12 @@ import { PlateService } from "./plate.service"
 import { UserInputError } from "apollo-server-express"
 import { CreatePlateInput } from "./inputs/createplate.input"
 import { GetPlateArgs } from "./inputs/getplate.args"
-import { Repository } from "typeorm"
 import { Complaint } from "../complaint/complaint.entity"
 
 @Resolver(() => Plate)
 export class PlateResolver implements ResolverInterface<Plate> {
   @Inject(() => PlateService)
   plateService: PlateService
-  plateRepository: Repository<Plate>
-  complaintRepository: Repository<Complaint>
 
   // QUERY ALL PLATES
   @Query(() => [Plate])
@@ -32,9 +30,9 @@ export class PlateResolver implements ResolverInterface<Plate> {
   }
 
   // QUERY A SPECIFIC PLATE BY PLATE_NUMBER
-  @Query(() => Plate, { nullable: true })
-  async findByPlateState(@Args() args: GetPlateArgs): Promise<Plate> {
-    const plate = await this.plateService.findByPlateNumberAndState(args)
+  @Query(() => Plate)
+  async findByPlateSerialAndState(@Args() args: GetPlateArgs): Promise<Plate> {
+    const plate = await this.plateService.findByPlateSerialAndState(args)
     if (plate === undefined) {
       throw new UserInputError(args.state + " " + args.plate_serial)
     }
@@ -42,23 +40,21 @@ export class PlateResolver implements ResolverInterface<Plate> {
   }
 
   @FieldResolver()
-  async complaints(@Root() plate: Plate) {
+  async complaints(@Root() plate: Plate): Promise<Complaint[]> {
     // const allComplaintsAssociated = await this.complaintRepository.findByIds(plate.complaints.map((complaint) => {return complaint.id}))
     // return allComplaintsAssociated
     return plate.complaints
   }
 
-  // CREATE A PLATE, MUST BE A USER?
+  @Authorized() // must be logged in to create a new license plate
   @Mutation(() => Plate)
   async createPlate(@Arg("data") data: CreatePlateInput): Promise<Plate> {
     return this.plateService.createPlate(data)
   }
 
-  // // DELETE PLATE, MUST BE USER?
-  // @Mutation(() => Boolean)
-  // async destroyPlateNumber(
-  //   @Arg("data") data: CreatePlateInput,
-  // ): Promise<boolean> {
-  //   return this.service.destroyPlate(data.plate_serial)
-  // }
+  @Authorized("ADMIN") // must be admin to delete plate
+  @Mutation(() => Boolean)
+  async deletePlateNumber(@Arg("id") id: string): Promise<boolean> {
+    return this.plateService.destroyPlate(id)
+  }
 }

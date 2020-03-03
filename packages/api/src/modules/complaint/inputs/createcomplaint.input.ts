@@ -1,14 +1,10 @@
 import { InputType, Field } from "type-graphql"
-import { Complaint } from "../complaint.entity"
-import { Plate } from "../../license/plate.entity"
 import { User } from "../../user/user.entity"
-import { ManyToMany } from "typeorm"
-import { StringField } from "../../shared/fields"
 
 @InputType()
 export class CreateComplaintInput {
-  @Field()
-  description: string
+  @Field({ nullable: true })
+  description?: string
 
   @Field()
   title: string

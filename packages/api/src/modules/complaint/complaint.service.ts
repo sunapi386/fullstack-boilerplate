@@ -4,24 +4,18 @@ import { Service } from "typedi"
 import { Complaint } from "./complaint.entity"
 import { CreateComplaintInput } from "./inputs/createcomplaint.input"
 import { UserInputError } from "apollo-server-express"
-import { Repository } from "typeorm"
-import { Plate } from "../license/plate.entity"
 import { PlateService } from "../license/plate.service"
-import { GetPlateArgs } from "../license/inputs/getplate.args"
 
 @Service()
 export class ComplaintService {
-  complaintRepository: Repository<Complaint>
-  plateRepository: Repository<Plate>
   plateService: PlateService
 
   async create(data: CreateComplaintInput) {
-    await this.checkComplaintExists(data)
     const complaint = Complaint.create(data)
 
     // the license must exist, if not found then create one
     const getPlateArgs = { plate_serial: data.plate_serial, state: data.state }
-    let plate = await this.plateService.findByPlateNumberAndState(getPlateArgs)
+    let plate = await this.plateService.findByPlateSerialAndState(getPlateArgs)
     if (plate === undefined) {
       plate = await this.plateService.createPlate(getPlateArgs)
     }
@@ -38,8 +32,8 @@ export class ComplaintService {
     return found.update(data)
   }
 
-  async destroy(ComplaintId: string): Promise<boolean> {
-    const complaint = await Complaint.findOneOrFail({ id: ComplaintId })
+  async destroy(id: string): Promise<boolean> {
+    const complaint = await Complaint.findOneOrFail({ id: id })
     return complaint.destroy()
   }
 
@@ -58,6 +52,9 @@ export class ComplaintService {
     return Complaint.find()
   }
 
+  // before you check if a complaint exists,
+  // think about this:
+  // what if I keep wanting to write the same complaint?
   async checkComplaintExists(field: Partial<Complaint>) {
     const complaint = await Complaint.find({ where: field })
     if (complaint.length > 0) {
