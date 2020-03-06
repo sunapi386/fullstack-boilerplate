@@ -1,4 +1,4 @@
-import { Entity, ManyToOne } from "typeorm"
+import { Column, Entity, ManyToOne } from "typeorm"
 import { Field, ObjectType } from "type-graphql"
 
 import { BaseEntity } from "../shared/base.entity"
