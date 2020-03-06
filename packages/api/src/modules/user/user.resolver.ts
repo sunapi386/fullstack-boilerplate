@@ -1,7 +1,7 @@
-import { Resolver, Query, Mutation, Arg, Authorized } from "type-graphql"
+import { Arg, Authorized, Mutation, Query, Resolver } from "type-graphql"
 import { Inject } from "typedi"
 
-import { decryptToken, createToken } from "../../lib/jwt"
+import { createToken, decryptToken } from "../../lib/jwt"
 
 import { User } from "./user.entity"
 import { UserService } from "./user.service"

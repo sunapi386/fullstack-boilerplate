@@ -1,7 +1,6 @@
 import {
   Arg,
   Authorized,
-  Ctx,
   FieldResolver,
   Mutation,
   Query,
@@ -16,7 +15,6 @@ import { UserInputError } from "apollo-server-express"
 import { CreateComplaintInput } from "./inputs/createcomplaint.input"
 import { User } from "../user/user.entity"
 import { CurrentUser } from "../shared/context/currentUser"
-import { ResolverContext } from "../shared/context/resolver"
 import { Plate } from "../license/plate.entity"
 
 @Resolver(() => Complaint)
@@ -59,20 +57,5 @@ export class ComplaintResolver {
   @Mutation(() => Boolean)
   async deleteComplaintNumber(@Arg("id") id: string): Promise<boolean> {
     return this.complaintService.destroy(id)
-  }
-
-  @FieldResolver(returns => User)
-  async author(@Root() complaint: Complaint) {
-    const author = await User.findOne(complaint.authorId)
-    if (!author)
-      throw new UserInputError("User not found " + complaint.authorId)
-    return author
-  }
-
-  @FieldResolver(returns => Plate)
-  async plate(@Root() complaint: Complaint) {
-    const plate = await Plate.findOne(complaint.plateId)
-    if (!plate) throw new UserInputError("Plate not found " + complaint.plateId)
-    return plate
   }
 }

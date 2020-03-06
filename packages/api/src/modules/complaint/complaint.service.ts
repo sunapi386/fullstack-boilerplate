@@ -44,11 +44,6 @@ export class ComplaintService {
   }
 
   async find(state: string, plate_serial: string) {
-    // return Complaint.getRepository()
-    //   .createQueryBuilder("Complaint")
-    //   .where("user.complaints", {})
-    //   .leftJoinAndSelect("Complaint.complaints", "complaint")
-    //   .getMany()
     return Complaint.getRepository().find({
       where: { plate: { plate_serial: plate_serial, state: state } },
     })

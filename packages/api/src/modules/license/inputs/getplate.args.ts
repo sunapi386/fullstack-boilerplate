@@ -1,4 +1,4 @@
-import { Field, ArgsType } from "type-graphql"
+import { ArgsType, Field } from "type-graphql"
 
 @ArgsType()
 export class GetPlateArgs {

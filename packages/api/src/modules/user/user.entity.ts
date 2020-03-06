@@ -1,4 +1,4 @@
-import { Entity, BeforeInsert, OneToMany } from "typeorm"
+import { BeforeInsert, Entity, OneToMany } from "typeorm"
 import { Field, ObjectType } from "type-graphql"
 import bcrypt from "bcryptjs"
 

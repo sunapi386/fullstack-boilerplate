@@ -1,11 +1,9 @@
-import { Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from "typeorm"
+import { Entity, OneToMany } from "typeorm"
 import { Field, ObjectType } from "type-graphql"
 
 import { BaseEntity } from "../shared/base.entity"
 import { StringField } from "../shared/fields"
 import { Complaint } from "../complaint/complaint.entity"
-import { User } from "../user/user.entity"
-import { RelationColumn } from "../shared/helpers"
 
 @ObjectType()
 @Entity()

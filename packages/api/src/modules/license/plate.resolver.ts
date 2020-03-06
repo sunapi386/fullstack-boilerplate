@@ -1,25 +1,13 @@
-import {
-  Arg,
-  FieldResolver,
-  Mutation,
-  Query,
-  Resolver,
-  Root,
-  ResolverInterface,
-  Args,
-  Authorized,
-} from "type-graphql"
+import { Arg, Args, Authorized, Mutation, Query, Resolver } from "type-graphql"
 import { Inject } from "typedi"
 
 import { Plate } from "./plate.entity"
 import { PlateService } from "./plate.service"
 import { UserInputError } from "apollo-server-express"
-import { CreatePlateInput } from "./inputs/createplate.input"
 import { GetPlateArgs } from "./inputs/getplate.args"
-import { Complaint } from "../complaint/complaint.entity"
 
 @Resolver(() => Plate)
-export class PlateResolver implements ResolverInterface<Plate> {
+export class PlateResolver {
   @Inject(() => PlateService)
   plateService: PlateService
 
@@ -37,13 +25,6 @@ export class PlateResolver implements ResolverInterface<Plate> {
       throw new UserInputError(args.state + " " + args.plate_serial)
     }
     return plate
-  }
-
-  @FieldResolver()
-  async complaints(@Root() plate: Plate): Promise<Complaint[]> {
-    // const allComplaintsAssociated = await this.complaintRepository.findByIds(plate.complaints.map((complaint) => {return complaint.id}))
-    // return allComplaintsAssociated
-    return plate.complaints
   }
 
   // No need to explicitly create a plate because we'll just make the customer create a complaint first

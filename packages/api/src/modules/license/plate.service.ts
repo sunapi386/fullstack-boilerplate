@@ -1,4 +1,3 @@
-// import { PlateInputError } from "apollo-server-express"
 import { Service } from "typedi"
 
 import { Plate } from "./plate.entity"
@@ -33,25 +32,10 @@ export class PlateService {
   }
 
   async findByPlateSerialAndState(args: GetPlateArgs): Promise<Plate> {
-    // return (
-    //   Plate.getRepository()
-    //     .findOne({
-    //       where:
-    //         {
-    //           plate_serial: args.plate_serial, state: args.state
-    //         }
-    //     })
-    //     // .createQueryBuilder("plate")
-    //     // .where("plate.plate_serial = :sn", { sn: args.plate_serial })
-    //     // .andWhere("plate.state = :st", { st: args.state })
-    //     // .leftJoinAndSelect("plate.complaints", "complaint")
-    //     // .getOne()
-    // )
     return Plate.findOneOrFail({
       plate_serial: args.plate_serial,
       state: args.state,
     })
-    // return Plate.findOne()
   }
 
   async findAll() {

@@ -1,5 +1,4 @@
-import { InputType, Field } from "type-graphql"
-import { User } from "../../user/user.entity"
+import { Field, InputType } from "type-graphql"
 
 @InputType()
 export class CreateComplaintInput {
