@@ -32,25 +32,25 @@ export class PlateService {
     return plate.destroy()
   }
 
-  async findByPlateSerialAndState(args: GetPlateArgs) {
-    return (
-      Plate.getRepository()
-        // .find({
-        //   where:
-        //     {
-        //       plate_serial: plate.plate_serial, state: plate.state
-        //     }
-        // })
-        .createQueryBuilder("plate")
-        .where("plate.plate_serial = :sn", { sn: args.plate_serial })
-        .andWhere("plate.state = :st", { st: args.state })
-        .leftJoinAndSelect("plate.complaints", "complaint")
-        .getOne()
-    )
-    // return Plate.findOneOrFail({
-    //   plate_serial: plate.plate_serial,
-    //   state: plate.state,
-    // })
+  async findByPlateSerialAndState(args: GetPlateArgs): Promise<Plate> {
+    // return (
+    //   Plate.getRepository()
+    //     .findOne({
+    //       where:
+    //         {
+    //           plate_serial: args.plate_serial, state: args.state
+    //         }
+    //     })
+    //     // .createQueryBuilder("plate")
+    //     // .where("plate.plate_serial = :sn", { sn: args.plate_serial })
+    //     // .andWhere("plate.state = :st", { st: args.state })
+    //     // .leftJoinAndSelect("plate.complaints", "complaint")
+    //     // .getOne()
+    // )
+    return Plate.findOneOrFail({
+      plate_serial: args.plate_serial,
+      state: args.state,
+    })
     // return Plate.findOne()
   }
 

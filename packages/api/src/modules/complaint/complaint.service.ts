@@ -1,5 +1,5 @@
 // import { ComplaintInputError } from "apollo-server-express"
-import { Service } from "typedi"
+import { Inject, Service } from "typedi"
 
 import { Complaint } from "./complaint.entity"
 import { CreateComplaintInput } from "./inputs/createcomplaint.input"
@@ -8,20 +8,26 @@ import { PlateService } from "../license/plate.service"
 
 @Service()
 export class ComplaintService {
+  @Inject(type => PlateService)
   plateService: PlateService
 
-  async create(data: CreateComplaintInput) {
+  async create(currentUserId: string, data: CreateComplaintInput) {
     const complaint = Complaint.create(data)
+    complaint.authorId = currentUserId
 
     // the license must exist, if not found then create one
     const getPlateArgs = { plate_serial: data.plate_serial, state: data.state }
-    let plate = await this.plateService.findByPlateSerialAndState(getPlateArgs)
-    if (plate === undefined) {
+    let plate
+    try {
+      plate = await this.plateService.findByPlateSerialAndState(getPlateArgs)
+    } catch (err) {
       plate = await this.plateService.createPlate(getPlateArgs)
+      await plate.save()
     }
-    complaint.plate = plate
+    complaint.plateId = plate.id
+    await complaint.save()
 
-    return await complaint.save()
+    return complaint
   }
 
   async update(
@@ -43,7 +49,7 @@ export class ComplaintService {
     //   .where("user.complaints", {})
     //   .leftJoinAndSelect("Complaint.complaints", "complaint")
     //   .getMany()
-    return Complaint.getRepository().findOne({
+    return Complaint.getRepository().find({
       where: { plate: { plate_serial: plate_serial, state: state } },
     })
   }

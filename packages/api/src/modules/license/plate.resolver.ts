@@ -46,11 +46,8 @@ export class PlateResolver implements ResolverInterface<Plate> {
     return plate.complaints
   }
 
-  @Authorized() // must be logged in to create a new license plate
-  @Mutation(() => Plate)
-  async createPlate(@Arg("data") data: CreatePlateInput): Promise<Plate> {
-    return this.plateService.createPlate(data)
-  }
+  // No need to explicitly create a plate because we'll just make the customer create a complaint first
+  // and create the license plate by-the-way.
 
   @Authorized("ADMIN") // must be admin to delete plate
   @Mutation(() => Boolean)
