@@ -10,7 +10,7 @@ import { ID, Field, ObjectType } from "type-graphql"
 export abstract class BaseEntity<T = {}> extends TBaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
-  id: string
+  readonly id: string
 
   @Field()
   @CreateDateColumn({ type: "timestamp with time zone" })

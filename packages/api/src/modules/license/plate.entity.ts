@@ -5,6 +5,7 @@ import { BaseEntity } from "../shared/base.entity"
 import { StringField } from "../shared/fields"
 import { Complaint } from "../complaint/complaint.entity"
 import { User } from "../user/user.entity"
+import { RelationColumn } from "../shared/helpers"
 
 @ObjectType()
 @Entity()
@@ -26,7 +27,5 @@ export class Plate extends BaseEntity<Plate> {
   )
   complaints: Complaint[]
 
-  @Field(type => User)
-  @ManyToOne(type => User, { lazy: true })
-  author: User
+  // plates do not have an author.
 }
