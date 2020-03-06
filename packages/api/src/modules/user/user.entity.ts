@@ -26,7 +26,7 @@ export class User extends BaseEntity<User> {
   @OneToMany(
     type => Complaint,
     complaint => complaint.author,
-    { cascade: ["insert"] },
+    { lazy: true, cascade: ["update"] },
   )
   complaints: Complaint[]
 

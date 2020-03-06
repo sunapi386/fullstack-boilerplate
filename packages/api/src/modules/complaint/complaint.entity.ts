@@ -16,6 +16,7 @@ export class Complaint extends BaseEntity<Complaint> {
   @ManyToOne(
     type => User,
     user => user.complaints,
+    { lazy: true, cascade: ["update"] },
   )
   author: User
   @RelationColumn()
@@ -28,6 +29,7 @@ export class Complaint extends BaseEntity<Complaint> {
   @ManyToOne(
     () => Plate,
     plate => plate.complaints,
+    { lazy: true, cascade: ["update"] },
   )
   @Field(() => Plate)
   plate: Plate
