@@ -25,6 +25,24 @@ export type BaseEntity = {
   updatedAt: Scalars["DateTime"]
 }
 
+export type Complaint = {
+  __typename?: "Complaint"
+  id: Scalars["ID"]
+  createdAt: Scalars["DateTime"]
+  updatedAt: Scalars["DateTime"]
+  author: User
+  plate: Plate
+  description: Scalars["String"]
+  title: Scalars["String"]
+}
+
+export type CreateComplaintInput = {
+  description?: Maybe<Scalars["String"]>
+  title: Scalars["String"]
+  plate_serial: Scalars["String"]
+  state: Scalars["String"]
+}
+
 export type LoginInput = {
   email: Scalars["String"]
   password: Scalars["String"]
@@ -32,12 +50,27 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: "Mutation"
+  createComplaint?: Maybe<Complaint>
+  deleteComplaintNumber: Scalars["Boolean"]
+  deletePlateNumber: Scalars["Boolean"]
   updateMe?: Maybe<User>
   login: AuthResponse
   register: AuthResponse
   logout?: Maybe<Scalars["Boolean"]>
   forgotPassword: Scalars["Boolean"]
   resetPassword: Scalars["Boolean"]
+}
+
+export type MutationCreateComplaintArgs = {
+  data: CreateComplaintInput
+}
+
+export type MutationDeleteComplaintNumberArgs = {
+  id: Scalars["String"]
+}
+
+export type MutationDeletePlateNumberArgs = {
+  id: Scalars["String"]
 }
 
 export type MutationUpdateMeArgs = {
@@ -60,9 +93,33 @@ export type MutationResetPasswordArgs = {
   data: ResetPasswordInput
 }
 
+export type Plate = {
+  __typename?: "Plate"
+  id: Scalars["ID"]
+  createdAt: Scalars["DateTime"]
+  updatedAt: Scalars["DateTime"]
+  plate_serial: Scalars["String"]
+  state: Scalars["String"]
+  complaints: Array<Complaint>
+}
+
 export type Query = {
   __typename?: "Query"
+  getComplaints: Array<Complaint>
+  findComplaintsFor: Array<Complaint>
+  getPlates: Array<Plate>
+  findByPlateSerialAndState: Plate
   me?: Maybe<User>
+}
+
+export type QueryFindComplaintsForArgs = {
+  plate_serial: Scalars["String"]
+  state: Scalars["String"]
+}
+
+export type QueryFindByPlateSerialAndStateArgs = {
+  plate_serial?: Maybe<Scalars["String"]>
+  state?: Maybe<Scalars["String"]>
 }
 
 export type RegisterInput = {
@@ -94,6 +151,7 @@ export type User = {
   email: Scalars["String"]
   firstName: Scalars["String"]
   lastName: Scalars["String"]
+  complaints: Array<Complaint>
 }
 
 export type MeFragment = { __typename?: "User" } & Pick<
