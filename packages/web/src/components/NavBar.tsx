@@ -1,38 +1,42 @@
 import React from "react"
 import { Link } from "./Link"
-import {
-  Avatar,
-  Button,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Menu,
-} from "@chakra-ui/core/dist"
+import { Avatar, Box, Divider, Flex, Heading, Grid } from "@chakra-ui/core/dist"
 import { useMe } from "./providers/MeProvider"
 
-export const NavBar = () => {
+const LeftTitle = () => {
+  return (
+    <Box m={2}>
+      <Heading>Fancy Co.</Heading>
+    </Box>
+  )
+}
+
+const RightNav = () => {
   const me = useMe()
   return (
-    <nav>
+    <Flex justifyContent={"flex-end"} m={1} p={3}>
       <Link to="/">Home</Link>
+      <Divider p={1} orientation="vertical" color="none" />
       <Link to="/about">About</Link>
-      {/*<Menu>*/}
-      {/*  <MenuButton as={Button} rightIcon="chevron-down">*/}
-      {/*    Actions*/}
-      {/*  </MenuButton>*/}
-      {/*  <MenuList>*/}
-      {/*    <MenuItem>Download</MenuItem>*/}
-      {/*    <MenuItem>Create a Copy</MenuItem>*/}
-      {/*    <MenuItem>Mark as Draft</MenuItem>*/}
-      {/*    <MenuItem>Delete</MenuItem>*/}
-      {/*    <MenuItem as="a" href="#">*/}
-      {/*      Attend a Workshop*/}
-      {/*    </MenuItem>*/}
-      {/*  </MenuList>*/}
-      {/*</Menu>*/}
+      <Divider p={1} orientation="vertical" />
       <Link to="/settings">
-        <Avatar name={me.firstName + " " + me.lastName} />
+        <Avatar name={me.firstName + " " + me.lastName} size="sm" />
       </Link>
-    </nav>
+    </Flex>
+  )
+}
+
+export const NavBar = () => {
+  return (
+    <Grid
+      templateColumns="repeat(2, 1fr)"
+      gap={6}
+      m="1"
+      borderBottom="1px"
+      borderBottomColor={"DarkSlateGray"}
+    >
+      <LeftTitle />
+      <RightNav />
+    </Grid>
   )
 }

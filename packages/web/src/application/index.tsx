@@ -5,7 +5,7 @@ import { AppProvider } from "../components/providers/AppProvider"
 import { CheckAuth } from "../components/CheckAuth"
 import { Dashboard } from "../pages/Dashboard"
 import { About } from "../pages/About"
-import { Settings } from "../pages/Settings"
+import { UserProfile } from "../pages/UserProfile"
 
 export function Application() {
   return (
@@ -15,7 +15,7 @@ export function Application() {
           <Router>
             <Dashboard path="/" />
             <About path="/about" />
-            <Settings path="/settings" />
+            <UserProfile path="/settings" />
           </Router>
         </CheckAuth>
       </React.Suspense>
