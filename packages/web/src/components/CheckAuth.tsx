@@ -8,8 +8,6 @@ import { ForgotPassword } from "../pages/ForgotPassword"
 
 export const CheckAuth: React.FC = ({ children }) => {
   const user = useUser()
-  console.log(user?.email)
-  console.log(children)
   return user ? (
     <>{children}</>
   ) : (

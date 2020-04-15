@@ -40,7 +40,7 @@ const RightNav = () => {
   const logout = useLogout()
 
   return (
-    <Flex justifyContent={"flex-end"} m={1} p={3}>
+    <Flex justifyContent={"flex-end"} m={1}>
       <Link to="/" p="2">
         Home
       </Link>
@@ -51,12 +51,14 @@ const RightNav = () => {
         About
       </Link>
       <Menu>
-        <MenuButton>
+        <MenuButton ml="3">
           <Avatar name={me.firstName + " " + me.lastName} size="sm" />
         </MenuButton>
         <MenuList>
           <MenuItem>
-            {me.firstName} {me.lastName}
+            <Link to={"/u/" + me.email} w={"100%"}>
+              {me.firstName} {me.lastName}
+            </Link>
           </MenuItem>
 
           <MenuItem onClick={toggleColor}>Toggle Color Mode</MenuItem>

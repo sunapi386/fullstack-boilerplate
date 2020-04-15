@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 import { Box, Flex, Text, Stack } from "@chakra-ui/core/dist"
-import { RouteComponentProps } from "@reach/router"
+import { RouteComponentProps, useParams } from "@reach/router"
 
 function Feature({ title, desc, ...rest }: { title: string; desc: string }) {
   return (
@@ -27,8 +27,12 @@ function StackEx() {
   )
 }
 export const UserComponent: FC<RouteComponentProps> = () => {
+  const params = useParams()
+  const userId = params.userId
+
   return (
     <Flex>
+      <Text>{userId}</Text>
       <StackEx />
     </Flex>
   )

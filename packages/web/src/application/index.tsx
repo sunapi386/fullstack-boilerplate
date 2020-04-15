@@ -16,7 +16,7 @@ export function Application() {
           <Router>
             <Dashboard path="/" />
             <About path="/about" />
-            <UserProfile path="/settings" />
+            <UserProfile path="/u/:userId" />
             <RoadCam path="/roadcam" />
           </Router>
         </CheckAuth>

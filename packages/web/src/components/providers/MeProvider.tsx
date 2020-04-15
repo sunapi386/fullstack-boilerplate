@@ -9,6 +9,7 @@ export const ME_FRAGMENT = gql`
     firstName
     lastName
     email
+    complaints
   }
 `
 
