@@ -1,7 +1,22 @@
-import React from "react"
+import React, { FC } from "react"
 import { Link } from "./Link"
-import { Avatar, Box, Divider, Flex, Heading, Grid } from "@chakra-ui/core/dist"
+import {
+  Avatar,
+  Box,
+  Flex,
+  Heading,
+  Grid,
+  MenuButton,
+  Menu,
+  MenuList,
+  MenuItem,
+  useColorMode,
+} from "@chakra-ui/core/dist"
 import { useMe } from "./providers/MeProvider"
+import { RouteComponentProps } from "@reach/router"
+import { useLogout } from "../lib/hooks/useLogout"
+
+import { useLocalStorage } from "@noquarter/hooks"
 
 const LeftTitle = () => {
   return (
@@ -13,28 +28,49 @@ const LeftTitle = () => {
 
 const RightNav = () => {
   const me = useMe()
+  const [, setColorMode] = useLocalStorage<"dark" | "light">(
+    "fullstack:darkmode",
+    "dark",
+  )
+  const { colorMode, toggleColorMode } = useColorMode()
+  const toggleColor = () => {
+    setColorMode(colorMode === "light" ? "dark" : "light")
+    toggleColorMode()
+  }
+  const logout = useLogout()
+
   return (
     <Flex justifyContent={"flex-end"} m={1} p={3}>
-      <Link to="/">Home</Link>
-      <Divider p={1} orientation="vertical" color="none" />
-      <Link to="/about">About</Link>
-      <Divider p={1} orientation="vertical" />
-      <Link to="/settings">
-        <Avatar name={me.firstName + " " + me.lastName} size="sm" />
+      <Link to="/" p="2">
+        Home
       </Link>
+      <Link to="/roadcam" p="2">
+        RoadCam
+      </Link>
+      <Link to="/about" p="2">
+        About
+      </Link>
+      <Menu>
+        <MenuButton>
+          <Avatar name={me.firstName + " " + me.lastName} size="sm" />
+        </MenuButton>
+        <MenuList>
+          <MenuItem>
+            {me.firstName} {me.lastName}
+          </MenuItem>
+
+          <MenuItem onClick={toggleColor}>Toggle Color Mode</MenuItem>
+
+          <MenuItem onClick={logout}>Logout</MenuItem>
+        </MenuList>
+      </Menu>
     </Flex>
   )
 }
 
-export const NavBar = () => {
+export const NavBar: FC<RouteComponentProps> = () => {
   return (
-    <Grid
-      templateColumns="repeat(2, 1fr)"
-      gap={6}
-      m="1"
-      borderBottom="1px"
-      borderBottomColor={"DarkSlateGray"}
-    >
+    <Grid templateColumns="repeat(2, 1fr)" gap={6} m="1">
       <LeftTitle />
       <RightNav />
     </Grid>
