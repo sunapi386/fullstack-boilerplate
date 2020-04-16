@@ -7,6 +7,7 @@ import { Dashboard } from "../pages/Dashboard"
 import { RoadCam } from "../pages/RoadCam"
 import { About } from "../pages/About"
 import { UserProfile } from "../pages/UserProfile"
+import { NotFound } from "../pages/NotFound"
 
 export function Application() {
   return (
@@ -15,9 +16,10 @@ export function Application() {
         <CheckAuth>
           <Router>
             <Dashboard path="/" />
-            <About path="/about" />
-            <UserProfile path="/u/:userId" />
-            <RoadCam path="/roadcam" />
+            <About path="about" />
+            <UserProfile path="u/:userId" />
+            <RoadCam path="roadcam" />
+            <NotFound default />
           </Router>
         </CheckAuth>
       </React.Suspense>

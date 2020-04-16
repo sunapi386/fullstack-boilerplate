@@ -56,7 +56,7 @@ const RightNav = () => {
         </MenuButton>
         <MenuList>
           <MenuItem>
-            <Link to={"/u/" + me.email} w={"100%"}>
+            <Link to={"/u/" + me.id} w={"100%"}>
               {me.firstName} {me.lastName}
             </Link>
           </MenuItem>
