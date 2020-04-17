@@ -2,21 +2,13 @@ import React, { FC } from "react"
 import {
   Box,
   Flex,
-  Text,
-  Stack,
-  SimpleGrid,
-  Heading,
+  Tab,
+  TabList,
+  TabPanel,
   TabPanels,
   Tabs,
-  TabPanel,
-  TabList,
-  Tab,
-  Grid,
-  Divider,
 } from "@chakra-ui/core/dist"
-import { RouteComponentProps, useParams } from "@reach/router"
-import { User } from "../lib/graphql"
-import { useMe } from "./providers/MeProvider"
+import { RouteComponentProps } from "@reach/router"
 
 const PeopleSmallBox = ({ title, text }: { title: string; text: string }) => {
   return (

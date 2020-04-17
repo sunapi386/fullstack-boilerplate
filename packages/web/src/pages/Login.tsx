@@ -1,16 +1,16 @@
 import React from "react"
-import { Flex, Box, Heading, Text, Button } from "@chakra-ui/core"
+import { Box, Button, Flex, Heading } from "@chakra-ui/core"
 import gql from "graphql-tag.macro"
 import * as Yup from "yup"
 import { RouteComponentProps } from "@reach/router"
 import { useApolloClient } from "@apollo/client"
 
 import {
-  MeFragmentDoc,
-  useLoginMutation,
-  MeQuery,
-  MeDocument,
   LoginInput,
+  MeDocument,
+  MeFragmentDoc,
+  MeQuery,
+  useLoginMutation,
 } from "../lib/graphql"
 
 import { Input } from "../components/Input"
