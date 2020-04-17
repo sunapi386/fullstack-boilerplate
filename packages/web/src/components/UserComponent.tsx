@@ -1,39 +1,81 @@
 import React, { FC } from "react"
-import { Box, Flex, Text, Stack } from "@chakra-ui/core/dist"
+import {
+  Box,
+  Flex,
+  Text,
+  Stack,
+  SimpleGrid,
+  Heading,
+  TabPanels,
+  Tabs,
+  TabPanel,
+  TabList,
+  Tab,
+  Grid,
+  Divider,
+} from "@chakra-ui/core/dist"
 import { RouteComponentProps, useParams } from "@reach/router"
+import { User } from "../lib/graphql"
+import { useMe } from "./providers/MeProvider"
 
-function Feature({ title, desc, ...rest }: { title: string; desc: string }) {
+const BoxIO = ({ title, text }: { title: string; text: string }) => {
   return (
-    <Box p={5} shadow="md" borderWidth="1px" {...rest}>
-      <Text fontSize="xl">{title}</Text>
-      <Text mt={4}>{desc}</Text>
+    <Box w="250px" mb="1em">
+      <Box textAlign="center" overflow="hidden">
+        {title}
+      </Box>
+      {/*<Divider orientation="horizontal"/>*/}
+      <Box textAlign="center" overflow="hidden">
+        {text}
+      </Box>
     </Box>
   )
 }
 
-function StackEx() {
-  return (
-    <Stack spacing={8}>
-      <Feature title="User Component" desc="Who I am" />
-      <Feature
-        title="Plan Money"
-        desc="The future can be even brighter but a goal without a plan is just a wish"
-      />
-      <Feature
-        title="Save Money"
-        desc="You deserve good things. With a whooping 10-15% interest rate per annum, grow your savings on your own terms with our completely automated process"
-      />
-    </Stack>
-  )
-}
-export const UserComponent: FC<RouteComponentProps> = () => {
-  const params = useParams()
-  const userId = params.userId
-
+const PeopleShort = () => {
+  // id = "noId", email = "noEmail", phoneNumber = "555", assistantId = "noId"
   return (
     <Flex>
-      <Text>{userId}</Text>
-      <StackEx />
+      <BoxIO title={"ID"} text={"1234567890"} />
+      <BoxIO title={"email"} text={"sunapi386@gmail.com"} />
+      <BoxIO title={"phone"} text={"4085551234"} />
+      <BoxIO title={"assistant ID"} text={"0987654321"} />
     </Flex>
+  )
+}
+
+const PeopleTabs = () => {
+  return (
+    <Box>
+      <Tabs isFitted variant="enclosed">
+        <TabList mb="1em" minW="800px">
+          <Tab>Person Overview</Tab>
+          <Tab>Complaints</Tab>
+          <Tab>Documents</Tab>
+          <Tab>Listings</Tab>
+          <Tab>Pending Questionnaires</Tab>
+          <Tab>Biographical</Tab>
+          <Tab>Employment</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <p>one!</p>
+          </TabPanel>
+          <TabPanel>
+            <p>two!</p>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </Box>
+  )
+}
+
+// Need user object to be passed here
+export const UserComponent: FC<RouteComponentProps> = () => {
+  return (
+    <Box w="100%">
+      <PeopleShort />
+      <PeopleTabs />
+    </Box>
   )
 }
