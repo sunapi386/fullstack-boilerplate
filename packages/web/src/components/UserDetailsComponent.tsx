@@ -8,13 +8,24 @@ import {
   TabPanels,
   Tabs,
   Text,
+  useColorMode,
 } from "@chakra-ui/core/dist"
 import { RouteComponentProps } from "@reach/router"
 
 const PeopleSmallBox = ({ title, text }: { title: string; text: string }) => {
+  // add a custom lighter grey color here
+  const { colorMode, toggleColorMode } = useColorMode()
+  const bgColor = { light: "gray.50", dark: "gray.800" }
+  const color = { light: "black", dark: "white" }
+
   return (
-    <Box w="250px" mb="1em">
-      <Box textAlign="center" overflow="hidden">
+    <Box
+      w="350px"
+      borderColor={color[colorMode]}
+      m="2em"
+      color={color[colorMode]}
+    >
+      <Box textAlign="center" overflow="hidden" fontWeight="600">
         {title}
       </Box>
       {/*<Divider orientation="horizontal"/>*/}
@@ -29,10 +40,10 @@ const PeopleShort = () => {
   // id = "noId", email = "noEmail", phoneNumber = "555", assistantId = "noId"
   return (
     <Flex justifyContent="center">
-      <PeopleSmallBox title={"ID"} text={"1234567890"} />
-      <PeopleSmallBox title={"email"} text={"sunapi386@gmail.com"} />
-      <PeopleSmallBox title={"phone"} text={"4085551234"} />
-      <PeopleSmallBox title={"assistant ID"} text={"0987654321"} />
+      <PeopleSmallBox title={"Customer ID"} text={"1234567890"} />
+      <PeopleSmallBox title={"Email"} text={"sunapi386@gmail.com"} />
+      <PeopleSmallBox title={"Phone"} text={"(408)555-1234"} />
+      <PeopleSmallBox title={"Assistant ID"} text={"0987654321"} />
     </Flex>
   )
 }
@@ -65,10 +76,10 @@ const InfoListings: FC = () => {
     </Box>
   )
 }
-const InfoPending: FC = () => {
+const InfoFinances: FC = () => {
   return (
     <Box>
-      <Text>Pending</Text>
+      <Text>Finances</Text>
     </Box>
   )
 }
@@ -92,32 +103,28 @@ const PeopleTabs = () => {
     <Box m="1em">
       <Tabs isFitted variant="enclosed">
         <TabList mb="1em" minW="800px">
-          <Tab>Person Overview</Tab>
-          <Tab>Complaints</Tab>
-          <Tab>Documents</Tab>
-          <Tab>Listings</Tab>
-          <Tab>Pending Questionnaires</Tab>
-          <Tab>Biographical</Tab>
-          <Tab>Employment</Tab>
+          <Tab fontWeight="600">Person Overview</Tab>
+          <Tab fontWeight="600">Listings</Tab>
+          <Tab fontWeight="600">Chat History</Tab>
+          <Tab fontWeight="600">Account Finances</Tab>
+          <Tab fontWeight="600">ID Documents</Tab>
+          <Tab fontWeight="600">Employment</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
             <InfoPerson />
           </TabPanel>
           <TabPanel>
-            <InfoComplaints />
-          </TabPanel>
-          <TabPanel>
-            <InfoDocuments />
-          </TabPanel>
-          <TabPanel>
             <InfoListings />
           </TabPanel>
           <TabPanel>
-            <InfoPending />
+            <InfoComplaints />
           </TabPanel>
           <TabPanel>
-            <InfoBiographical />
+            <InfoFinances />
+          </TabPanel>
+          <TabPanel>
+            <InfoDocuments />
           </TabPanel>
           <TabPanel>
             <InfoEmployment />

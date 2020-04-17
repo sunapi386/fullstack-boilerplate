@@ -19,10 +19,18 @@ export const RoadCam: FC<RouteComponentProps> = () => {
     <Page>
       <Tabs w="100vw">
         <TabList>
-          <Tab>World Map</Tab>
-          <Tab>License Plate</Tab>
-          <Tab>Complaints</Tab>
-          <Tab>Users</Tab>
+          <Tab _selected={{ color: "black", bg: "#e6fffa" }} fontWeight="600">
+            World Map
+          </Tab>
+          <Tab _selected={{ color: "black", bg: "#e6fffa" }} fontWeight="600">
+            License Plate
+          </Tab>
+          <Tab _selected={{ color: "black", bg: "#e6fffa" }} fontWeight="600">
+            Complaints
+          </Tab>
+          <Tab _selected={{ color: "black", bg: "#e6fffa" }} fontWeight="600">
+            Users
+          </Tab>
         </TabList>
 
         <TabPanels>
