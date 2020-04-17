@@ -1,5 +1,5 @@
 import React from "react"
-import { Flex, Box, Heading, Button } from "@chakra-ui/core"
+import { Flex, Box, Heading, Text, Button } from "@chakra-ui/core"
 import gql from "graphql-tag.macro"
 import * as Yup from "yup"
 import { RouteComponentProps } from "@reach/router"
@@ -65,7 +65,7 @@ export const Login: React.FC<RouteComponentProps> = () => {
       p={{ base: 10, lg: "5%" }}
       direction="column"
     >
-      <Heading pb={10}>Login</Heading>
+      <Heading pb={10}>Fancy Co.</Heading>
       <Box w={["100%", 400]}>
         <Form onSubmit={onSubmit} {...form}>
           <Input name="email" label="Email" placeholder="jim@gmail.com" />

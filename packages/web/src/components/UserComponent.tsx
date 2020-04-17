@@ -18,7 +18,7 @@ import { RouteComponentProps, useParams } from "@reach/router"
 import { User } from "../lib/graphql"
 import { useMe } from "./providers/MeProvider"
 
-const BoxIO = ({ title, text }: { title: string; text: string }) => {
+const PeopleSmallBox = ({ title, text }: { title: string; text: string }) => {
   return (
     <Box w="250px" mb="1em">
       <Box textAlign="center" overflow="hidden">
@@ -36,17 +36,17 @@ const PeopleShort = () => {
   // id = "noId", email = "noEmail", phoneNumber = "555", assistantId = "noId"
   return (
     <Flex>
-      <BoxIO title={"ID"} text={"1234567890"} />
-      <BoxIO title={"email"} text={"sunapi386@gmail.com"} />
-      <BoxIO title={"phone"} text={"4085551234"} />
-      <BoxIO title={"assistant ID"} text={"0987654321"} />
+      <PeopleSmallBox title={"ID"} text={"1234567890"} />
+      <PeopleSmallBox title={"email"} text={"sunapi386@gmail.com"} />
+      <PeopleSmallBox title={"phone"} text={"4085551234"} />
+      <PeopleSmallBox title={"assistant ID"} text={"0987654321"} />
     </Flex>
   )
 }
 
 const PeopleTabs = () => {
   return (
-    <Box>
+    <Box m="1em">
       <Tabs isFitted variant="enclosed">
         <TabList mb="1em" minW="800px">
           <Tab>Person Overview</Tab>
