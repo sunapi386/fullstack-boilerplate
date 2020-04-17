@@ -2,10 +2,17 @@ import React, { FC } from "react"
 import { RouteComponentProps } from "@reach/router"
 import { Page } from "../components/Page"
 import { WorldMap } from "../components/WorldMap"
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/core/dist"
+import {
+  Box,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from "@chakra-ui/core/dist"
 import { LicensePlates } from "../components/LicensePlates"
 import { Complaints } from "../components/Complaints"
-import { UserComponent } from "../components/UserComponent"
+import { UserDetailsComponent } from "../components/UserDetailsComponent"
 
 export const RoadCam: FC<RouteComponentProps> = () => {
   return (
@@ -20,7 +27,9 @@ export const RoadCam: FC<RouteComponentProps> = () => {
 
         <TabPanels>
           <TabPanel>
-            <WorldMap />
+            <Box>
+              <WorldMap />
+            </Box>
           </TabPanel>
           <TabPanel>
             <LicensePlates />
@@ -29,7 +38,7 @@ export const RoadCam: FC<RouteComponentProps> = () => {
             <Complaints />
           </TabPanel>
           <TabPanel>
-            <UserComponent />
+            <UserDetailsComponent />
           </TabPanel>
         </TabPanels>
       </Tabs>

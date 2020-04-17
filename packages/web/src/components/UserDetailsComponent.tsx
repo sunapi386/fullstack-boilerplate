@@ -7,6 +7,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Text,
 } from "@chakra-ui/core/dist"
 import { RouteComponentProps } from "@reach/router"
 
@@ -27,12 +28,62 @@ const PeopleSmallBox = ({ title, text }: { title: string; text: string }) => {
 const PeopleShort = () => {
   // id = "noId", email = "noEmail", phoneNumber = "555", assistantId = "noId"
   return (
-    <Flex>
+    <Flex justifyContent="center">
       <PeopleSmallBox title={"ID"} text={"1234567890"} />
       <PeopleSmallBox title={"email"} text={"sunapi386@gmail.com"} />
       <PeopleSmallBox title={"phone"} text={"4085551234"} />
       <PeopleSmallBox title={"assistant ID"} text={"0987654321"} />
     </Flex>
+  )
+}
+
+const InfoPerson: FC = () => {
+  return (
+    <Box>
+      <Text>Person</Text>
+    </Box>
+  )
+}
+const InfoComplaints: FC = () => {
+  return (
+    <Box>
+      <Text>Complaints</Text>
+    </Box>
+  )
+}
+const InfoDocuments: FC = () => {
+  return (
+    <Box>
+      <Text>Documents</Text>
+    </Box>
+  )
+}
+const InfoListings: FC = () => {
+  return (
+    <Box>
+      <Text>Listings</Text>
+    </Box>
+  )
+}
+const InfoPending: FC = () => {
+  return (
+    <Box>
+      <Text>Pending</Text>
+    </Box>
+  )
+}
+const InfoBiographical: FC = () => {
+  return (
+    <Box>
+      <Text>Biographical</Text>
+    </Box>
+  )
+}
+const InfoEmployment: FC = () => {
+  return (
+    <Box>
+      <Text>Employment</Text>
+    </Box>
   )
 }
 
@@ -51,10 +102,25 @@ const PeopleTabs = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <p>one!</p>
+            <InfoPerson />
           </TabPanel>
           <TabPanel>
-            <p>two!</p>
+            <InfoComplaints />
+          </TabPanel>
+          <TabPanel>
+            <InfoDocuments />
+          </TabPanel>
+          <TabPanel>
+            <InfoListings />
+          </TabPanel>
+          <TabPanel>
+            <InfoPending />
+          </TabPanel>
+          <TabPanel>
+            <InfoBiographical />
+          </TabPanel>
+          <TabPanel>
+            <InfoEmployment />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -63,7 +129,7 @@ const PeopleTabs = () => {
 }
 
 // Need user object to be passed here
-export const UserComponent: FC<RouteComponentProps> = () => {
+export const UserDetailsComponent: FC<RouteComponentProps> = () => {
   return (
     <Box w="100%">
       <PeopleShort />
