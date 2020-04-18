@@ -14,8 +14,7 @@ import { RouteComponentProps } from "@reach/router"
 
 const PeopleSmallBox = ({ title, text }: { title: string; text: string }) => {
   // add a custom lighter grey color here
-  const { colorMode, toggleColorMode } = useColorMode()
-  const bgColor = { light: "gray.50", dark: "gray.800" }
+  const { colorMode } = useColorMode()
   const color = { light: "black", dark: "white" }
 
   return (
@@ -80,13 +79,6 @@ const InfoFinances: FC = () => {
   return (
     <Box>
       <Text>Finances</Text>
-    </Box>
-  )
-}
-const InfoBiographical: FC = () => {
-  return (
-    <Box>
-      <Text>Biographical</Text>
     </Box>
   )
 }
