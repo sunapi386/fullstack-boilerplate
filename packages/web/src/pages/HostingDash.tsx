@@ -9,7 +9,13 @@ import {
   Heading,
   SimpleGrid,
   Stack,
+  Stat,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
+  Text,
 } from "@chakra-ui/core/dist"
+import { TiStar } from "react-icons/all"
 
 // const TabsBoard = () => {
 //   return (
@@ -76,7 +82,11 @@ const RequestsCard = () => {
       <Box>
         <Heading fontSize="lg">Requests</Heading>
       </Box>
-      <Box>Nothing you need to do right now - all set!</Box>
+      <Box>
+        <Text color="gray.500">
+          Nothing you need to do right now - all set!
+        </Text>
+      </Box>
     </Card>
   )
 }
@@ -87,7 +97,47 @@ const StatsCard = () => {
       <Box>
         <Heading fontSize="lg">Stats</Heading>
       </Box>
-      <Divider />
+      <Box p={2}>
+        <SimpleGrid columns={3} spacing={2} p={2}>
+          <Stat>
+            <StatLabel>Overall rating</StatLabel>
+            <StatNumber>0</StatNumber>
+            <StatHelpText />
+          </Stat>
+          <Stat>
+            <StatLabel>Total reviews</StatLabel>
+            <StatNumber>
+              <Flex>
+                0 <Box m={1} as={TiStar} size="28px" />
+              </Flex>
+            </StatNumber>
+            <StatHelpText />
+          </Stat>
+          <Stat>
+            <StatLabel> Response rate</StatLabel>
+            <StatNumber>0 %</StatNumber>
+            <StatHelpText />
+          </Stat>
+        </SimpleGrid>
+        <Divider />
+        <SimpleGrid columns={3} spacing={2} p={2}>
+          <Stat>
+            <StatLabel>April earnings</StatLabel>
+            <StatNumber>$ 0</StatNumber>
+            <StatHelpText />
+          </Stat>
+          <Stat>
+            <StatLabel>30-day views</StatLabel>
+            <StatNumber>0</StatNumber>
+            <StatHelpText />
+          </Stat>
+          <Stat>
+            <StatLabel>30-day bookings</StatLabel>
+            <StatNumber>0</StatNumber>
+            <StatHelpText />
+          </Stat>
+        </SimpleGrid>
+      </Box>
     </Card>
   )
 }

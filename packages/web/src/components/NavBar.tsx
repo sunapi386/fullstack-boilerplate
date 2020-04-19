@@ -14,6 +14,7 @@ import {
   SimpleGrid,
   Switch,
   useColorMode,
+  Text,
 } from "@chakra-ui/core/dist"
 import { useMe } from "./providers/MeProvider"
 import { useLogout } from "../lib/hooks/useLogout"
@@ -31,7 +32,7 @@ const LeftTitle = () => {
   return (
     <Link _hover={{ outline: "none" }} _focus={{ outline: "none" }} to="/">
       <Box m={2}>
-        <Heading>Fancy Co.</Heading>
+        <Heading as="i">Fancy Co.</Heading>
       </Box>
     </Link>
   )
@@ -61,10 +62,16 @@ const RightNav = () => {
           _focus={{ outline: "none" }}
         >
           <SimpleGrid columns={2}>
-            <Avatar name={me.firstName + " " + me.lastName} />
+            <Avatar
+              size="lg"
+              name={me.firstName + " " + me.lastName}
+              src="https://i1.sndcdn.com/avatars-000288328162-lnw0yk-t500x500.jpg"
+            />
             <Box>
               <Flex>
-                {me.firstName} {me.lastName}
+                <Text fontSize="lg">
+                  {me.firstName} {me.lastName}
+                </Text>
               </Flex>
               <Flex fontSize="sm">See your profile</Flex>
             </Box>

@@ -1,7 +1,7 @@
 // ENV VARIABLES
 export const {
-  NODE_ENV = "development",
-  APP_ENV = "development",
+  NODE_ENV = "default",
+  APP_ENV = "default",
   APP_SECRET = "APP_SECRET",
   APP_AUTH_SECRET = "APP_AUTH_SECRET",
   PORT = 5555,
