@@ -3,8 +3,8 @@ import { Router } from "@reach/router"
 
 import { AppProvider } from "../components/providers/AppProvider"
 import { CheckAuth } from "../components/CheckAuth"
-import { Dashboard } from "../pages/Dashboard"
-import { RoadCam } from "../pages/RoadCam"
+import { RentingDash } from "../pages/Dashboard"
+import { HostingDash } from "../pages/HostingDash"
 import { About } from "../pages/About"
 import { UserProfile } from "../pages/UserProfile"
 import { NotFound } from "../pages/NotFound"
@@ -25,10 +25,10 @@ export function Application() {
       <React.Suspense fallback={spinner}>
         <CheckAuth>
           <Router>
-            <Dashboard path="/" />
+            <RentingDash path="/" />
             <About path="about" />
             <UserProfile path="u/:userId" />
-            <RoadCam path="roadcam" />
+            <HostingDash path="hosting" />
             <NotFound default />
           </Router>
         </CheckAuth>

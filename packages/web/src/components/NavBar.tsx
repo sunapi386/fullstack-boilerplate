@@ -4,25 +4,37 @@ import {
   Avatar,
   Box,
   Flex,
-  Heading,
   Grid,
-  MenuButton,
+  Heading,
   Menu,
-  MenuList,
+  MenuButton,
+  MenuDivider,
   MenuItem,
+  MenuList,
+  SimpleGrid,
+  Switch,
   useColorMode,
 } from "@chakra-ui/core/dist"
 import { useMe } from "./providers/MeProvider"
 import { RouteComponentProps } from "@reach/router"
 import { useLogout } from "../lib/hooks/useLogout"
+import { MdMenu } from "react-icons/md"
 
 import { useLocalStorage } from "@noquarter/hooks"
+import {
+  FaHome,
+  FiCalendar,
+  IoIosLogOut,
+  WiMoonAltWaningCrescent2,
+} from "react-icons/all"
 
 const LeftTitle = () => {
   return (
-    <Box m={2}>
-      <Heading>Fancy Co.</Heading>
-    </Box>
+    <Link _hover={{ outline: "none" }} _focus={{ outline: "none" }} to="/">
+      <Box m={2}>
+        <Heading>Fancy Co.</Heading>
+      </Box>
+    </Link>
   )
 }
 
@@ -33,37 +45,64 @@ const RightNav = () => {
     "dark",
   )
   const { colorMode, toggleColorMode } = useColorMode()
+
   const toggleColor = () => {
     setColorMode(colorMode === "light" ? "dark" : "light")
     toggleColorMode()
   }
   const logout = useLogout()
 
+  const UserProfileMenuItem = () => {
+    return (
+      <Box m="1em">
+        <Link
+          to={"/u/" + me.id}
+          w={"100%"}
+          _hover={{ outline: "none" }}
+          _focus={{ outline: "none" }}
+        >
+          <SimpleGrid columns={2}>
+            <Avatar name={me.firstName + " " + me.lastName} />
+            <Box>
+              <Flex>
+                {me.firstName} {me.lastName}
+              </Flex>
+              <Flex fontSize="sm">See your profile</Flex>
+            </Box>
+          </SimpleGrid>
+        </Link>
+      </Box>
+    )
+  }
+
   return (
     <Flex justifyContent={"flex-end"} m={1}>
       <Link to="/" p="2">
-        Home
+        <Box as={FaHome} size="32px" />
       </Link>
-      <Link to="/roadcam" p="2">
-        RoadCam
-      </Link>
-      <Link to="/about" p="2">
-        About
+      <Link to="/hosting" p="2">
+        <Box as={FiCalendar} size="32px" />
       </Link>
       <Menu>
-        <MenuButton ml="3">
-          <Avatar name={me.firstName + " " + me.lastName} size="sm" />
+        <MenuButton p="2">
+          <Box as={MdMenu} size="32px" />
         </MenuButton>
         <MenuList>
           <MenuItem>
-            <Link to={"/u/" + me.id} w={"100%"}>
-              {me.firstName} {me.lastName}
-            </Link>
+            <UserProfileMenuItem />
           </MenuItem>
-
-          <MenuItem onClick={toggleColor}>Toggle Color Mode</MenuItem>
-
-          <MenuItem onClick={logout}>Logout</MenuItem>
+          <MenuDivider />
+          <MenuItem onClick={toggleColor}>
+            <Box as={WiMoonAltWaningCrescent2} size="32px" />
+            <Box ml={1}>Dark</Box>
+            <Flex w="70%" direction="row-reverse">
+              <Switch isChecked={colorMode !== "light"} size="lg" />
+            </Flex>
+          </MenuItem>
+          <MenuItem onClick={logout}>
+            <Box as={IoIosLogOut} size="32px" />
+            <Box ml={1}>Logout</Box>
+          </MenuItem>
         </MenuList>
       </Menu>
     </Flex>

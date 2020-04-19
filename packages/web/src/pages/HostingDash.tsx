@@ -14,7 +14,7 @@ import { LicensePlates } from "../components/LicensePlates"
 import { Complaints } from "../components/Complaints"
 import { UserDetailsComponent } from "../components/UserDetailsComponent"
 
-export const RoadCam: FC<RouteComponentProps> = () => {
+export const HostingDash: FC<RouteComponentProps> = () => {
   return (
     <Page>
       <Tabs w="100vw">
