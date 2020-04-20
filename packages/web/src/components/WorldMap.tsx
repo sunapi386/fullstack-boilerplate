@@ -1,8 +1,9 @@
-import React, { FC } from "react"
+import React from "react"
 import { Box, Icon } from "@chakra-ui/core/dist"
 import GoogleMapReact from "google-map-react"
 import { BoxProps } from "@chakra-ui/core/dist/Box"
 import { LoadSpinner } from "./LoadSpinner"
+import { FiHome } from "react-icons/all"
 
 const Marker = ({ text }: any) => {
   return (
@@ -23,7 +24,9 @@ export const WorldMap: React.FC<BoxProps> = () => {
           defaultCenter={{ lat: 37.2967787, lng: -121.9578387 }}
           defaultZoom={11}
         >
-          <Marker lat={37.2967787} lng={-121.9578387} name="My Marker" />
+          <Marker lat={37.2967787} lng={-121.9578387} name="My Marker">
+            <Box as={FiHome} size="28px" />
+          </Marker>
         </GoogleMapReact>
       </Box>
     </React.Suspense>
