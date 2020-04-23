@@ -11,6 +11,8 @@ import {
 import emotionStyled, { CreateStyled } from "@emotion/styled"
 import { useLocalStorage } from "@noquarter/hooks"
 
+import "../../components/RSuiteWrapper.scss"
+
 export const ThemeProvider: React.FC = ({ children }) => {
   const [colorMode] = useLocalStorage<"dark" | "light">(
     "fullstack:darkmode",
@@ -21,7 +23,11 @@ export const ThemeProvider: React.FC = ({ children }) => {
       <ColorModeProvider value={colorMode}>
         <StyledBackground>
           <CSSReset />
-          {children}
+          <Box
+            className={colorMode === "light" ? "rsuite-light" : "rsuite-dark"}
+          >
+            {children}
+          </Box>
         </StyledBackground>
       </ColorModeProvider>
     </CThemeProvider>
