@@ -1,0 +1,11 @@
+.rsuite-light {
+    // use a `~` to import from `node_modules`
+    //
+    // do NOT add a `.css` at the end of this, it causes the namespacing to
+    // break silently: https://github.com/webpack-contrib/sass-loader/issues/245
+    @import "~rsuite/dist/styles/rsuite-default";
+}
+
+.rsuite-dark {
+    @import "~rsuite/dist/styles/rsuite-dark";
+}
