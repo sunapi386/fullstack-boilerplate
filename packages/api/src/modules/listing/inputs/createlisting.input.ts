@@ -1,7 +1,13 @@
-import { Field, InputType } from "type-graphql"
+import { InputType } from "type-graphql"
+import { StringField } from "../../shared/fields"
 
 @InputType()
 export class CreateListingInput {
-  @Field({ nullable: true })
-  description?: string
+  // Images
+
+  @StringField()
+  title: string
+
+  @StringField()
+  description: string
 }
