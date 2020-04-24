@@ -43,8 +43,8 @@ postgres=# \du
 
 postgres=#
 ```
-As `createdb fullstack-boilerplate` creates the db, verify that it was created
-`psql fullstack-boilerplate`
+As `createdb fancystackdb` creates the db, verify that it was created
+`psql fancystackdb`
 Then `\dt`
 
 If there are issues starting up like
@@ -56,40 +56,15 @@ Ignore watch: [ 'node_modules' ]
 Using ts-node version 8.6.2, typescript version 3.8.2
 Server started at http://localhost:5555 🚀
 error: password authentication failed for user "jsun"
-    at Connection.parseE (/home/jsun/workspace/fullstack-boilerplate/node_modules/pg/lib/connection.js:614:13)
-    at Connection.parseMessage (/home/jsun/workspace/fullstack-boilerplate/node_modules/pg/lib/connection.js:413:19)
-    at Socket.<anonymous> (/home/jsun/workspace/fullstack-boilerplate/node_modules/pg/lib/connection.js:129:22)
-    at Socket.emit (events.js:311:20)
-    at addChunk (_stream_readable.js:294:12)
-    at readableAddChunk (_stream_readable.js:275:11)
-    at Socket.Readable.push (_stream_readable.js:209:10)
-    at TCP.onStreamRead (internal/stream_base_commons.js:186:23) {
-  name: 'error',
-  length: 100,
-  severity: 'FATAL',
-  code: '28P01',
-  detail: undefined,
-  hint: undefined,
-  position: undefined,
-  internalPosition: undefined,
-  internalQuery: undefined,
-  where: undefined,
-  schema: undefined,
-  table: undefined,
-  column: undefined,
-  dataType: undefined,
-  constraint: undefined,
-  file: 'auth.c',
-  line: '329',
-  routine: 'auth_failed'
+  ...
 }
 ```
 
 ```
 > sudo tail -f /var/log/postgresql/postgresql-10-main.log
 
-2020-03-07 22:52:45.109 PST [11412] jsun@fullstack-boilerplate FATAL:  password authentication failed for user "jsun"
-2020-03-07 22:52:45.109 PST [11412] jsun@fullstack-boilerplate DETAIL:  User "jsun" has no password assigned.
+2020-03-07 22:52:45.109 PST [11412] jsun@fancystackdb FATAL:  password authentication failed for user "jsun"
+2020-03-07 22:52:45.109 PST [11412] jsun@fancystackdb DETAIL:  User "jsun" has no password assigned.
 	Connection matched pg_hba.conf line 92: "host    all             all             127.0.0.1/32            md5"
 
 ```

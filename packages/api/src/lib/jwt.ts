@@ -13,8 +13,8 @@ export const createToken = (
 ): string => {
   try {
     const token = jwt.sign(payload, APP_SECRET, {
-      issuer: "@fullstack-boilerplate/api",
-      audience: ["@fullstack-boilerplate/app", "@fullstack-boilerplate/web"],
+      issuer: "@fancystack/api",
+      audience: ["@fancystack/app", "@fancystack/web"],
       expiresIn: "4w",
       ...options,
     })
@@ -28,8 +28,8 @@ export const createToken = (
 export const createAuthToken = (payload: Payload): string => {
   try {
     const token = jwt.sign(payload, APP_AUTH_SECRET, {
-      issuer: "@fullstack-boilerplate/api",
-      audience: ["@fullstack-boilerplate/app", "@fullstack-boilerplate/web"],
+      issuer: "@fancystack/api",
+      audience: ["@fancystack/app", "@fancystack/web"],
       expiresIn: "4w",
     })
     return token

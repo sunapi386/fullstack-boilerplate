@@ -25,9 +25,9 @@ https://github.com/typeorm/typeorm/blob/master/docs/migrations.md
 
 ## Checking PostgreSQL DB
 
-- `dropdb fullstack-boilerplate` if you want to drop db
-- `createdb fullstack-boilerplate` creates the db
-- `psql fullstack-boilerplate` gets a shell to db
+- `dropdb fancystackdb` if you want to drop db
+- `createdb fancystackdb` creates the db
+- `psql fancystackdb` gets a shell to db
 
 And some commonly used commands:
 

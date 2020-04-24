@@ -6,7 +6,7 @@ import { Form } from "../components/Form"
 import { Input } from "../components/Input"
 import { FormError } from "../components/FormError"
 import { useForm } from "../lib/hooks/useForm"
-import { CreateListingInput } from "@fullstack-boilerplate/api/src/modules/listing/inputs/createlisting.input"
+import { CreateListingInput } from "../lib/graphql"
 import * as Yup from "yup"
 import { gql, useMutation } from "@apollo/client"
 
