@@ -16,6 +16,7 @@ import {
   Text,
 } from "@chakra-ui/core/dist"
 import { TiStar } from "react-icons/all"
+import { Link } from "../components/Link"
 
 // const TabsBoard = () => {
 //   return (
@@ -70,7 +71,9 @@ const HorizontalBar = () => {
         <Heading textAlign="center">Hosting Dashboard</Heading>
       </Flex>
       <Flex direction="row-reverse" align="flex-end">
-        <Button>Create new listing</Button>
+        <Link to={"create_listing"}>
+          <Button>Create new listing</Button>
+        </Link>
       </Flex>
     </SimpleGrid>
   )

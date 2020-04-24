@@ -9,6 +9,7 @@ import { About } from "../pages/About"
 import { UserProfile } from "../pages/UserProfile"
 import { NotFound } from "../pages/NotFound"
 import { LoadSpinner } from "../components/LoadSpinner"
+import { CreateListing } from "../pages/CreateListing"
 
 export function Application() {
   return (
@@ -20,6 +21,10 @@ export function Application() {
             <About path="about" />
             <UserProfile path="u/:userId" />
             <HostingDash path="hosting" />
+
+            {/* Can't figure out how to nest CreateListing inside HostingDash */}
+            <CreateListing path="hosting/create_listing" />
+
             <NotFound default />
           </Router>
         </CheckAuth>
