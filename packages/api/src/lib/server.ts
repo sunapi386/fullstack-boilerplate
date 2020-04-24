@@ -3,7 +3,7 @@ import "dotenv/config"
 import express from "express"
 import morgan from "morgan"
 
-import { PORT } from "./config"
+import { APP_ENV, PORT } from "./config"
 
 export class Server {
   private readonly _app: express.Application
@@ -19,8 +19,10 @@ export class Server {
   }
 
   async start() {
-    this._app.listen(PORT, () =>
-      console.log(`Server started at http://localhost:${PORT} 🚀`),
-    )
+    this._app.listen(PORT, () => {
+      console.log(
+        `Server started in ${APP_ENV} mode, at http://localhost:${PORT} 🚀`,
+      )
+    })
   }
 }

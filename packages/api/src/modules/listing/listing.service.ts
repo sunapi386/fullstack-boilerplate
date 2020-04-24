@@ -13,7 +13,8 @@ export class ListingService {
   async create(id: string, input: CreateListingInput): Promise<Listing> {
     const listing = await Listing.create(input)
     listing.authorId = id
-    return listing.save()
+    await listing.save()
+    return listing
   }
 
   async destroy(id: string): Promise<boolean> {
