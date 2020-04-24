@@ -8,20 +8,18 @@ import { FormError } from "../components/FormError"
 import { useForm } from "../lib/hooks/useForm"
 import { CreateListingInput } from "@fullstack-boilerplate/api/src/modules/listing/inputs/createlisting.input"
 import * as Yup from "yup"
+import { gql, useMutation } from "@apollo/client"
 
 // A page to create new listing
-//
-// export const LISTING = gql`
-//   mutation AddNewLisiting($data: ListingInput!) {
-//     register(data: $data) {
-//       user {
-//         ...Me
-//       }
-//       token
-//     }
-//   }
-//   ${MeFragmentDoc}
-// `
+
+export const CREATE_LISTING = gql`
+  mutation AddNewLisiting($data: CreateListingInput!) {
+    createListing(data: $data) {
+      createdAt
+      id
+    }
+  }
+`
 
 const ListingSchema = Yup.object().shape<CreateListingInput>({
   title: Yup.string().required("Required"),
@@ -29,23 +27,20 @@ const ListingSchema = Yup.object().shape<CreateListingInput>({
 })
 
 export const CreateListing: FC<RouteComponentProps> = () => {
-  const onSubmit = async (values: CreateListingInput) => {
-    console.log(values)
-    // const res = await register({
-    //   variables: { data: values },
-    // })
-    // form.handler(res, {
-    //   onSuccess: data => {
-    //     localStorage.setItem("token", data.register.token)
-    //     client.writeQuery<MeQuery>({
-    //       query: MeDocument,
-    //       data: { me: data.register.user },
-    //     })
-    //   },
-    // })
-  }
-
+  const [createListing] = useMutation(CREATE_LISTING)
   const form = useForm<CreateListingInput>({ validationSchema: ListingSchema })
+
+  const onSubmit = async (newListingData: CreateListingInput) => {
+    console.log(newListingData)
+    const res = await createListing({
+      variables: { data: newListingData },
+    })
+    form.handler(res, {
+      onSuccess: data => {
+        console.log("successful create listing", res, data)
+      },
+    })
+  }
 
   return (
     <Page>
