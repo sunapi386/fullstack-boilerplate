@@ -9,6 +9,7 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
   DateTime: any
 }
 
@@ -43,6 +44,21 @@ export type CreateComplaintInput = {
   state: Scalars["String"]
 }
 
+export type CreateListingInput = {
+  title: Scalars["String"]
+  description: Scalars["String"]
+}
+
+export type Listing = {
+  __typename?: "Listing"
+  id: Scalars["ID"]
+  createdAt: Scalars["DateTime"]
+  updatedAt: Scalars["DateTime"]
+  author: User
+  description: Scalars["String"]
+  title: Scalars["String"]
+}
+
 export type LoginInput = {
   email: Scalars["String"]
   password: Scalars["String"]
@@ -53,6 +69,8 @@ export type Mutation = {
   createComplaint?: Maybe<Complaint>
   deleteComplaintNumber: Scalars["Boolean"]
   deletePlateNumber: Scalars["Boolean"]
+  createListing?: Maybe<Listing>
+  deleteListingNumber: Scalars["Boolean"]
   updateMe?: Maybe<User>
   login: AuthResponse
   register: AuthResponse
@@ -70,6 +88,14 @@ export type MutationDeleteComplaintNumberArgs = {
 }
 
 export type MutationDeletePlateNumberArgs = {
+  id: Scalars["String"]
+}
+
+export type MutationCreateListingArgs = {
+  data: CreateListingInput
+}
+
+export type MutationDeleteListingNumberArgs = {
   id: Scalars["String"]
 }
 
@@ -109,6 +135,8 @@ export type Query = {
   findComplaintsFor: Array<Complaint>
   getPlates: Array<Plate>
   findByPlateSerialAndState: Plate
+  getListing: Array<Listing>
+  findListingFor: Listing
   me?: Maybe<User>
 }
 
@@ -122,11 +150,25 @@ export type QueryFindByPlateSerialAndStateArgs = {
   state?: Maybe<Scalars["String"]>
 }
 
+export type QueryFindListingForArgs = {
+  id: Scalars["String"]
+}
+
 export type RegisterInput = {
   firstName: Scalars["String"]
   lastName: Scalars["String"]
   email: Scalars["String"]
   password: Scalars["String"]
+}
+
+export type Reservation = {
+  __typename?: "Reservation"
+  id: Scalars["ID"]
+  createdAt: Scalars["DateTime"]
+  updatedAt: Scalars["DateTime"]
+  author: User
+  description: Scalars["String"]
+  title: Scalars["String"]
 }
 
 export type ResetPasswordInput = {
@@ -162,7 +204,7 @@ export type MeFragment = { __typename?: "User" } & Pick<
 export type MeQueryVariables = {}
 
 export type MeQuery = { __typename?: "Query" } & {
-  me: Maybe<{ __typename?: "User" } & MeFragment>
+  me?: Maybe<{ __typename?: "User" } & MeFragment>
 }
 
 export type ForgotPasswordMutationVariables = {
