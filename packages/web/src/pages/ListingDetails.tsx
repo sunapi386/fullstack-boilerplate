@@ -13,6 +13,10 @@ export const FIND_LISTING = gql`
       updatedAt
       description
       title
+      author {
+        firstName
+        lastName
+      }
     }
   }
 `
@@ -42,6 +46,10 @@ export const ListingDetails: FC<RouteComponentProps> = () => {
       <SimpleGrid columns={2} spacing={1}>
         <Box>Title</Box> <Box>{data.findListing.title}</Box>
         <Box>Description</Box> <Box>{data.findListing.description}</Box>
+        <Box>By</Box>{" "}
+        <Box>
+          {data.findListing.author.firstName} {data.findListing.author.lastName}
+        </Box>
         <Box>ID</Box> <Box>{params.listingId}</Box>
         <Box>Created At</Box>{" "}
         <Box>{Moment(data.findListing.createdAt).fromNow()}</Box>
