@@ -16,7 +16,7 @@
     "lint": "lerna run lint",
     "pre-commit": "lerna run pre-commit",
     "ci": "yarn typecheck && yarn lint",
-    "heroku-postbuild": "yarn build:api && yarn build:web"
+    "heroku-postbuild": "yarn build:api"
   },
   "husky": {
     "hooks": {

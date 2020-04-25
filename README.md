@@ -41,4 +41,6 @@ APP_ENV=           development
 NODE_ENV=          development
 PORT=              5555
 ```
-You can use `heroku local`
+You can use `heroku local`.
+
+Use heroku for api hosting, and you can host the static web files anywhere.

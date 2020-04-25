@@ -19,7 +19,7 @@ import { authChecker } from "./lib/authChecker"
 import { Server } from "./lib/server"
 import { createDbConnection } from "./db"
 
-class FullstackBoilerplate extends Server {
+class Fancystack extends Server {
   constructor() {
     super()
     this.init()
@@ -77,4 +77,4 @@ class FullstackBoilerplate extends Server {
   }
 }
 
-new FullstackBoilerplate().start()
+new Fancystack().start()
