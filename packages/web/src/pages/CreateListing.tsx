@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 import { Box, Button, Flex, Heading } from "@chakra-ui/core/dist"
-import { RouteComponentProps } from "@reach/router"
+import { navigate, RouteComponentProps } from "@reach/router"
 import { Page } from "../components/Page"
 import { Form } from "../components/Form"
 import { Input } from "../components/Input"
@@ -13,7 +13,7 @@ import { gql, useMutation } from "@apollo/client"
 // A page to create new listing
 
 export const CREATE_LISTING = gql`
-  mutation AddNewLisiting($data: CreateListingInput!) {
+  mutation AddNewListing($data: CreateListingInput!) {
     createListing(data: $data) {
       createdAt
       id
@@ -31,13 +31,12 @@ export const CreateListing: FC<RouteComponentProps> = () => {
   const form = useForm<CreateListingInput>({ validationSchema: ListingSchema })
 
   const onSubmit = async (newListingData: CreateListingInput) => {
-    console.log(newListingData)
     const res = await createListing({
       variables: { data: newListingData },
     })
     form.handler(res, {
       onSuccess: data => {
-        console.log("successful create listing", res, data)
+        navigate("/listing/" + data.createListing.id, { replace: true })
       },
     })
   }

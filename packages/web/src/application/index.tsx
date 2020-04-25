@@ -10,6 +10,7 @@ import { UserProfile } from "../pages/UserProfile"
 import { NotFound } from "../pages/NotFound"
 import { LoadSpinner } from "../components/LoadSpinner"
 import { CreateListing } from "../pages/CreateListing"
+import { ListingDetails } from "../pages/ListingDetails"
 
 export function Application() {
   return (
@@ -24,6 +25,7 @@ export function Application() {
 
             {/* Can't figure out how to nest CreateListing inside HostingDash */}
             <CreateListing path="hosting/create_listing" />
+            <ListingDetails path="listing/:listingId" />
 
             <NotFound default />
           </Router>

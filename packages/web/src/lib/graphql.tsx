@@ -136,7 +136,7 @@ export type Query = {
   getPlates: Array<Plate>
   findByPlateSerialAndState: Plate
   getListing: Array<Listing>
-  findListingFor: Listing
+  findListing: Listing
   me?: Maybe<User>
 }
 
@@ -150,7 +150,7 @@ export type QueryFindByPlateSerialAndStateArgs = {
   state?: Maybe<Scalars["String"]>
 }
 
-export type QueryFindListingForArgs = {
+export type QueryFindListingArgs = {
   id: Scalars["String"]
 }
 
@@ -207,6 +207,16 @@ export type MeQuery = { __typename?: "Query" } & {
   me?: Maybe<{ __typename?: "User" } & MeFragment>
 }
 
+export type AddNewListingMutationVariables = {
+  data: CreateListingInput
+}
+
+export type AddNewListingMutation = { __typename?: "Mutation" } & {
+  createListing?: Maybe<
+    { __typename?: "Listing" } & Pick<Listing, "createdAt" | "id">
+  >
+}
+
 export type ForgotPasswordMutationVariables = {
   email: Scalars["String"]
 }
@@ -215,6 +225,17 @@ export type ForgotPasswordMutation = { __typename?: "Mutation" } & Pick<
   Mutation,
   "forgotPassword"
 >
+
+export type GetListingByIdQueryVariables = {
+  id: Scalars["String"]
+}
+
+export type GetListingByIdQuery = { __typename?: "Query" } & {
+  findListing: { __typename?: "Listing" } & Pick<
+    Listing,
+    "createdAt" | "updatedAt" | "description" | "title"
+  >
+}
 
 export type LoginMutationVariables = {
   data: LoginInput
@@ -293,6 +314,53 @@ export type MeQueryResult = ApolloReactCommon.QueryResult<
   MeQuery,
   MeQueryVariables
 >
+export const AddNewListingDocument = gql`
+  mutation AddNewListing($data: CreateListingInput!) {
+    createListing(data: $data) {
+      createdAt
+      id
+    }
+  }
+`
+
+/**
+ * __useAddNewListingMutation__
+ *
+ * To run a mutation, you first call `useAddNewListingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddNewListingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addNewListingMutation, { data, loading, error }] = useAddNewListingMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useAddNewListingMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    AddNewListingMutation,
+    AddNewListingMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    AddNewListingMutation,
+    AddNewListingMutationVariables
+  >(AddNewListingDocument, baseOptions)
+}
+export type AddNewListingMutationHookResult = ReturnType<
+  typeof useAddNewListingMutation
+>
+export type AddNewListingMutationResult = ApolloReactCommon.MutationResult<
+  AddNewListingMutation
+>
+export type AddNewListingMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  AddNewListingMutation,
+  AddNewListingMutationVariables
+>
 export const ForgotPasswordDocument = gql`
   mutation ForgotPassword($email: String!) {
     forgotPassword(email: $email)
@@ -336,6 +404,65 @@ export type ForgotPasswordMutationResult = ApolloReactCommon.MutationResult<
 export type ForgotPasswordMutationOptions = ApolloReactCommon.BaseMutationOptions<
   ForgotPasswordMutation,
   ForgotPasswordMutationVariables
+>
+export const GetListingByIdDocument = gql`
+  query GetListingById($id: String!) {
+    findListing(id: $id) {
+      createdAt
+      updatedAt
+      description
+      title
+    }
+  }
+`
+
+/**
+ * __useGetListingByIdQuery__
+ *
+ * To run a query within a React component, call `useGetListingByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetListingByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetListingByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetListingByIdQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    GetListingByIdQuery,
+    GetListingByIdQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    GetListingByIdQuery,
+    GetListingByIdQueryVariables
+  >(GetListingByIdDocument, baseOptions)
+}
+export function useGetListingByIdLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    GetListingByIdQuery,
+    GetListingByIdQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    GetListingByIdQuery,
+    GetListingByIdQueryVariables
+  >(GetListingByIdDocument, baseOptions)
+}
+export type GetListingByIdQueryHookResult = ReturnType<
+  typeof useGetListingByIdQuery
+>
+export type GetListingByIdLazyQueryHookResult = ReturnType<
+  typeof useGetListingByIdLazyQuery
+>
+export type GetListingByIdQueryResult = ApolloReactCommon.QueryResult<
+  GetListingByIdQuery,
+  GetListingByIdQueryVariables
 >
 export const LoginDocument = gql`
   mutation Login($data: LoginInput!) {

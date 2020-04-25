@@ -21,7 +21,7 @@ export class ListingResolver {
 
   // anyone can read a specific Listing
   @Query(() => Listing)
-  async findListingFor(@Arg("id") id: string): Promise<Listing> {
+  async findListing(@Arg("id") id: string): Promise<Listing> {
     const listing = await this.listingService.find(id)
     if (listing === undefined) {
       throw new UserInputError(id + " found no listings")
