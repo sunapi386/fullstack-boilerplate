@@ -33,3 +33,12 @@ Comes with user authentication included
 3. `createdb fancystackdb` (must have postgres setup locally)
 4. `cd packages/api && yarn watch`
 5. `cd packages/web && yarn start`
+
+## Local Running
+Make a `.env` file with vars you want to set. E.g.
+```
+APP_ENV=           development
+NODE_ENV=          development
+PORT=              5555
+```
+You can use `heroku local`

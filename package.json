@@ -16,12 +16,15 @@
     "lint": "lerna run lint",
     "pre-commit": "lerna run pre-commit",
     "ci": "yarn typecheck && yarn lint",
-    "heroku-postbuild": "yarn build:api"
+    "heroku-postbuild": "yarn build:api && yarn build:web"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lerna run --concurrency 1 --stream pre-commit"
     }
+  },
+  "engines": {
+    "node": "12.x"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "2.29.0",
