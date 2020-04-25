@@ -32,7 +32,7 @@ interface MailArgs {
 }
 
 export class Mailer {
-  private readonly from: string = "Boiler Plate <noreply@boilerplate.co>"
+  private readonly from: string = "Jason Sun <noreply@sunpi.co>"
   send(args: MailArgs) {
     if (!SENDGRID_API_KEY) return
     const data = {
