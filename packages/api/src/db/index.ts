@@ -16,6 +16,7 @@ export const createDbConnection = async () => {
 
     const connection = await createConnection({
       ...options,
+      name: NODE_ENV,
       url: DATABASE_URL,
     })
 
