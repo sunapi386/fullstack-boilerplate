@@ -24,6 +24,8 @@ export const createDbConnection = async () => {
     })
 
     // Run migrations in production
+    // don't migrate databases automatically, race condition when 1+ servers
+    // https://blog.staffjoy.com/dont-migrate-databases-automatically-5039ab061365
     if (IS_PRODUCTION || IS_STAGING) await connection.runMigrations()
   } catch (err) {
     // Sentry
