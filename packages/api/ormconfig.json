@@ -1,6 +1,6 @@
 [
   {
-    "name": "default",
+    "name": "development",
     "type": "postgres",
     "host": "localhost",
     "port": 5432,
@@ -16,8 +16,14 @@
     "type": "postgres",
     "synchronize": false,
     "logging": true,
-    "entities": ["packages/api/dist/modules/**/*.entity.js"],
-    "migrations": ["packages/api/dist/db/migrations/*.js"],
+    "entities": [
+      "packages/api/dist/modules/**/*.entity.js",
+      "modules/**/*.entity.js"
+    ],
+    "migrations": [
+      "packages/api/dist/db/migrations/*.js",
+      "db/migrations/*.js"
+    ],
     "cli": { "migrationsDir": "src/db/migrations" }
   }
 ]

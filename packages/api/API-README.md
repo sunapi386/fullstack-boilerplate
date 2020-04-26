@@ -144,3 +144,20 @@ mutation {
   }
 }
 ```
+
+## TypeORM options
+See BaseConnectionOptions
+
+-  `cli`:
+-  `database`:
+-  `entities`: Entities to be loaded for this connection. Accepts both entity classes and directories where from entities need to be loaded. Directories support glob patterns.
+-  `host`: ?
+-  `port`: ? Not defined/used in typeorm's connection options (not in ConnectionOptions/PostgresConnectionOptions/BaseConnectionOptions)
+
+-  `logging`:
+-  `migrations`: Migrations table name, in case of different name from "migrations". Accepts single string name.
+-  `migrationsDir`:
+-  `name`:
+-  `synchronize`: Indicates if migrations should be auto run on every application launch. Manually can use CLI and run
+ migrations:run command.
+-  `type`:

@@ -17,7 +17,7 @@ import { attachLoaders } from "./lib/attachLoaders"
 import { ExpressContext } from "./lib/types"
 import { authChecker } from "./lib/authChecker"
 import { Server } from "./lib/server"
-import { createDbConnection } from "./db"
+import { createDbConnection } from "./db/createDbConnection"
 
 class Fancystack extends Server {
   constructor() {
