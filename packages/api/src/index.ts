@@ -63,10 +63,10 @@ class Fancystack extends Server {
       schema,
     })
 
-    // apolloServer.applyMiddleware({
-    //   cors: CORS_OPTIONS,
-    //   app: this.app,
-    // })
+    apolloServer.applyMiddleware({
+      cors: CORS_OPTIONS,
+      app: this.app,
+    })
   }
 
   async setupControllers() {

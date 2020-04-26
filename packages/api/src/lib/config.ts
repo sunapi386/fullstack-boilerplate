@@ -11,6 +11,7 @@ export const {
   DATABASE_URL = "",
   WEB_URL = "localhost:3000",
   REDIS_URL = "",
+  CORS_DOMAIN = "http://localhost/",
 } = process.env
 
 // IS PRODUCTION
@@ -19,7 +20,8 @@ export const IS_STAGING = APP_ENV === "staging"
 
 // CORS
 export const CORS_OPTIONS = {
-  origin: "*",
+  origin: ["http://10.0.1.21/", CORS_DOMAIN],
+  allowedHeaders: ["Content-Type", "Authorization"],
 }
 
 // GRAPHQL PATH
