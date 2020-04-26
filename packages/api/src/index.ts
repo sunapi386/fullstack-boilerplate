@@ -67,6 +67,7 @@ class Fancystack extends Server {
       cors: CORS_OPTIONS,
       app: this.app,
     })
+    console.log("CORS_OPTIONS", CORS_OPTIONS)
   }
 
   async setupControllers() {
