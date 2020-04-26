@@ -20,7 +20,7 @@ export class Server {
   async start() {
     this._app.listen(PORT, () => {
       console.log(
-        `Server started in ${APP_ENV} mode, at http://localhost:${PORT} 🚀`,
+        `Server started in APP_ENV=${APP_ENV} mode, at http://localhost:${PORT} 🚀`,
       )
     })
   }

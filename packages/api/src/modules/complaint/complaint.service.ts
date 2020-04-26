@@ -1,4 +1,3 @@
-// import { ComplaintInputError } from "apollo-server-express"
 import { Inject, Service } from "typedi"
 
 import { Complaint } from "./complaint.entity"

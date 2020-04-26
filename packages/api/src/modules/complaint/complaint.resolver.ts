@@ -1,12 +1,4 @@
-import {
-  Arg,
-  Authorized,
-  FieldResolver,
-  Mutation,
-  Query,
-  Resolver,
-  Root,
-} from "type-graphql"
+import { Arg, Authorized, Mutation, Query, Resolver } from "type-graphql"
 import { Inject } from "typedi"
 
 import { Complaint } from "./complaint.entity"
@@ -15,7 +7,6 @@ import { UserInputError } from "apollo-server-express"
 import { CreateComplaintInput } from "./inputs/createcomplaint.input"
 import { User } from "../user/user.entity"
 import { CurrentUser } from "../shared/context/currentUser"
-import { Plate } from "../license/plate.entity"
 
 @Resolver(() => Complaint)
 export class ComplaintResolver {

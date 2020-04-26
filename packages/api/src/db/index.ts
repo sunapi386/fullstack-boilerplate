@@ -1,6 +1,6 @@
 import { getConnectionOptions, createConnection } from "typeorm"
 import {
-  NODE_ENV,
+  ORMCONFIG_USE_NAME,
   DATABASE_URL,
   IS_PRODUCTION,
   IS_STAGING,
@@ -10,13 +10,16 @@ import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConne
 export const createDbConnection = async () => {
   try {
     // Create DB connection
+    console.log(
+      `Create DB Connection ORMCONFIG_USE_NAME=${ORMCONFIG_USE_NAME} DATABASE_URL=${DATABASE_URL}`,
+    )
     const options = (await getConnectionOptions(
-      NODE_ENV,
+      ORMCONFIG_USE_NAME,
     )) as PostgresConnectionOptions
 
     const connection = await createConnection({
       ...options,
-      name: NODE_ENV,
+      name: ORMCONFIG_USE_NAME,
       url: DATABASE_URL,
     })
 
