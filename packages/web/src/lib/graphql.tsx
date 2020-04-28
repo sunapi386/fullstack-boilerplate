@@ -47,6 +47,11 @@ export type CreateComplaintInput = {
 export type CreateListingInput = {
   title: Scalars["String"]
   description: Scalars["String"]
+  imageUrl?: Maybe<Scalars["String"]>
+  imageAlt?: Maybe<Scalars["String"]>
+  price: Scalars["Int"]
+  beds?: Maybe<Scalars["Int"]>
+  baths?: Maybe<Scalars["Int"]>
 }
 
 export type Listing = {
@@ -57,6 +62,13 @@ export type Listing = {
   author: User
   description: Scalars["String"]
   title: Scalars["String"]
+  imageUrl?: Maybe<Scalars["String"]>
+  imageAlt?: Maybe<Scalars["String"]>
+  beds?: Maybe<Scalars["Int"]>
+  baths?: Maybe<Scalars["Int"]>
+  price: Scalars["Int"]
+  reviews?: Maybe<Scalars["Int"]>
+  ratings?: Maybe<Scalars["Int"]>
 }
 
 export type LoginInput = {
@@ -135,7 +147,7 @@ export type Query = {
   findComplaintsFor: Array<Complaint>
   getPlates: Array<Plate>
   findByPlateSerialAndState: Plate
-  getListing: Array<Listing>
+  listings: Array<Listing>
   findListing: Listing
   me?: Maybe<User>
 }
@@ -196,6 +208,16 @@ export type User = {
   complaints: Array<Complaint>
 }
 
+export type ListingsForBoxQueryVariables = {}
+
+export type ListingsForBoxQuery = { __typename?: "Query" } & {
+  listings: Array<
+    { __typename?: "Listing" } & Pick<Listing, "description" | "title"> & {
+        author: { __typename?: "User" } & Pick<User, "firstName" | "lastName">
+      }
+  >
+}
+
 export type MeFragment = { __typename?: "User" } & Pick<
   User,
   "id" | "firstName" | "lastName" | "email"
@@ -233,8 +255,20 @@ export type GetListingByIdQueryVariables = {
 export type GetListingByIdQuery = { __typename?: "Query" } & {
   findListing: { __typename?: "Listing" } & Pick<
     Listing,
-    "createdAt" | "updatedAt" | "description" | "title"
-  >
+    | "createdAt"
+    | "updatedAt"
+    | "description"
+    | "title"
+    | "imageUrl"
+    | "imageAlt"
+    | "beds"
+    | "baths"
+    | "price"
+    | "reviews"
+    | "ratings"
+  > & {
+      author: { __typename?: "User" } & Pick<User, "firstName" | "lastName">
+    }
 }
 
 export type LoginMutationVariables = {
@@ -265,6 +299,66 @@ export const MeFragmentDoc = gql`
     email
   }
 `
+export const ListingsForBoxDocument = gql`
+  query listingsForBox {
+    listings {
+      description
+      title
+      author {
+        firstName
+        lastName
+      }
+    }
+  }
+`
+
+/**
+ * __useListingsForBoxQuery__
+ *
+ * To run a query within a React component, call `useListingsForBoxQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListingsForBoxQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListingsForBoxQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListingsForBoxQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    ListingsForBoxQuery,
+    ListingsForBoxQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    ListingsForBoxQuery,
+    ListingsForBoxQueryVariables
+  >(ListingsForBoxDocument, baseOptions)
+}
+export function useListingsForBoxLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    ListingsForBoxQuery,
+    ListingsForBoxQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    ListingsForBoxQuery,
+    ListingsForBoxQueryVariables
+  >(ListingsForBoxDocument, baseOptions)
+}
+export type ListingsForBoxQueryHookResult = ReturnType<
+  typeof useListingsForBoxQuery
+>
+export type ListingsForBoxLazyQueryHookResult = ReturnType<
+  typeof useListingsForBoxLazyQuery
+>
+export type ListingsForBoxQueryResult = ApolloReactCommon.QueryResult<
+  ListingsForBoxQuery,
+  ListingsForBoxQueryVariables
+>
 export const MeDocument = gql`
   query Me {
     me {
@@ -412,6 +506,17 @@ export const GetListingByIdDocument = gql`
       updatedAt
       description
       title
+      author {
+        firstName
+        lastName
+      }
+      imageUrl
+      imageAlt
+      beds
+      baths
+      price
+      reviews
+      ratings
     }
   }
 `

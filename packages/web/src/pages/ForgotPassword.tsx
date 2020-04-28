@@ -43,8 +43,8 @@ export const ForgotPassword: React.FC<RouteComponentProps> = () => {
     >
       <Heading pb={10}>Forgot password</Heading>
       {success ? (
-        <Box>
-          <Text>We've sent you a link by email!</Text>
+        <Box w={["100%", 400]}>
+          <Text mb={4}>We've sent you a link by email!</Text>
           <Flex justify="space-between" align="center" mt={4}>
             <Link to="/login">Login</Link>
           </Flex>

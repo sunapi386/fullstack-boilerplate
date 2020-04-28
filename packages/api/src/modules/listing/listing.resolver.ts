@@ -27,7 +27,7 @@ export class ListingResolver implements ResolverInterface<Listing> {
 
   // anyone can read listings collection
   @Query(() => [Listing])
-  async getListing(): Promise<Listing[]> {
+  async listings(): Promise<Listing[]> {
     return await this.listingService.findAll()
   }
 

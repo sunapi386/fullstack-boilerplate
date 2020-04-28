@@ -1,19 +1,18 @@
-import React, { FC } from "react"
-import { Badge, Box, Image, Icon } from "@chakra-ui/core/dist"
-import { RouteComponentProps } from "@reach/router"
+import React from "react"
+import { Badge, Box, Icon, Image } from "@chakra-ui/core/dist"
 
-export const RentalBox: FC<RouteComponentProps> = () => {
-  const property = {
-    imageUrl: "https://bit.ly/2Z4KKcF",
-    imageAlt: "Rear view of modern home with pool",
-    beds: 3,
-    baths: 2,
-    title: "Modern home in city center in the heart of historic Los Angeles",
-    formattedPrice: "$1,900.00",
-    reviewCount: 34,
-    rating: 4,
-  }
+export type ListingShortAd = {
+  imageUrl: string
+  imageAlt: string
+  beds: number
+  baths: number
+  title: string
+  formattedPrice: string
+  reviewCount: number
+  rating: number
+}
 
+export const ListingBox = ({ property }: { property: ListingShortAd }) => {
   return (
     <Box
       maxW="sm"
@@ -63,7 +62,6 @@ export const RentalBox: FC<RouteComponentProps> = () => {
           {Array(5)
             .fill("")
             .map((_, i) => (
-              // eslint-disable-next-line react/jsx-no-undef
               <Icon
                 name="star"
                 key={i}

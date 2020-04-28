@@ -24,6 +24,15 @@ export const CREATE_LISTING = gql`
 const ListingSchema = Yup.object().shape<CreateListingInput>({
   title: Yup.string().required("Required"),
   description: Yup.string().required("Required"),
+  price: Yup.number()
+    .required("Required")
+    .min(0),
+  beds: Yup.number()
+    .notRequired()
+    .min(0),
+  baths: Yup.number()
+    .notRequired()
+    .min(0),
 })
 
 export const CreateListing: FC<RouteComponentProps> = () => {
@@ -64,6 +73,13 @@ export const CreateListing: FC<RouteComponentProps> = () => {
               label="Description"
               placeholder="Near the park and subway"
             />
+
+            <Input name="price" label="Price" placeholder="$900" />
+
+            <Input name="beds" label="Bedrooms" placeholder="1" />
+
+            <Input name="baths" label="Bathrooms" placeholder="1" />
+
             <FormError display="flex" justifyContent="flex-end" />
             <Button
               variantColor="blue"

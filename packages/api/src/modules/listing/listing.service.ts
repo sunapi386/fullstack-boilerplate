@@ -6,7 +6,7 @@ import { UserInputError } from "apollo-server-express"
 @Service()
 export class ListingService {
   async findAll(): Promise<Listing[]> {
-    return []
+    return await Listing.find()
   }
 
   // returns the id
