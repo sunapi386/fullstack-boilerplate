@@ -77,7 +77,7 @@ export const Login: React.FC<RouteComponentProps> = () => {
           />
           <FormError display="flex" justifyContent="flex-end" />
           <Button
-            variantColor="pink"
+            variantColor="blue"
             type="submit"
             isFullWidth
             loadingText="loading"

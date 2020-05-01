@@ -45,6 +45,7 @@
     "dayjs": "1.8.26",
     "emotion-theming": "10.0.27",
     "google-map-react": "^1.1.7",
+    "query-string": "^6.12.1",
     "react": "16.13.1",
     "react-daterange-picker": "^2.0.1",
     "react-dom": "16.13.1",

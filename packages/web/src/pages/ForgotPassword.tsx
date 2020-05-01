@@ -44,7 +44,9 @@ export const ForgotPassword: React.FC<RouteComponentProps> = () => {
       <Heading pb={10}>Forgot password</Heading>
       {success ? (
         <Box w={["100%", 400]}>
-          <Text mb={4}>We've sent you a link by email!</Text>
+          <Text mb={4}>
+            Check your email for password reset link (expires in 24h).
+          </Text>
           <Flex justify="space-between" align="center" mt={4}>
             <Link to="/login">Login</Link>
           </Flex>
@@ -58,7 +60,7 @@ export const ForgotPassword: React.FC<RouteComponentProps> = () => {
             <Input name="email" label="Email" placeholder="jim@gmail.com" />
             <FormError display="flex" justifyContent="flex-end" />
             <Button
-              variantColor="pink"
+              variantColor="blue"
               type="submit"
               isFullWidth
               loadingText="loading"

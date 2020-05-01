@@ -1,4 +1,4 @@
-import { BeforeInsert, Entity, OneToMany } from "typeorm"
+import { BeforeInsert, BeforeUpdate, Entity, OneToMany } from "typeorm"
 import { Field, ObjectType } from "type-graphql"
 import bcrypt from "bcryptjs"
 
@@ -30,7 +30,7 @@ export class User extends BaseEntity<User> {
   )
   complaints: Complaint[]
 
-  @BeforeInsert()
+  @BeforeInsert() @BeforeUpdate()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10)
   }
