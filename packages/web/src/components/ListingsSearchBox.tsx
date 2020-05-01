@@ -7,13 +7,13 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/core/dist"
-import { RouteComponentProps } from "@reach/router"
 import { MdSearch } from "react-icons/all"
 import { Moment } from "moment"
 import { DatePickerPopover } from "./DatePicker"
 import { GuestPickerPopover } from "./GuestPicker"
+import { BoxProps } from "@chakra-ui/core/dist/Box"
 
-export const ListingsSearchBox: FC<RouteComponentProps> = () => {
+export const ListingsSearchBox: FC<BoxProps> = () => {
   // const [date, setDate] = React.useState({start: null, end: null})
   const handleDateSelected = ({
     start,

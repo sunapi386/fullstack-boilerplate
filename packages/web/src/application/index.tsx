@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Suspense } from "react"
 import { Router } from "@reach/router"
 
 import { AppProvider } from "../components/providers/AppProvider"
@@ -8,14 +8,13 @@ import { HostingDash } from "../pages/HostingDash"
 import { About } from "../pages/About"
 import { UserProfile } from "../pages/UserProfile"
 import { NotFound } from "../pages/NotFound"
-import { LoadSpinner } from "../components/LoadSpinner"
 import { CreateListing } from "../pages/CreateListing"
 import { ListingDetails } from "../pages/ListingDetails"
 
 export function Application() {
   return (
     <AppProvider>
-      <React.Suspense fallback={<LoadSpinner />}>
+      <Suspense fallback={<h1>Loading page...</h1>}>
         <CheckAuth>
           <Router>
             <RentingDash path="/" />
@@ -30,7 +29,7 @@ export function Application() {
             <NotFound default />
           </Router>
         </CheckAuth>
-      </React.Suspense>
+      </Suspense>
     </AppProvider>
   )
 }

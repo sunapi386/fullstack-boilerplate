@@ -96,7 +96,11 @@ const RightNav = () => {
             <Box as={WiMoonAltWaningCrescent2} size="32px" />
             <Box ml={1}>Dark</Box>
             <Flex w="70%" direction="row-reverse">
-              <Switch isChecked={colorMode !== "light"} size="lg" />
+              <Switch
+                onChange={toggleColor}
+                isChecked={colorMode !== "light"}
+                size="lg"
+              />
             </Flex>
           </MenuItem>
           <MenuItem onClick={logout}>

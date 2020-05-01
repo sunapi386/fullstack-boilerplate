@@ -10,6 +10,7 @@ import { Page } from "./Page"
 export const ALL_LISTINGS = gql`
   query listingsForBox {
     listings {
+      id
       description
       title
       author {
