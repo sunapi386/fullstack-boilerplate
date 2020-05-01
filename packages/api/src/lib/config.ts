@@ -7,6 +7,10 @@ export const {
   PORT = 5555,
   AWS_S3_BUCKET = "",
   SENDGRID_API_KEY = "",
+  SENDGRID_RESET_TEMPLATE_ID = "d-4a56aea422d747eebb4bc8f4dc519626EXAMPLE",
+  SENDGRID_WELCOME_TEMPLATE_ID = "d-94d77d0f64c04e18a72e21d185917148EXAMPLE",
+  EMAIL_FROM = "Fancy Co. <j@sunpi.co>",
+  EMAIL_CO_NAME = "Fancy Company",
   DATABASE_URL = "",
   WEB_URL = "localhost:3000",
   REDIS_URL = "",
@@ -61,7 +65,7 @@ export const jwtAuth = {
 // S3
 export const S3_CONFIG = {
   signatureVersion: "v4",
-  region: "eu-central-1",
+  region: "us-west-1",
 }
 export const S3_URL = `https://${AWS_S3_BUCKET}.s3.amazonaws.com/`
 

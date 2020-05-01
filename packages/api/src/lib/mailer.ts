@@ -7,6 +7,7 @@ import {
   DEV_EMAIL_OPTIONS,
   IS_PRODUCTION,
   IS_STAGING,
+  EMAIL_FROM,
 } from "./config"
 
 // In production, SendGrid is used, replace with your own templateIds and
@@ -32,9 +33,12 @@ interface MailArgs {
 }
 
 export class Mailer {
-  private readonly from: string = "Fancy Co. <noreply@sunpi.co>"
+  private readonly from: string = EMAIL_FROM
   send(args: MailArgs) {
-    if (!SENDGRID_API_KEY) return
+    if (!SENDGRID_API_KEY) {
+      console.log("send no SENDGRID_API_KEY")
+      return
+    }
     const data = {
       from: this.from,
       to: args.to,
@@ -43,7 +47,15 @@ export class Mailer {
     }
     try {
       if (IS_PRODUCTION || IS_STAGING) {
-        sendgrid.send(data)
+        sendgrid
+          .send(data)
+          .then(() => {
+            console.log("Email sent to", args.to)
+          })
+          .catch(error => {
+            console.log(error.response.body)
+            // console.log(error.response.body.errors[0].message)
+          })
       } else {
         this.sendDev(args)
       }
@@ -65,13 +77,21 @@ export class Mailer {
       args.variables,
       version.plain_content,
     )
-    devMail.sendMail({
-      to: args.to,
-      from: this.from,
-      subject,
-      html,
-      text,
-    })
+    devMail
+      .sendMail({
+        to: args.to,
+        from: this.from,
+        subject,
+        html,
+        text,
+      })
+      .then(() => {
+        console.log("Dev email sent to ", args.to)
+      })
+      .catch(error => {
+        console.log(error.response.body)
+        // console.log(error.response.body.errors[0].message)
+      })
   }
 
   interpolateVariables(params: any, html: string) {

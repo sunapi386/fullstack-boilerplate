@@ -1,5 +1,10 @@
 import { Service } from "typedi"
-import { FULL_WEB_URL } from "../../lib/config"
+import {
+  FULL_WEB_URL,
+  EMAIL_CO_NAME,
+  SENDGRID_RESET_TEMPLATE_ID,
+  SENDGRID_WELCOME_TEMPLATE_ID,
+} from "../../lib/config"
 import { User } from "./user.entity"
 import { Mailer } from "../../lib/mailer"
 
@@ -8,19 +13,24 @@ export class UserMailer extends Mailer {
   sendWelcomeEmail(user: User) {
     console.log("sendWelcomeEmail", user.email)
     this.send({
-      templateId: "d-sendgrid-template-id",
+      templateId: SENDGRID_WELCOME_TEMPLATE_ID,
       to: user.email,
-      variables: { firstName: user.firstName },
+      variables: {
+        firstName: user.firstName,
+        companyName: EMAIL_CO_NAME,
+      },
     })
   }
 
   sendResetPasswordLink(user: User, token: string) {
     console.log("sendResetPasswordLink", user.email)
     this.send({
-      templateId: "d-sendgrid-template-id2",
+      templateId: SENDGRID_RESET_TEMPLATE_ID,
       to: user.email,
       variables: {
-        link: `${FULL_WEB_URL()}/reset-password?token=${token}`,
+        firstName: `${user.firstName}`,
+        companyName: EMAIL_CO_NAME,
+        resetLink: `${FULL_WEB_URL()}/reset-password?token=${token}`,
       },
     })
   }
