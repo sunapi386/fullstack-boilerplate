@@ -36,7 +36,8 @@ export class Mailer {
   private readonly from: string = EMAIL_FROM
   send(args: MailArgs) {
     if (!SENDGRID_API_KEY) {
-      console.log("send no SENDGRID_API_KEY")
+      console.log("send nothing, no SENDGRID_API_KEY")
+      console.log("MailArgs:", args)
       return
     }
     const data = {

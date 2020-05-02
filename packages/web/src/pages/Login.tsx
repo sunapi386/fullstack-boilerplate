@@ -68,7 +68,7 @@ export const Login: React.FC<RouteComponentProps> = () => {
       <Heading pb={10}>Fancy Co.</Heading>
       <Box w={["100%", 400]}>
         <Form onSubmit={onSubmit} {...form}>
-          <Input name="email" label="Email" placeholder="jim@gmail.com" />
+          <Input name="email" label="Email" placeholder="user@example.com" />
           <Input
             name="password"
             label="Password"

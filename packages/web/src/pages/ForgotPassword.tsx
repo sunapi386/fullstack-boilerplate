@@ -57,7 +57,7 @@ export const ForgotPassword: React.FC<RouteComponentProps> = () => {
             <Text mb={4}>
               What is your email? We'll send you a link to reset your password
             </Text>
-            <Input name="email" label="Email" placeholder="jim@gmail.com" />
+            <Input name="email" label="Email" placeholder="user@example.com" />
             <FormError display="flex" justifyContent="flex-end" />
             <Button
               variantColor="blue"
