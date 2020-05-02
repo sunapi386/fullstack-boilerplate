@@ -80,9 +80,9 @@ export type Mutation = {
   __typename?: "Mutation"
   createComplaint?: Maybe<Complaint>
   deleteComplaintNumber: Scalars["Boolean"]
-  deletePlateNumber: Scalars["Boolean"]
   createListing?: Maybe<Listing>
   deleteListingNumber: Scalars["Boolean"]
+  deletePlateNumber: Scalars["Boolean"]
   updateMe?: Maybe<User>
   login: AuthResponse
   register: AuthResponse
@@ -99,15 +99,15 @@ export type MutationDeleteComplaintNumberArgs = {
   id: Scalars["String"]
 }
 
-export type MutationDeletePlateNumberArgs = {
-  id: Scalars["String"]
-}
-
 export type MutationCreateListingArgs = {
   data: CreateListingInput
 }
 
 export type MutationDeleteListingNumberArgs = {
+  id: Scalars["String"]
+}
+
+export type MutationDeletePlateNumberArgs = {
   id: Scalars["String"]
 }
 
@@ -145,10 +145,10 @@ export type Query = {
   __typename?: "Query"
   getComplaints: Array<Complaint>
   findComplaintsFor: Array<Complaint>
-  getPlates: Array<Plate>
-  findByPlateSerialAndState: Plate
   listings: Array<Listing>
   findListing: Listing
+  getPlates: Array<Plate>
+  findByPlateSerialAndState: Plate
   me?: Maybe<User>
 }
 
@@ -157,13 +157,13 @@ export type QueryFindComplaintsForArgs = {
   state: Scalars["String"]
 }
 
+export type QueryFindListingArgs = {
+  id: Scalars["String"]
+}
+
 export type QueryFindByPlateSerialAndStateArgs = {
   plate_serial?: Maybe<Scalars["String"]>
   state?: Maybe<Scalars["String"]>
-}
-
-export type QueryFindListingArgs = {
-  id: Scalars["String"]
 }
 
 export type RegisterInput = {
