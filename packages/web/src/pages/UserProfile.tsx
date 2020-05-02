@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 import { RouteComponentProps, useParams } from "@reach/router"
-import { Page } from "../components/Page"
+import { Page } from "../components/shared/Page"
 import { UserDetailsComponent } from "../components/UserDetailsComponent"
 
 export const UserProfile: FC<RouteComponentProps> = () => {

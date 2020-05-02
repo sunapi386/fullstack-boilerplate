@@ -13,11 +13,11 @@ import {
   useLoginMutation,
 } from "../lib/graphql"
 
-import { Input } from "../components/Input"
+import { Input } from "../components/shared/Input"
 import { useForm } from "../lib/hooks/useForm"
-import { Form } from "../components/Form"
-import { FormError } from "../components/FormError"
-import { Link } from "../components/Link"
+import { Form } from "../components/shared/Form"
+import { FormError } from "../components/shared/FormError"
+import { Link } from "../components/shared/Link"
 
 export const LOGIN = gql`
   mutation Login($data: LoginInput!) {

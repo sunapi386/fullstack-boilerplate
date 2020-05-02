@@ -1,8 +1,8 @@
 import React, { FC } from "react"
 import { RouteComponentProps } from "@reach/router"
 import { Box, Button, Heading, Text } from "@chakra-ui/core/dist"
-import { Link } from "../components/Link"
-import { Page } from "../components/Page"
+import { Link } from "../components/shared/Link"
+import { Page } from "../components/shared/Page"
 
 export const NotFound: FC<RouteComponentProps> = () => {
   // return <Redirect to="/" noThrow={true} />

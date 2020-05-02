@@ -10,7 +10,7 @@ import {
   Text,
   useColorMode,
 } from "@chakra-ui/core/dist"
-import { RouteComponentProps } from "@reach/router"
+import { RouteComponentProps, useParams } from "@reach/router"
 
 const PeopleSmallBox = ({ title, text }: { title: string; text: string }) => {
   // add a custom lighter grey color here
@@ -35,7 +35,7 @@ const PeopleSmallBox = ({ title, text }: { title: string; text: string }) => {
   )
 }
 
-const PeopleShort = () => {
+const UserInfoSummaryBarTop = () => {
   // id = "noId", email = "noEmail", phoneNumber = "555", assistantId = "noId"
   return (
     <Flex justifyContent="center">
@@ -47,79 +47,57 @@ const PeopleShort = () => {
   )
 }
 
-const InfoPerson: FC = () => {
+const UserOverview: FC = () => {
   return (
     <Box>
-      <Text>Person</Text>
+      <Text>Overview</Text>
     </Box>
   )
 }
-const InfoComplaints: FC = () => {
+const UserComplaints: FC = () => {
   return (
     <Box>
       <Text>Complaints</Text>
     </Box>
   )
 }
-const InfoDocuments: FC = () => {
+const UserDocuments: FC = () => {
   return (
     <Box>
       <Text>Documents</Text>
     </Box>
   )
 }
-const InfoListings: FC = () => {
+const UserListings: FC = () => {
   return (
     <Box>
       <Text>Listings</Text>
     </Box>
   )
 }
-const InfoFinances: FC = () => {
-  return (
-    <Box>
-      <Text>Finances</Text>
-    </Box>
-  )
-}
-const InfoEmployment: FC = () => {
-  return (
-    <Box>
-      <Text>Employment</Text>
-    </Box>
-  )
-}
 
-const PeopleTabs = () => {
+const UserInfoTabs = () => {
   return (
     <Box m="1em">
       <Tabs isFitted variant="enclosed">
         <TabList mb="1em" minW="800px">
-          <Tab fontWeight="600">Person Overview</Tab>
+          <Tab fontWeight="600">Overview</Tab>
           <Tab fontWeight="600">Listings</Tab>
-          <Tab fontWeight="600">Chat History</Tab>
-          <Tab fontWeight="600">Account Finances</Tab>
-          <Tab fontWeight="600">ID Documents</Tab>
-          <Tab fontWeight="600">Employment</Tab>
+          <Tab fontWeight="600">Complaints</Tab>
+          <Tab fontWeight="600">Documents</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
-            <InfoPerson />
+            <UserOverview />
           </TabPanel>
           <TabPanel>
-            <InfoListings />
+            <UserListings />
           </TabPanel>
           <TabPanel>
-            <InfoComplaints />
+            <UserComplaints />
           </TabPanel>
           <TabPanel>
-            <InfoFinances />
-          </TabPanel>
-          <TabPanel>
-            <InfoDocuments />
-          </TabPanel>
-          <TabPanel>
-            <InfoEmployment />
+            <UserDocuments />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -129,10 +107,12 @@ const PeopleTabs = () => {
 
 // Need user object to be passed here
 export const UserDetailsComponent: FC<RouteComponentProps> = () => {
+  const params = useParams()
+  console.log(params)
   return (
     <Box w="100%">
-      <PeopleShort />
-      <PeopleTabs />
+      <UserInfoSummaryBarTop />
+      <UserInfoTabs />
     </Box>
   )
 }

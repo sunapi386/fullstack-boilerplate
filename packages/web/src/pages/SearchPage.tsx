@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 import { RouteComponentProps } from "@reach/router"
-import { Page } from "../components/Page"
+import { Page } from "../components/shared/Page"
 import { ListingBox } from "../components/ListingBox"
 import { WorldMap } from "../components/WorldMap"
 

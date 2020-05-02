@@ -9,8 +9,8 @@ import {
 } from "@chakra-ui/core/dist"
 import { MdSearch } from "react-icons/all"
 import { Moment } from "moment"
-import { DatePickerPopover } from "./DatePicker"
-import { GuestPickerPopover } from "./GuestPicker"
+import { DatePickerPopover } from "./shared/DatePicker"
+import { GuestPickerPopover } from "./GuestPickerPopover"
 import { BoxProps } from "@chakra-ui/core/dist/Box"
 
 export const ListingsSearchBox: FC<BoxProps> = () => {

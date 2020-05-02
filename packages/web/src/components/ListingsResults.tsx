@@ -1,10 +1,10 @@
 import React from "react"
 import { Box } from "@chakra-ui/core/dist"
 import { BoxProps } from "@chakra-ui/core/dist/Box"
-import { LoadSpinner } from "./LoadSpinner"
+import { LoadSpinner } from "./shared/LoadSpinner"
 import { ListingBox, ListingShortAd } from "./ListingBox"
 import { gql, useQuery } from "@apollo/client"
-import { Page } from "./Page"
+import { Page } from "./shared/Page"
 
 // Fetch the data from backend
 export const ALL_LISTINGS = gql`

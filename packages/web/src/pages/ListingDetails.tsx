@@ -1,9 +1,9 @@
 import React, { FC } from "react"
 import { RouteComponentProps, useParams } from "@reach/router"
-import { Page } from "../components/Page"
+import { Page } from "../components/shared/Page"
 import { Box, SimpleGrid } from "@chakra-ui/core/dist"
 import { gql, useQuery } from "@apollo/client"
-import { LoadSpinner } from "../components/LoadSpinner"
+import { LoadSpinner } from "../components/shared/LoadSpinner"
 import Moment from "moment"
 
 export const FIND_LISTING = gql`

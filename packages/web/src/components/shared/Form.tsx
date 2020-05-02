@@ -2,7 +2,7 @@ import React from "react"
 import { useFormContext, FormContext } from "react-hook-form"
 import { FormProps } from "react-hook-form/dist/contextTypes"
 
-import { useToast } from "../lib/hooks/useToast"
+import { useToast } from "../../lib/hooks/useToast"
 
 interface FormContainerProps {
   onSubmit?: (values: any) => Promise<any> | any

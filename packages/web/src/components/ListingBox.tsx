@@ -1,6 +1,6 @@
 import React from "react"
 import { Badge, Box, Icon, Image, PseudoBox } from "@chakra-ui/core/dist"
-import { Link } from "./Link"
+import { Link } from "./shared/Link"
 
 export type ListingShortAd = {
   imageUrl: string

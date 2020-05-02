@@ -1,7 +1,7 @@
 import React, { FC } from "react"
 import { RouteComponentProps } from "@reach/router"
 import { Heading } from "@chakra-ui/core"
-import { Page } from "../components/Page"
+import { Page } from "../components/shared/Page"
 
 export const About: FC<RouteComponentProps> = () => {
   return (

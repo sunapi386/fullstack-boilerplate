@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 import { RouteComponentProps } from "@reach/router"
-import { Page } from "../components/Page"
+import { Page } from "../components/shared/Page"
 import {
   Box,
   Button,
@@ -16,7 +16,7 @@ import {
   Text,
 } from "@chakra-ui/core/dist"
 import { TiStar } from "react-icons/all"
-import { Link } from "../components/Link"
+import { Link } from "../components/shared/Link"
 
 // const TabsBoard = () => {
 //   return (

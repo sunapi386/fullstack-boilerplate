@@ -2,7 +2,7 @@ import React from "react"
 import { Box, Icon } from "@chakra-ui/core/dist"
 import GoogleMapReact from "google-map-react"
 import { BoxProps } from "@chakra-ui/core/dist/Box"
-import { LoadSpinner } from "./LoadSpinner"
+import { LoadSpinner } from "./shared/LoadSpinner"
 import { FiHome } from "react-icons/all"
 
 const Marker = ({ text }: any) => {

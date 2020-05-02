@@ -16,8 +16,8 @@ import {
   useColorMode,
   Text,
 } from "@chakra-ui/core/dist"
-import { useMe } from "./providers/MeProvider"
-import { useLogout } from "../lib/hooks/useLogout"
+import { useMe } from "../providers/MeProvider"
+import { useLogout } from "../../lib/hooks/useLogout"
 
 import { useLocalStorage } from "@noquarter/hooks"
 import {

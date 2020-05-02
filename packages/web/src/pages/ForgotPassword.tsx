@@ -5,10 +5,10 @@ import { RouteComponentProps } from "@reach/router"
 
 import { useForgotPasswordMutation } from "../lib/graphql"
 import { useForm } from "../lib/hooks/useForm"
-import { Link } from "../components/Link"
-import { Form } from "../components/Form"
-import { FormError } from "../components/FormError"
-import { Input } from "../components/Input"
+import { Link } from "../components/shared/Link"
+import { Form } from "../components/shared/Form"
+import { FormError } from "../components/shared/FormError"
+import { Input } from "../components/shared/Input"
 import Yup from "../lib/yup"
 
 export const FORGOT_PASSWORD = gql`
