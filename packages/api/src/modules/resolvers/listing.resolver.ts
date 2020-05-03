@@ -17,6 +17,7 @@ import { User } from "../entities/user.entity"
 import { CreateListingInput } from "../inputs/createlisting.input"
 import { UserInputError } from "apollo-server-express"
 import { UserRepository } from "../repositories/user.repository"
+import { generatePreSignedUrl } from "../../lib/s3"
 
 @Resolver(() => Listing)
 export class ListingResolver implements ResolverInterface<Listing> {
@@ -49,6 +50,15 @@ export class ListingResolver implements ResolverInterface<Listing> {
     @Arg("data") input: CreateListingInput,
   ): Promise<Listing> {
     return this.listingService.create(currentUser.id, input)
+  }
+
+  @Authorized()
+  @Query(() => String)
+  async generateListingAssetUploadUrl(
+    @Arg("filename") filename: string,
+    @Arg("contentType") contentType: string,
+  ): Promise<string> {
+    return await generatePreSignedUrl(filename, 60, contentType)
   }
 
   @Authorized("ADMIN") // only admin can delete stuff
