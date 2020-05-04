@@ -104,16 +104,15 @@ const StatsCard = () => {
         <SimpleGrid columns={3} spacing={2} p={2}>
           <Stat>
             <StatLabel>Overall rating</StatLabel>
-            <StatNumber>0</StatNumber>
+            <Flex>
+              <StatNumber>0</StatNumber>
+              <Box m={1} as={TiStar} size="28px" />
+            </Flex>
             <StatHelpText />
           </Stat>
           <Stat>
             <StatLabel>Total reviews</StatLabel>
-            <StatNumber>
-              <Flex>
-                0 <Box m={1} as={TiStar} size="28px" />
-              </Flex>
-            </StatNumber>
+            <StatNumber>0</StatNumber>
             <StatHelpText />
           </Stat>
           <Stat>
