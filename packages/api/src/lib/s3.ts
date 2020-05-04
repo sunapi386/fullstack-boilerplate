@@ -1,11 +1,11 @@
-import { S3 } from "aws-sdk/clients/all"
-import { AWS_S3_BUCKET, S3_CONFIG } from "./config"
+import AWS from "aws-sdk"
+import { AWS_S3_BUCKET, S3_CONFIG, S3_URL } from "./config"
 // "bucket": "fancyimages",
 // "key": "AKIA3SDAS7437JAS2GJI",
 // "secret": "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"
 
 // AWS
-export const s3 = new S3(S3_CONFIG)
+export const s3 = new AWS.S3(S3_CONFIG)
 
 // Function to generate presigned url.
 // Uploading to s3 from the browser using presigned url
@@ -15,20 +15,37 @@ export const s3 = new S3(S3_CONFIG)
 // 3. Backend sends frontend this generated, pre-signed url
 // 4. Frontend directly upload the file to AWS S3 using pre-signed URL.
 
-export const generatePreSignedUrl = async (
+export const generatePreSignedUrl = (
   filename: string,
-  signedUrlExpireSeconds: number,
   contentType: string,
-): Promise<string> => {
+  bucket?: string,
+  signedUrlExpireSeconds?: number,
+  acl?: string,
+): string => {
   const params = {
-    Bucket: AWS_S3_BUCKET,
+    Bucket: bucket || AWS_S3_BUCKET,
     Key: filename,
-    Expires: signedUrlExpireSeconds,
+    Expires: signedUrlExpireSeconds || 60 * 5,
     ContentType: contentType,
-    ACL: "public-read",
+    ACL: acl || "public-read",
   }
-  const url = await s3.getSignedUrlPromise("putObject", params)
-
+  const url = s3.getSignedUrl("putObject", params)
+  console.log("filename", filename, "contentType", contentType)
   console.log("Presigned URL:", url)
+  console.log("Accessible at URL:", `${S3_URL}${filename}`)
+  return url
+}
+
+export const signedDownloadUrl = (
+  key: string,
+  bucket?: string,
+  signedUrlExpireSeconds?: number,
+) => {
+  const url = s3.getSignedUrl("getObject", {
+    Bucket: bucket || AWS_S3_BUCKET,
+    Key: key,
+    Expires: signedUrlExpireSeconds || 60 * 5,
+  })
+  console.log("signedDownloadUrl at URL:", `${S3_URL}${key}`)
   return url
 }

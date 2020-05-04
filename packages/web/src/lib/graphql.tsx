@@ -147,6 +147,7 @@ export type Query = {
   findComplaintsFor: Array<Complaint>
   listings: Array<Listing>
   findListing: Listing
+  generateListingAssetUploadUrl: Scalars["String"]
   getPlates: Array<Plate>
   findByPlateSerialAndState: Plate
   me?: Maybe<User>
@@ -159,6 +160,11 @@ export type QueryFindComplaintsForArgs = {
 
 export type QueryFindListingArgs = {
   id: Scalars["String"]
+}
+
+export type QueryGenerateListingAssetUploadUrlArgs = {
+  contentType: Scalars["String"]
+  filename: Scalars["String"]
 }
 
 export type QueryFindByPlateSerialAndStateArgs = {
@@ -251,6 +257,16 @@ export type AddNewListingMutation = { __typename?: "Mutation" } & {
   >
 }
 
+export type RequestUploadUrlQueryVariables = {
+  filename: Scalars["String"]
+  contentType: Scalars["String"]
+}
+
+export type RequestUploadUrlQuery = { __typename?: "Query" } & Pick<
+  Query,
+  "generateListingAssetUploadUrl"
+>
+
 export type ForgotPasswordMutationVariables = {
   email: Scalars["String"]
 }
@@ -278,9 +294,7 @@ export type GetListingByIdQuery = { __typename?: "Query" } & {
     | "price"
     | "reviews"
     | "ratings"
-  > & {
-      author: { __typename?: "User" } & Pick<User, "firstName" | "lastName">
-    }
+  > & { author: { __typename?: "User" } & Pick<User, "firstName" | "lastName"> }
 }
 
 export type LoginMutationVariables = {
@@ -483,6 +497,64 @@ export type AddNewListingMutationResult = ApolloReactCommon.MutationResult<
 export type AddNewListingMutationOptions = ApolloReactCommon.BaseMutationOptions<
   AddNewListingMutation,
   AddNewListingMutationVariables
+>
+export const RequestUploadUrlDocument = gql`
+  query RequestUploadUrl($filename: String!, $contentType: String!) {
+    generateListingAssetUploadUrl(
+      filename: $filename
+      contentType: $contentType
+    )
+  }
+`
+
+/**
+ * __useRequestUploadUrlQuery__
+ *
+ * To run a query within a React component, call `useRequestUploadUrlQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRequestUploadUrlQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRequestUploadUrlQuery({
+ *   variables: {
+ *      filename: // value for 'filename'
+ *      contentType: // value for 'contentType'
+ *   },
+ * });
+ */
+export function useRequestUploadUrlQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    RequestUploadUrlQuery,
+    RequestUploadUrlQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    RequestUploadUrlQuery,
+    RequestUploadUrlQueryVariables
+  >(RequestUploadUrlDocument, baseOptions)
+}
+export function useRequestUploadUrlLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    RequestUploadUrlQuery,
+    RequestUploadUrlQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    RequestUploadUrlQuery,
+    RequestUploadUrlQueryVariables
+  >(RequestUploadUrlDocument, baseOptions)
+}
+export type RequestUploadUrlQueryHookResult = ReturnType<
+  typeof useRequestUploadUrlQuery
+>
+export type RequestUploadUrlLazyQueryHookResult = ReturnType<
+  typeof useRequestUploadUrlLazyQuery
+>
+export type RequestUploadUrlQueryResult = ApolloReactCommon.QueryResult<
+  RequestUploadUrlQuery,
+  RequestUploadUrlQueryVariables
 >
 export const ForgotPasswordDocument = gql`
   mutation ForgotPassword($email: String!) {

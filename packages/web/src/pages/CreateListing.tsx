@@ -9,6 +9,9 @@ import { useForm } from "../lib/hooks/useForm"
 import { CreateListingInput } from "../lib/graphql"
 import * as Yup from "yup"
 import { gql, useMutation } from "@apollo/client"
+import { Upload } from "../components/shared/Upload"
+import useImperativeQuery from "../components/shared/useImperativeQuery"
+import { useMe } from "../components/providers/MeProvider"
 
 // A page to create new listing
 
@@ -34,8 +37,19 @@ const ListingSchema = Yup.object().shape<CreateListingInput>({
     .notRequired()
     .min(0),
 })
+export const REQUEST_UPLOAD_URL = gql`
+  query RequestUploadUrl($filename: String!, $contentType: String!) {
+    generateListingAssetUploadUrl(
+      filename: $filename
+      contentType: $contentType
+    )
+  }
+`
 
 export const CreateListing: FC<RouteComponentProps> = () => {
+  const me = useMe()
+  const getSignedUrl = useImperativeQuery(REQUEST_UPLOAD_URL)
+
   const [createListing] = useMutation(CREATE_LISTING)
   const form = useForm<CreateListingInput>({ validationSchema: ListingSchema })
 
@@ -50,6 +64,9 @@ export const CreateListing: FC<RouteComponentProps> = () => {
     })
   }
 
+  // const processUpload = async()
+
+  // const fileItems: File[] = []
   return (
     <Page>
       <Flex
@@ -63,6 +80,87 @@ export const CreateListing: FC<RouteComponentProps> = () => {
         <Heading pb={10}>Create Listing</Heading>
         <Box w={["100%", 900]}>
           <Form onSubmit={onSubmit} {...form}>
+            <Box>
+              <Upload
+                name={"listing-upload"}
+                label={"Photos"}
+                maxFiles={8}
+                allowMultiple={true}
+                acceptedFileTypes={["image/*"]}
+                /** A file has been added or removed, receives a list of file items */
+                required={true}
+                server={{
+                  revert: (
+                    uniqueFieldId: string,
+                    load: () => void,
+                    error: (errorText: string) => void,
+                  ) => {
+                    console.log("revert", uniqueFieldId)
+                    if (error) {
+                      // todo: add revert feature
+                      console.log("revert error", error)
+                    }
+                    load()
+                  },
+                  process: async (
+                    fieldName,
+                    file,
+                    metadata,
+                    load,
+                    error,
+                    progress,
+                    abort,
+                  ) => {
+                    console.log("process (uploading)", file)
+                    const fileKey = me.id + file.lastModified + file.name
+                    const { data } = await getSignedUrl({
+                      filename: fileKey,
+                      contentType: file.type,
+                    })
+                    const destination = data.generateListingAssetUploadUrl
+                    console.log("destination", destination)
+
+                    // https://pqina.nl/filepond/docs/patterns/api/server/#advanced
+
+                    // fieldName is the name of the input field
+                    // file is the actual file object to send
+                    const formData = new FormData()
+                    formData.append(fieldName, file, file.name)
+
+                    const request = new XMLHttpRequest()
+                    request.open("PUT", destination)
+                    request.upload.onprogress = e => {
+                      progress(e.lengthComputable, e.loaded, e.total)
+                    }
+                    request.onload = () => {
+                      if (request.status >= 200 && request.status < 300) {
+                        // the load method accepts either a string (id) or an object
+                        load(fileKey)
+                      } else {
+                        // Can call the error method if something is wrong, should exit after
+                        error("up failed")
+                      }
+                    }
+                    request.send(formData)
+
+                    // Should expose an abort method so the request can be cancelled
+                    return {
+                      abort: () => {
+                        // This function is entered if the user has tapped the cancel button
+                        // Let FilePond know the request has been cancelled
+                        request.abort()
+                        abort()
+                      },
+                    }
+                  },
+                  load: (source, load) => {
+                    // simulates loading a file from the server
+                    console.log("load", source, load)
+                  },
+                }}
+              />
+            </Box>
+
             <Input
               name="title"
               label="Title"
@@ -74,7 +172,7 @@ export const CreateListing: FC<RouteComponentProps> = () => {
               placeholder="Near the park and subway"
             />
 
-            <Input name="price" label="Price" placeholder="$900" />
+            <Input name="price" label="Price" placeholder="$" />
 
             <Input name="beds" label="Bedrooms" placeholder="1" />
 

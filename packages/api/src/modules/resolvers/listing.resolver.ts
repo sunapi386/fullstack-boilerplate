@@ -17,7 +17,7 @@ import { User } from "../entities/user.entity"
 import { CreateListingInput } from "../inputs/createlisting.input"
 import { UserInputError } from "apollo-server-express"
 import { UserRepository } from "../repositories/user.repository"
-import { generatePreSignedUrl } from "../../lib/s3"
+import { generatePreSignedUrl, signedDownloadUrl } from "../../lib/s3"
 
 @Resolver(() => Listing)
 export class ListingResolver implements ResolverInterface<Listing> {
@@ -58,7 +58,16 @@ export class ListingResolver implements ResolverInterface<Listing> {
     @Arg("filename") filename: string,
     @Arg("contentType") contentType: string,
   ): Promise<string> {
-    return await generatePreSignedUrl(filename, 60, contentType)
+    return generatePreSignedUrl(filename, contentType)
+  }
+
+  @Authorized()
+  @Query(() => String)
+  async signedDownloadUrl(
+    @CurrentUser() currentUser: User,
+    @Arg("filename") filename: string,
+  ): Promise<string> {
+    return await signedDownloadUrl(filename)
   }
 
   @Authorized("ADMIN") // only admin can delete stuff
