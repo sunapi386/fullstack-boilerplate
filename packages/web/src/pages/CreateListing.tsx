@@ -12,6 +12,7 @@ import { gql, useMutation } from "@apollo/client"
 import { Upload } from "../components/shared/Upload"
 import useImperativeQuery from "../components/shared/useImperativeQuery"
 import { useMe } from "../components/providers/MeProvider"
+import { Textarea } from "../components/shared/Textarea"
 
 // A page to create new listing
 
@@ -78,7 +79,7 @@ export const CreateListing: FC<RouteComponentProps> = () => {
         direction="column"
       >
         <Heading pb={10}>Create Listing</Heading>
-        <Box w={["100%", 900]}>
+        <Box w={["100%", 400]}>
           <Form onSubmit={onSubmit} {...form}>
             <Box>
               <Upload
@@ -161,7 +162,7 @@ export const CreateListing: FC<RouteComponentProps> = () => {
               />
             </Box>
 
-            <Input
+            <Textarea
               name="title"
               label="Title"
               placeholder="Great Room With View"

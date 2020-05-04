@@ -148,6 +148,7 @@ export type Query = {
   listings: Array<Listing>
   findListing: Listing
   generateListingAssetUploadUrl: Scalars["String"]
+  signedDownloadUrl: Scalars["String"]
   getPlates: Array<Plate>
   findByPlateSerialAndState: Plate
   me?: Maybe<User>
@@ -164,6 +165,10 @@ export type QueryFindListingArgs = {
 
 export type QueryGenerateListingAssetUploadUrlArgs = {
   contentType: Scalars["String"]
+  filename: Scalars["String"]
+}
+
+export type QuerySignedDownloadUrlArgs = {
   filename: Scalars["String"]
 }
 
