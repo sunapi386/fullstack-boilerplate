@@ -10,3 +10,4 @@ temp
 coverage
 .idea/
 schema.graphql
+yarn-error.log
