@@ -2,6 +2,7 @@ import React, { FC } from "react"
 import {
   Box,
   Flex,
+  SimpleGrid,
   Tab,
   TabList,
   TabPanel,
@@ -12,23 +13,30 @@ import {
 } from "@chakra-ui/core/dist"
 import { RouteComponentProps, useParams } from "@reach/router"
 
-const PeopleSmallBox = ({ title, text }: { title: string; text: string }) => {
+const PeopleSmallBox = ({
+  title,
+  text,
+  ...params
+}: {
+  title: string
+  text: string
+}) => {
   // add a custom lighter grey color here
   const { colorMode } = useColorMode()
   const color = { light: "black", dark: "white" }
 
   return (
     <Box
-      w="350px"
       borderColor={color[colorMode]}
-      m="2em"
+      m="1em"
       color={color[colorMode]}
+      {...params}
     >
-      <Box textAlign="center" overflow="hidden" fontWeight="600">
+      <Box textAlign="center" overflow="auto" fontWeight="semibold">
         {title}
       </Box>
       {/*<Divider orientation="horizontal"/>*/}
-      <Box textAlign="center" overflow="hidden">
+      <Box textAlign="center" overflow="auto" fontSize="sm">
         {text}
       </Box>
     </Box>
@@ -39,10 +47,15 @@ const UserInfoSummaryBarTop = () => {
   // id = "noId", email = "noEmail", phoneNumber = "555", assistantId = "noId"
   return (
     <Flex justifyContent="center">
-      <PeopleSmallBox title={"Customer ID"} text={"1234567890"} />
-      <PeopleSmallBox title={"Email"} text={"sunapi386@gmail.com"} />
-      <PeopleSmallBox title={"Phone"} text={"(408)555-1234"} />
-      <PeopleSmallBox title={"Assistant ID"} text={"0987654321"} />
+      <SimpleGrid minChildWidth="200px" spacing="1em" m="1em" w="90%">
+        <PeopleSmallBox
+          title={"Customer ID"}
+          text={"57a94eac-dedd-4465-83ca-f7849f66a27d"}
+        />
+        <PeopleSmallBox title={"Email"} text={"sunapi386@gmail.com"} />
+        <PeopleSmallBox title={"Phone"} text={"(408)555-1234"} />
+        <PeopleSmallBox title={"Assistant ID"} text={"0987654321"} />
+      </SimpleGrid>
     </Flex>
   )
 }
@@ -51,20 +64,6 @@ const UserOverview: FC = () => {
   return (
     <Box>
       <Text>Overview</Text>
-    </Box>
-  )
-}
-const UserComplaints: FC = () => {
-  return (
-    <Box>
-      <Text>Complaints</Text>
-    </Box>
-  )
-}
-const UserDocuments: FC = () => {
-  return (
-    <Box>
-      <Text>Documents</Text>
     </Box>
   )
 }
@@ -80,11 +79,9 @@ const UserInfoTabs = () => {
   return (
     <Box m="1em">
       <Tabs isFitted variant="enclosed">
-        <TabList mb="1em" minW="800px">
-          <Tab fontWeight="600">Overview</Tab>
+        <TabList>
+          <Tab fontWeight="semibold">Overview</Tab>
           <Tab fontWeight="600">Listings</Tab>
-          <Tab fontWeight="600">Complaints</Tab>
-          <Tab fontWeight="600">Documents</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -92,12 +89,6 @@ const UserInfoTabs = () => {
           </TabPanel>
           <TabPanel>
             <UserListings />
-          </TabPanel>
-          <TabPanel>
-            <UserComplaints />
-          </TabPanel>
-          <TabPanel>
-            <UserDocuments />
           </TabPanel>
         </TabPanels>
       </Tabs>
