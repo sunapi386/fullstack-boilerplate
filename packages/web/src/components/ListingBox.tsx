@@ -1,5 +1,12 @@
 import React from "react"
-import { Badge, Box, Icon, Image, PseudoBox } from "@chakra-ui/core/dist"
+import {
+  AspectRatioBox,
+  Badge,
+  Box,
+  Icon,
+  Image,
+  PseudoBox,
+} from "@chakra-ui/core/dist"
 import { Link } from "./shared/Link"
 
 export type ListingShortAd = {
@@ -30,7 +37,13 @@ export const ListingBox = ({ property }: { property: ListingShortAd }) => {
         maxH="sm"
         m="1em"
       >
-        <Image src={property.imageUrl} alt={property.imageAlt} />
+        <AspectRatioBox maxW="400px" ratio={4 / 3}>
+          <Image
+            src={property.imageUrl}
+            alt={property.imageAlt}
+            objectFit="cover"
+          />
+        </AspectRatioBox>
 
         <Box p="6">
           <Box d="flex" alignItems="baseline">

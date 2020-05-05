@@ -127,11 +127,13 @@ export const CreateListing: FC<RouteComponentProps> = () => {
 
                     // fieldName is the name of the input field
                     // file is the actual file object to send
-                    const formData = new FormData()
-                    formData.append(fieldName, file, file.name)
-
                     const request = new XMLHttpRequest()
                     request.open("PUT", destination)
+                    request.setRequestHeader("Content-Type", file.type)
+                    request.setRequestHeader(
+                      "Content-Disposition",
+                      `inline; filename=${file.name}`,
+                    )
                     request.upload.onprogress = e => {
                       progress(e.lengthComputable, e.loaded, e.total)
                     }
@@ -148,7 +150,7 @@ export const CreateListing: FC<RouteComponentProps> = () => {
                         error("up failed")
                       }
                     }
-                    request.send(formData)
+                    request.send(file)
 
                     // Should expose an abort method so the request can be cancelled
                     return {
