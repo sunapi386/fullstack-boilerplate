@@ -73,7 +73,7 @@ export const ListingDetails: FC<RouteComponentProps> = () => {
         <Box>Ratings</Box>
         <Box>{data.findListing.ratings}</Box>
         <Box>Image</Box>
-        <Box>{data.findListing.ImageUrl}</Box>
+        <Box>{data.findListing.imageUrl}</Box>
         <Box>Alt</Box>
         <Box>{data.findListing.imageAlt}</Box>
       </SimpleGrid>

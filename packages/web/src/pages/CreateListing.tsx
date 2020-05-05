@@ -26,6 +26,7 @@ export const CREATE_LISTING = gql`
 `
 
 const ListingSchema = Yup.object().shape<CreateListingInput>({
+  imageUrl: Yup.string().required("Required"),
   title: Yup.string().required("Required"),
   description: Yup.string().required("Required"),
   price: Yup.number()
@@ -68,6 +69,7 @@ export const CreateListing: FC<RouteComponentProps> = () => {
   // const processUpload = async()
 
   // const fileItems: File[] = []
+  const { setValue } = form
   return (
     <Page>
       <Flex
@@ -83,10 +85,10 @@ export const CreateListing: FC<RouteComponentProps> = () => {
           <Form onSubmit={onSubmit} {...form}>
             <Box>
               <Upload
-                name={"listing-upload"}
+                name={"imageUrl"}
                 label={"Photos"}
-                maxFiles={8}
-                allowMultiple={true}
+                maxFiles={1}
+                allowMultiple={false}
                 acceptedFileTypes={["image/*"]}
                 /** A file has been added or removed, receives a list of file items */
                 required={true}
@@ -133,12 +135,16 @@ export const CreateListing: FC<RouteComponentProps> = () => {
                     request.upload.onprogress = e => {
                       progress(e.lengthComputable, e.loaded, e.total)
                     }
+
                     request.onload = () => {
                       if (request.status >= 200 && request.status < 300) {
                         // the load method accepts either a string (id) or an object
+                        console.log("imageUrl key", fileKey)
                         load(fileKey)
+                        setValue("imageUrl", fileKey)
                       } else {
                         // Can call the error method if something is wrong, should exit after
+                        console.log("we baddd")
                         error("up failed")
                       }
                     }
@@ -162,12 +168,12 @@ export const CreateListing: FC<RouteComponentProps> = () => {
               />
             </Box>
 
-            <Textarea
+            <Input
               name="title"
               label="Title"
               placeholder="Great Room With View"
             />
-            <Input
+            <Textarea
               name="description"
               label="Description"
               placeholder="Near the park and subway"
