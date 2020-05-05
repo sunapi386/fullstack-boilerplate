@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs"
 import { BaseEntity } from "../shared/base.entity"
 import { BooleanField, StringField } from "../shared/fields"
 import { Complaint } from "./complaint.entity"
+import { Listing } from "./listing.entity"
 
 @ObjectType()
 @Entity()
@@ -39,6 +40,14 @@ export class User extends BaseEntity<User> {
     { lazy: true, cascade: ["update"] },
   )
   complaints: Complaint[]
+
+  @Field(type => [Listing])
+  @OneToMany(
+    type => Listing,
+    listing => listing.author,
+    { lazy: true, cascade: ["update"] },
+  )
+  listings: Listing[]
 
   @BeforeInsert()
   @BeforeUpdate()
