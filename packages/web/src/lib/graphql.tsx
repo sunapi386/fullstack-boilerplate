@@ -54,6 +54,16 @@ export type CreateListingInput = {
   baths?: Maybe<Scalars["Int"]>
 }
 
+export type Fileurl = {
+  __typename?: "Fileurl"
+  id: Scalars["ID"]
+  createdAt: Scalars["DateTime"]
+  updatedAt: Scalars["DateTime"]
+  author: User
+  description: Scalars["String"]
+  url: Scalars["String"]
+}
+
 export type Listing = {
   __typename?: "Listing"
   id: Scalars["ID"]
@@ -216,6 +226,9 @@ export type User = {
   email: Scalars["String"]
   firstName: Scalars["String"]
   lastName: Scalars["String"]
+  phone?: Maybe<Scalars["String"]>
+  phoneValidated: Scalars["Boolean"]
+  emailValidated: Scalars["Boolean"]
   complaints: Array<Complaint>
 }
 
@@ -299,7 +312,12 @@ export type GetListingByIdQuery = { __typename?: "Query" } & {
     | "price"
     | "reviews"
     | "ratings"
-  > & { author: { __typename?: "User" } & Pick<User, "firstName" | "lastName"> }
+  > & {
+      author: { __typename?: "User" } & Pick<
+        User,
+        "firstName" | "lastName" | "id"
+      >
+    }
 }
 
 export type LoginMutationVariables = {
@@ -615,6 +633,7 @@ export const GetListingByIdDocument = gql`
       author {
         firstName
         lastName
+        id
       }
       imageUrl
       imageAlt

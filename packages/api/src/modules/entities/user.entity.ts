@@ -3,7 +3,7 @@ import { Field, ObjectType } from "type-graphql"
 import bcrypt from "bcryptjs"
 
 import { BaseEntity } from "../shared/base.entity"
-import { StringField } from "../shared/fields"
+import { BooleanField, StringField } from "../shared/fields"
 import { Complaint } from "./complaint.entity"
 
 @ObjectType()
@@ -20,6 +20,16 @@ export class User extends BaseEntity<User> {
 
   @StringField()
   lastName: string
+
+  // this should be validated by sms
+  @StringField({nullable: true})
+  phone: string
+
+  @BooleanField({default: false})
+  phoneValidated: boolean
+
+  @BooleanField({default: false})
+  emailValidated: boolean
 
   // user may have written many complaints
   @Field(type => [Complaint])

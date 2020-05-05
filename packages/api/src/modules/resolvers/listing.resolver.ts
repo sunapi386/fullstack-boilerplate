@@ -18,6 +18,8 @@ import { CreateListingInput } from "../inputs/createlisting.input"
 import { UserInputError } from "apollo-server-express"
 import { UserRepository } from "../repositories/user.repository"
 import { generatePreSignedUrl, signedDownloadUrl } from "../../lib/s3"
+import { sendSms } from "../../lib/sms"
+import { FULL_WEB_URL } from "../../lib/config"
 
 @Resolver(() => Listing)
 export class ListingResolver implements ResolverInterface<Listing> {
@@ -49,7 +51,15 @@ export class ListingResolver implements ResolverInterface<Listing> {
     @CurrentUser() currentUser: User,
     @Arg("data") input: CreateListingInput,
   ): Promise<Listing> {
-    return this.listingService.create(currentUser.id, input)
+    const listing = await this.listingService.create(currentUser.id, input)
+    if (currentUser.phoneValidated) {
+      const listingUrl = `${FULL_WEB_URL}/listing/${listing.id}`
+      sendSms(
+        currentUser.phone,
+        `Hi ${currentUser.firstName}, your listing was created. ${listingUrl}`,
+      )
+    }
+    return listing
   }
 
   @Authorized()

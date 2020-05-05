@@ -4,23 +4,26 @@ import jwt from "express-jwt"
 import corsMiddleware from "cors"
 
 export const {
-  NODE_ENV = "development",
+  APP_AUTH_SECRET = "APP_AUTH_SECRET",
   APP_ENV = "development",
   APP_SECRET = "APP_SECRET",
-  APP_AUTH_SECRET = "APP_AUTH_SECRET",
-  PORT = 5555,
   AWS_S3_BUCKET = "",
   AWS_S3_KEY = "",
   AWS_S3_SECRET = "",
+  CORS_DOMAIN = "*",
+  DATABASE_URL = "",
+  EMAIL_CO_NAME = "Fancy Company",
+  EMAIL_FROM = "Fancy Co. <j@sunpi.co>",
+  NODE_ENV = "development",
+  PORT = 5555,
+  REDIS_URL = "",
   SENDGRID_API_KEY = "",
   SENDGRID_RESET_TEMPLATE_ID = "EXAMPLE",
   SENDGRID_WELCOME_TEMPLATE_ID = "EXAMPLE",
-  EMAIL_FROM = "Fancy Co. <j@sunpi.co>",
-  EMAIL_CO_NAME = "Fancy Company",
-  DATABASE_URL = "",
+  TWILIO_ACCOUNT_SID = "",
+  TWILIO_AUTH_TOKEN = "",
+  TWILIO_FROM_NUMBER = "",
   WEB_URL = "localhost:3000",
-  REDIS_URL = "",
-  CORS_DOMAIN = "*",
 } = process.env
 
 // IS PRODUCTION
