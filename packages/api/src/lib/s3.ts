@@ -21,13 +21,17 @@ export const generatePreSignedUrl = (
   bucket?: string,
   signedUrlExpireSeconds?: number,
   acl?: string,
+  contentDisposition?: string,
 ): string => {
   const params = {
     Bucket: bucket || AWS_S3_BUCKET,
     Key: filename,
-    Expires: signedUrlExpireSeconds || 60 * 5,
+    Expires: signedUrlExpireSeconds ? signedUrlExpireSeconds : 60 * 5,
     ContentType: contentType,
-    ACL: acl || "public-read",
+    // todo: make a entity table to separate internal key vs. filename
+    // so that attachment; filename="filename.jpg" can work
+    ContentDisposition: contentDisposition ? contentDisposition : "inline",
+    ACL: acl ? acl : "public-read",
   }
   const url = s3.getSignedUrl("putObject", params)
   console.log("filename", filename, "contentType", contentType)

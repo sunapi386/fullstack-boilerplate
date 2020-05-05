@@ -1,7 +1,7 @@
 import React, { FC } from "react"
 import { RouteComponentProps, useParams } from "@reach/router"
 import { Page } from "../components/shared/Page"
-import { Box, Button, SimpleGrid } from "@chakra-ui/core/dist"
+import { Box, Image, SimpleGrid } from "@chakra-ui/core/dist"
 import { gql, useQuery } from "@apollo/client"
 import { LoadSpinner } from "../components/shared/LoadSpinner"
 import Moment from "moment"
@@ -79,9 +79,10 @@ export const ListingDetails: FC<RouteComponentProps> = () => {
         <Box>Ratings</Box>
         <Box>{data.findListing.ratings}</Box>
         <Box>Image</Box>
-        <Box>{data.findListing.imageUrl}</Box>
-        <Box>Alt</Box>
-        <Box>{data.findListing.imageAlt}</Box>
+        <Image
+          src={data.findListing.imageUrl}
+          alt={data.findListing.imageAlt}
+        />
       </SimpleGrid>
     </Page>
   )
