@@ -71,7 +71,10 @@ const HorizontalBar = () => {
         <Heading textAlign="center">Hosting Dashboard</Heading>
       </Flex>
       <Flex direction="row-reverse" align="flex-end">
-        <Link to={"create_listing"}>
+        <Link
+          _hover={{ color: "blue.500", outline: "none" }}
+          to={"create_listing"}
+        >
           <Button>Create new listing</Button>
         </Link>
       </Flex>

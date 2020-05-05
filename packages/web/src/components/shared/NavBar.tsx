@@ -31,7 +31,11 @@ import { useLocation } from "@reach/router"
 
 const LeftTitle = () => {
   return (
-    <Link _hover={{ outline: "none" }} _focus={{ outline: "none" }} to="/">
+    <Link
+      _hover={{ outline: "none", color: "blue.500" }}
+      _focus={{ outline: "none" }}
+      to="/"
+    >
       <Box m={2}>
         <Heading as="i">Fancy Co.</Heading>
       </Box>
@@ -46,7 +50,7 @@ const UserProfileMenuItem = () => {
       <Link
         to={"/u/" + me.id}
         w={"100%"}
-        _hover={{ outline: "none" }}
+        _hover={{ outline: "none", color: "blue.500" }}
         _focus={{ outline: "none" }}
       >
         <SimpleGrid columns={2}>
@@ -69,7 +73,7 @@ const UserProfileMenuItem = () => {
   )
 }
 
-const DropDownMenu = () => {
+const DropDownMenu = ({ menubuttoncolor }: { menubuttoncolor: string }) => {
   const [, setColorMode] = useLocalStorage<"dark" | "light">(
     "fullstack:darkmode",
     "dark",
@@ -84,8 +88,8 @@ const DropDownMenu = () => {
 
   return (
     <Menu>
-      <MenuButton p="2">
-        <Box as={IoIosArrowDropdown} size="32px" />
+      <MenuButton p="2" _hover={{ color: "blue.500" }}>
+        <Box as={IoIosArrowDropdown} size="32px" color={menubuttoncolor} />
       </MenuButton>
       <MenuList>
         <MenuItem>
@@ -118,16 +122,18 @@ const RightNav = () => {
   const location = useLocation()
   const pathname = location.pathname
   const isHosting = pathname.includes("hosting")
+  const isProfile = pathname.includes("/u/")
+  const isDash = isProfile !== isHosting
 
   return (
     <Flex justifyContent={"flex-end"} m={1}>
-      <Link to="/" p="2">
-        <Box as={FaHome} size="32px" color={isHosting ? "" : "blue.500"} />
+      <Link to="/" p="2" _hover={{ color: "blue.500" }}>
+        <Box as={FaHome} size="32px" color={isDash ? "" : "blue.500"} />
       </Link>
-      <Link to="/hosting" p="2">
+      <Link to="/hosting" p="2" _hover={{ color: "blue.500" }}>
         <Box as={FiCalendar} size="32px" color={isHosting ? "blue.500" : ""} />
       </Link>
-      <DropDownMenu />
+      <DropDownMenu menubuttoncolor={isProfile ? "blue.500" : ""} />
     </Flex>
   )
 }
