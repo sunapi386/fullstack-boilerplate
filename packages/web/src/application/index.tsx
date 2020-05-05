@@ -2,19 +2,25 @@ import React, { Suspense } from "react"
 import { Router } from "@reach/router"
 
 import { AppProvider } from "../components/providers/AppProvider"
-import { CheckAuth } from "../components/shared/CheckAuth"
-import { RentingDash } from "../pages/Dashboard"
 import { HostingDash } from "../pages/HostingDash"
 import { About } from "../pages/About"
 import { UserProfile } from "../pages/UserProfile"
 import { NotFound } from "../pages/NotFound"
 import { CreateListing } from "../pages/CreateListing"
 import { ListingDetails } from "../pages/ListingDetails"
+import { RentingDash } from "../pages/Dashboard"
+import { LoadSpinner } from "../components/shared/LoadSpinner"
+
+const CheckAuth = React.lazy(() =>
+  import("../components/shared/CheckAuth").then(({ CheckAuth }) => ({
+    default: CheckAuth,
+  })),
+)
 
 export function Application() {
   return (
     <AppProvider>
-      <Suspense fallback={<h1>Loading page...</h1>}>
+      <Suspense fallback={<LoadSpinner />}>
         <CheckAuth>
           <Router>
             <RentingDash path="/" />

@@ -1,14 +1,19 @@
 import React from "react"
-import { Spinner } from "@chakra-ui/core"
+import { Spinner, Flex } from "@chakra-ui/core"
 
-export const LoadSpinner: React.FC = () => {
+export const LoadSpinner: React.FC = ({ ...props }) => {
   return (
-    <Spinner
-      thickness="4px"
-      speed="0.65s"
-      emptyColor="gray.200"
-      color="blue.500"
-      size="xl"
-    />
+    <Flex align="center" justify="center">
+      <Spinner
+        h="15vh"
+        w="15vh"
+        m="2em"
+        thickness="4px"
+        speed="0.75s"
+        emptyColor="gray.200"
+        color="blue.500"
+        {...props}
+      />
+    </Flex>
   )
 }
