@@ -214,8 +214,7 @@ export type UpdateUserInput = {
   lastName?: Maybe<Scalars["String"]>
   email?: Maybe<Scalars["String"]>
   password?: Maybe<Scalars["String"]>
-  avatar?: Maybe<Scalars["String"]>
-  houseId?: Maybe<Scalars["String"]>
+  avatarUrl?: Maybe<Scalars["String"]>
 }
 
 export type User = {
@@ -226,10 +225,12 @@ export type User = {
   email: Scalars["String"]
   firstName: Scalars["String"]
   lastName: Scalars["String"]
+  avatarUrl?: Maybe<Scalars["String"]>
   phone?: Maybe<Scalars["String"]>
   phoneValidated: Scalars["Boolean"]
   emailValidated: Scalars["Boolean"]
   complaints: Array<Complaint>
+  listings: Array<Listing>
 }
 
 export type ListingsForBoxQueryVariables = {}

@@ -22,7 +22,10 @@ export class User extends BaseEntity<User> {
   @StringField()
   lastName: string
 
-  // this should be validated by sms
+  @StringField({nullable: true})
+  avatarUrl: string
+
+ // this should be validated by sms
   @StringField({nullable: true})
   phone: string
 
