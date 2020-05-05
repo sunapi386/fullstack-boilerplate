@@ -2,6 +2,7 @@ import { Service } from "typedi"
 import { Listing } from "../entities/listing.entity"
 import { CreateListingInput } from "../inputs/createlisting.input"
 import { UserInputError } from "apollo-server-express"
+import { S3_URL } from "../../lib/config"
 
 @Service()
 export class ListingService {
@@ -13,6 +14,11 @@ export class ListingService {
   async create(id: string, input: CreateListingInput): Promise<Listing> {
     const listing = await Listing.create(input)
     listing.authorId = id
+    // if the imageUrl contains a value,
+    // we prepend the url to it
+    if (input.imageUrl) {
+      listing.imageUrl = `${S3_URL}${input.imageUrl}`
+    }
     await listing.save()
     return listing
   }

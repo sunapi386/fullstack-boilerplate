@@ -1,10 +1,11 @@
 import React, { FC } from "react"
 import { RouteComponentProps, useParams } from "@reach/router"
 import { Page } from "../components/shared/Page"
-import { Box, SimpleGrid } from "@chakra-ui/core/dist"
+import { Box, Button, SimpleGrid } from "@chakra-ui/core/dist"
 import { gql, useQuery } from "@apollo/client"
 import { LoadSpinner } from "../components/shared/LoadSpinner"
 import Moment from "moment"
+import { useMe } from "../components/providers/MeProvider"
 
 export const FIND_LISTING = gql`
   query GetListingById($id: String!) {
@@ -16,6 +17,7 @@ export const FIND_LISTING = gql`
       author {
         firstName
         lastName
+        id
       }
       imageUrl
       imageAlt
@@ -34,6 +36,7 @@ export const ListingDetails: FC<RouteComponentProps> = () => {
   const { loading, error, data } = useQuery(FIND_LISTING, {
     variables: { id: params.listingId },
   })
+  const me = useMe()
 
   if (loading)
     return (
@@ -48,9 +51,12 @@ export const ListingDetails: FC<RouteComponentProps> = () => {
       </Page>
     )
   }
+  const editable = data.findListing.author.id === me.id
   return (
     <Page>
-      <SimpleGrid columns={2} spacing={1}>
+      <SimpleGrid columns={2} p={"1em"}>
+        <Box>Editable</Box>
+        <Box>{editable ? "yes" : "no"}</Box>
         <Box>Title</Box> <Box>{data.findListing.title}</Box>
         <Box>Description</Box> <Box>{data.findListing.description}</Box>
         <Box>By</Box>

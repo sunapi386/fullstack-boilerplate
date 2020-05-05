@@ -30,7 +30,7 @@ export const ALL_LISTINGS = gql`
 
 const Listings = ({ listings }: { listings: [ListingShortAd] }) => {
   return (
-    <Box border="1px" borderRadius="4px" m="1em" w="90%" h="80vh">
+    <Box m="1em" w="90%" h="80vh">
       {listings.map((listingAd, key) => (
         <ListingBox key={key} property={listingAd} />
       ))}
@@ -39,18 +39,6 @@ const Listings = ({ listings }: { listings: [ListingShortAd] }) => {
 }
 
 export const ListingsResults: React.FC<BoxProps> = () => {
-  // const singlelisting = {
-  //   imageUrl: "https://bit.ly/2Z4KKcF",
-  //   imageAlt: "Backend view of modern home with pool",
-  //   beds: 3,
-  //   baths: 2,
-  //   title: "Backend home in city center in the heart of historic Los Angeles",
-  //   formattedPrice: "$1,900.00",
-  //   reviewCount: 34,
-  //   rating: 4,
-  // }
-
-  // const listings: [ListingShortAd] = [singlelisting]
   const { loading, error, data } = useQuery(ALL_LISTINGS)
 
   if (loading)
