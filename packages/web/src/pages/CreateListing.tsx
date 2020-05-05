@@ -181,7 +181,7 @@ export const CreateListing: FC<RouteComponentProps> = () => {
               placeholder="Near the park and subway"
             />
 
-            <Input name="price" label="Price" placeholder="$" />
+            <Input name="price" label="Daily Price" placeholder="$" />
 
             <Input name="beds" label="Bedrooms" placeholder="1" />
 

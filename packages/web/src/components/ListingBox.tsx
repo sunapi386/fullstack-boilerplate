@@ -15,7 +15,7 @@ export type ListingShortAd = {
   beds: number
   baths: number
   title: string
-  formattedPrice: string
+  price: string
   reviewCount: number
   rating: number
   id: string
@@ -73,9 +73,8 @@ export const ListingBox = ({ property }: { property: ListingShortAd }) => {
           </Box>
 
           <Box>
-            {property.formattedPrice}
             <Box as="span" color="gray.600" fontSize="sm">
-              / wk
+              $ {property.price} / day
             </Box>
           </Box>
 
