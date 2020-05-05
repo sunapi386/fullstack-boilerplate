@@ -1,5 +1,5 @@
 import React from "react"
-import { Box } from "@chakra-ui/core/dist"
+import { Box, SimpleGrid } from "@chakra-ui/core/dist"
 import { BoxProps } from "@chakra-ui/core/dist/Box"
 import { LoadSpinner } from "./shared/LoadSpinner"
 import { ListingBox, ListingShortAd } from "./ListingBox"
@@ -30,11 +30,11 @@ export const ALL_LISTINGS = gql`
 
 const Listings = ({ listings }: { listings: [ListingShortAd] }) => {
   return (
-    <Box m="1em" w="90%" h="80vh">
+    <SimpleGrid minChildWidth="260px" spacing="1em" m="1em" w="90%" h="80vh">
       {listings.map((listingAd, key) => (
         <ListingBox key={key} property={listingAd} />
       ))}
-    </Box>
+    </SimpleGrid>
   )
 }
 

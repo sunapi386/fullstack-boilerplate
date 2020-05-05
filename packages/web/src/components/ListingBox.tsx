@@ -29,7 +29,7 @@ export const ListingBox = ({ property }: { property: ListingShortAd }) => {
       _focus={{ outline: "none" }}
     >
       <PseudoBox
-        _hover={{ borderColor: "gray.200" }}
+        _hover={{ borderColor: "blue.500" }}
         maxW="sm"
         borderWidth="1px"
         rounded="lg"
