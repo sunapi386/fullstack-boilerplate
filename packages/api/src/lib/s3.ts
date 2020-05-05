@@ -1,8 +1,5 @@
 import AWS from "aws-sdk"
 import { AWS_S3_BUCKET, S3_CONFIG, S3_URL } from "./config"
-// "bucket": "fancyimages",
-// "key": "AKIA3SDAS7437JAS2GJI",
-// "secret": "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"
 
 // AWS
 export const s3 = new AWS.S3(S3_CONFIG)
