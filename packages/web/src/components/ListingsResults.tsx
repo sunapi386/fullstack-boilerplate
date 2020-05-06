@@ -28,7 +28,7 @@ export const ALL_LISTINGS = gql`
   }
 `
 
-const Listings = ({ listings }: { listings: [ListingShortAd] }) => {
+export const ListingsGrid = ({ listings }: { listings: [ListingShortAd] }) => {
   return (
     <SimpleGrid minChildWidth="260px" spacing="1em" m="1em" w="90%" h="80vh">
       {listings.map((listingAd, key) => (
@@ -56,7 +56,7 @@ export const ListingsResults: React.FC<BoxProps> = () => {
   }
   return (
     <React.Suspense fallback={<LoadSpinner />}>
-      <Listings listings={data.listings} />
+      <ListingsGrid listings={data.listings} />
     </React.Suspense>
   )
 }

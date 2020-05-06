@@ -151,6 +151,15 @@ export type Plate = {
   complaints: Array<Complaint>
 }
 
+export type PublicUserResponse = {
+  __typename?: "PublicUserResponse"
+  email: Scalars["String"]
+  firstName: Scalars["String"]
+  lastName: Scalars["String"]
+  avatarUrl?: Maybe<Scalars["String"]>
+  phone?: Maybe<Scalars["String"]>
+}
+
 export type Query = {
   __typename?: "Query"
   getComplaints: Array<Complaint>
@@ -161,6 +170,7 @@ export type Query = {
   signedDownloadUrl: Scalars["String"]
   getPlates: Array<Plate>
   findByPlateSerialAndState: Plate
+  user?: Maybe<PublicUserResponse>
   me?: Maybe<User>
 }
 
@@ -185,6 +195,10 @@ export type QuerySignedDownloadUrlArgs = {
 export type QueryFindByPlateSerialAndStateArgs = {
   plate_serial?: Maybe<Scalars["String"]>
   state?: Maybe<Scalars["String"]>
+}
+
+export type QueryUserArgs = {
+  id: Scalars["String"]
 }
 
 export type RegisterInput = {
@@ -252,6 +266,19 @@ export type ListingsForBoxQuery = { __typename?: "Query" } & {
     > & {
         author: { __typename?: "User" } & Pick<User, "firstName" | "lastName">
       }
+  >
+}
+
+export type GetPublicUserQueryVariables = {
+  id: Scalars["String"]
+}
+
+export type GetPublicUserQuery = { __typename?: "Query" } & {
+  user?: Maybe<
+    { __typename?: "PublicUserResponse" } & Pick<
+      PublicUserResponse,
+      "firstName" | "lastName" | "email" | "avatarUrl"
+    >
   >
 }
 
@@ -425,6 +452,65 @@ export type ListingsForBoxLazyQueryHookResult = ReturnType<
 export type ListingsForBoxQueryResult = ApolloReactCommon.QueryResult<
   ListingsForBoxQuery,
   ListingsForBoxQueryVariables
+>
+export const GetPublicUserDocument = gql`
+  query GetPublicUser($id: String!) {
+    user(id: $id) {
+      firstName
+      lastName
+      email
+      avatarUrl
+    }
+  }
+`
+
+/**
+ * __useGetPublicUserQuery__
+ *
+ * To run a query within a React component, call `useGetPublicUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPublicUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPublicUserQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetPublicUserQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    GetPublicUserQuery,
+    GetPublicUserQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    GetPublicUserQuery,
+    GetPublicUserQueryVariables
+  >(GetPublicUserDocument, baseOptions)
+}
+export function useGetPublicUserLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    GetPublicUserQuery,
+    GetPublicUserQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    GetPublicUserQuery,
+    GetPublicUserQueryVariables
+  >(GetPublicUserDocument, baseOptions)
+}
+export type GetPublicUserQueryHookResult = ReturnType<
+  typeof useGetPublicUserQuery
+>
+export type GetPublicUserLazyQueryHookResult = ReturnType<
+  typeof useGetPublicUserLazyQuery
+>
+export type GetPublicUserQueryResult = ApolloReactCommon.QueryResult<
+  GetPublicUserQuery,
+  GetPublicUserQueryVariables
 >
 export const MeDocument = gql`
   query Me {

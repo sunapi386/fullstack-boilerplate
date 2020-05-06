@@ -10,6 +10,8 @@ import { Listing } from "./listing.entity"
 @ObjectType()
 @Entity()
 export class User extends BaseEntity<User> {
+  // perhaps add assistantId
+
   @StringField({ unique: true })
   email: string
 

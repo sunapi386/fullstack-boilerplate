@@ -1,7 +1,8 @@
 import { Field, InputType } from "type-graphql"
+import { Complaint } from "../entities/complaint.entity"
 
 @InputType()
-export class CreateComplaintInput {
+export class CreateComplaintInput implements Partial<Complaint> {
   @Field({ nullable: true })
   description?: string
 

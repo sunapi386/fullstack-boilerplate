@@ -1,5 +1,6 @@
 import React, { FC } from "react"
 import {
+  Avatar,
   Box,
   Flex,
   SimpleGrid,
@@ -12,6 +13,19 @@ import {
   useColorMode,
 } from "@chakra-ui/core/dist"
 import { RouteComponentProps, useParams } from "@reach/router"
+import { gql, useQuery } from "@apollo/client"
+import { LoadSpinner } from "./shared/LoadSpinner"
+
+export const PUBLIC_USER = gql`
+  query GetPublicUser($id: String!) {
+    user(id: $id) {
+      firstName
+      lastName
+      email
+      avatarUrl
+    }
+  }
+`
 
 const PeopleSmallBox = ({
   title,
@@ -43,30 +57,31 @@ const PeopleSmallBox = ({
   )
 }
 
-const UserInfoSummaryBarTop = () => {
-  // id = "noId", email = "noEmail", phoneNumber = "555", assistantId = "noId"
+const UserInfoSummaryBarTop = ({ userId }: { userId: string }) => {
+  const result = useQuery(PUBLIC_USER, { variables: { id: userId } })
+  const { loading, data } = result
+  if (loading) {
+    return <LoadSpinner />
+  }
+  const fullName = `${data.user.firstName} ${data.user.lastName}`
   return (
     <Flex justifyContent="center">
-      <SimpleGrid minChildWidth="200px" spacing="1em" m="1em" w="90%">
-        <PeopleSmallBox
-          title={"Customer ID"}
-          text={"57a94eac-dedd-4465-83ca-f7849f66a27d"}
+      <SimpleGrid minChildWidth="100px" spacing="1em" m="1em" w="90%">
+        <Avatar
+          m="1em"
+          textAlign="center"
+          name={fullName}
+          src={data.user.avatarUrl}
         />
-        <PeopleSmallBox title={"Email"} text={"sunapi386@gmail.com"} />
-        <PeopleSmallBox title={"Phone"} text={"(408)555-1234"} />
-        <PeopleSmallBox title={"Assistant ID"} text={"0987654321"} />
+        <PeopleSmallBox title={"ID"} text={userId} />
+        <PeopleSmallBox title={"Name"} text={fullName} />
+        <PeopleSmallBox title={"Email"} text={data.user.email} />
+        {/*<PeopleSmallBox title={"Phone"} text={data.user.phone} />*/}
       </SimpleGrid>
     </Flex>
   )
 }
 
-const UserOverview: FC = () => {
-  return (
-    <Box>
-      <Text>Overview</Text>
-    </Box>
-  )
-}
 const UserListings: FC = () => {
   return (
     <Box>
@@ -80,13 +95,9 @@ const UserInfoTabs = () => {
     <Box m="1em">
       <Tabs isFitted variant="enclosed">
         <TabList>
-          <Tab fontWeight="semibold">Overview</Tab>
-          <Tab fontWeight="600">Listings</Tab>
+          <Tab fontWeight="semibold">Listings</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>
-            <UserOverview />
-          </TabPanel>
           <TabPanel>
             <UserListings />
           </TabPanel>
@@ -99,10 +110,9 @@ const UserInfoTabs = () => {
 // Need user object to be passed here
 export const UserDetailsComponent: FC<RouteComponentProps> = () => {
   const params = useParams()
-  console.log(params)
   return (
     <Box w="100%">
-      <UserInfoSummaryBarTop />
+      <UserInfoSummaryBarTop userId={params.userId} />
       <UserInfoTabs />
     </Box>
   )

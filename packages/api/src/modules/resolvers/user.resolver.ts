@@ -14,6 +14,7 @@ import { CurrentUser } from "../shared/context/currentUser"
 import { RegisterInput } from "../inputs/register.input"
 import { AuthResponse } from "../responses/auth.response"
 import { LoginInput } from "../inputs/login.input"
+import { PublicUserResponse } from "../responses/publicUser.response"
 
 @Resolver(() => User)
 export class UserResolver {
@@ -23,6 +24,12 @@ export class UserResolver {
   userMailer: UserMailer
   @Inject(() => UserRepository)
   userRepository: UserRepository
+
+  // public user details
+  @Query(() => PublicUserResponse, { nullable: true })
+  async user(@Arg("id") userId: string): Promise<PublicUserResponse> {
+    return this.userRepository.findById(userId)
+  }
 
   // ME
   @Authorized()

@@ -1,8 +1,9 @@
 import { InputType } from "type-graphql"
 import { IntField, StringField } from "../shared/fields"
+import { Listing } from "../entities/listing.entity"
 
 @InputType()
-export class CreateListingInput {
+export class CreateListingInput implements Partial<Listing> {
   @StringField()
   title: string
 
