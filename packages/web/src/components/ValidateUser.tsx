@@ -17,6 +17,13 @@ import {
 } from "@chakra-ui/core/dist"
 import { MeFragment } from "../lib/graphql"
 
+// https://github.com/bl00mber/react-phone-input-2
+// https://gitlab.com/catamphetamine/react-phone-number-input
+
+// make a phone number validator
+// and have twilo text the number to confirm
+// also email validator
+
 export const ValidateUser = ({ user }: { user: MeFragment }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
