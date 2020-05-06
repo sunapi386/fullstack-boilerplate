@@ -44,7 +44,7 @@ const LeftTitle = () => {
 }
 const UserProfileMenuItem = () => {
   const me = useMe()
-
+  const avatarUrl = me.avatarUrl ? me.avatarUrl : ""
   return (
     <Box m="1em">
       <Link
@@ -57,7 +57,7 @@ const UserProfileMenuItem = () => {
           <Avatar
             size="lg"
             name={me.firstName + " " + me.lastName}
-            src="https://i1.sndcdn.com/avatars-000288328162-lnw0yk-t500x500.jpg"
+            src={avatarUrl}
           />
           <Box>
             <Flex>

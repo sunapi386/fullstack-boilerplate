@@ -69,7 +69,6 @@ export type Listing = {
   id: Scalars["ID"]
   createdAt: Scalars["DateTime"]
   updatedAt: Scalars["DateTime"]
-  author: User
   description: Scalars["String"]
   title: Scalars["String"]
   imageUrl?: Maybe<Scalars["String"]>
@@ -79,6 +78,7 @@ export type Listing = {
   price: Scalars["Int"]
   reviews?: Maybe<Scalars["Int"]>
   ratings?: Maybe<Scalars["Int"]>
+  author: User
 }
 
 export type LoginInput = {
@@ -282,9 +282,32 @@ export type GetPublicUserQuery = { __typename?: "Query" } & {
   >
 }
 
+export type MyListingsQueryVariables = {}
+
+export type MyListingsQuery = { __typename?: "Query" } & {
+  me?: Maybe<
+    { __typename?: "User" } & {
+      listings: Array<
+        { __typename?: "Listing" } & Pick<
+          Listing,
+          | "imageUrl"
+          | "imageAlt"
+          | "beds"
+          | "baths"
+          | "title"
+          | "price"
+          | "reviews"
+          | "ratings"
+          | "id"
+        >
+      >
+    }
+  >
+}
+
 export type MeFragment = { __typename?: "User" } & Pick<
   User,
-  "id" | "firstName" | "lastName" | "email"
+  "id" | "firstName" | "lastName" | "email" | "avatarUrl"
 >
 
 export type MeQueryVariables = {}
@@ -383,6 +406,7 @@ export const MeFragmentDoc = gql`
     firstName
     lastName
     email
+    avatarUrl
   }
 `
 export const ListingsForBoxDocument = gql`
@@ -511,6 +535,69 @@ export type GetPublicUserLazyQueryHookResult = ReturnType<
 export type GetPublicUserQueryResult = ApolloReactCommon.QueryResult<
   GetPublicUserQuery,
   GetPublicUserQueryVariables
+>
+export const MyListingsDocument = gql`
+  query myListings {
+    me {
+      listings {
+        imageUrl
+        imageAlt
+        beds
+        baths
+        title
+        price
+        reviews
+        ratings
+        id
+      }
+    }
+  }
+`
+
+/**
+ * __useMyListingsQuery__
+ *
+ * To run a query within a React component, call `useMyListingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyListingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyListingsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyListingsQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    MyListingsQuery,
+    MyListingsQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<MyListingsQuery, MyListingsQueryVariables>(
+    MyListingsDocument,
+    baseOptions,
+  )
+}
+export function useMyListingsLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    MyListingsQuery,
+    MyListingsQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    MyListingsQuery,
+    MyListingsQueryVariables
+  >(MyListingsDocument, baseOptions)
+}
+export type MyListingsQueryHookResult = ReturnType<typeof useMyListingsQuery>
+export type MyListingsLazyQueryHookResult = ReturnType<
+  typeof useMyListingsLazyQuery
+>
+export type MyListingsQueryResult = ApolloReactCommon.QueryResult<
+  MyListingsQuery,
+  MyListingsQueryVariables
 >
 export const MeDocument = gql`
   query Me {

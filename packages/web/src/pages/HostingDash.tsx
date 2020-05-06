@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/core/dist"
 import { TiStar } from "react-icons/all"
 import { Link } from "../components/shared/Link"
+import { Card } from "../components/shared/Card"
 
 // const TabsBoard = () => {
 //   return (
@@ -55,14 +56,6 @@ import { Link } from "../components/shared/Link"
 //     </Tabs>
 //   )
 // }
-
-const Card: FC = ({ children }) => {
-  return (
-    <Box p={5} shadow="sm" borderWidth="1px" m={1}>
-      {children}
-    </Box>
-  )
-}
 
 const HorizontalBar = () => {
   return (
