@@ -2,6 +2,7 @@ import React, { FC } from "react"
 import {
   Avatar,
   Box,
+  Button,
   Flex,
   SimpleGrid,
   Tab,
@@ -9,12 +10,14 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
   useColorMode,
 } from "@chakra-ui/core/dist"
 import { RouteComponentProps, useParams } from "@reach/router"
 import { gql, useQuery } from "@apollo/client"
 import { LoadSpinner } from "./shared/LoadSpinner"
+import { Page } from "./shared/Page"
+import { ListingsGrid } from "./ListingsResults"
+import { Link } from "./shared/Link"
 
 export const PUBLIC_USER = gql`
   query GetPublicUser($id: String!) {
@@ -23,6 +26,24 @@ export const PUBLIC_USER = gql`
       lastName
       email
       avatarUrl
+    }
+  }
+`
+
+export const MY_LISTINGS = gql`
+  query myListings {
+    me {
+      listings {
+        imageUrl
+        imageAlt
+        beds
+        baths
+        title
+        price
+        reviews
+        ratings
+        id
+      }
     }
   }
 `
@@ -83,10 +104,34 @@ const UserInfoSummaryBarTop = ({ userId }: { userId: string }) => {
 }
 
 const UserListings: FC = () => {
+  const { loading, error, data } = useQuery(MY_LISTINGS)
+  if (loading)
+    return (
+      <Page>
+        <LoadSpinner />
+      </Page>
+    )
+  if (error) {
+    return (
+      <Page>
+        <Box>Error! {error.message}</Box>
+      </Page>
+    )
+  }
+  if (!data.me.listings) {
+    return (
+      <Link to={"/hosting/create_listing"} _hover={{ outline: "none" }}>
+        <Flex justifyContent="center" align="center" justify="center">
+          Oops, you haven't made any listings yet.
+          <Button>Make a listing here.</Button>
+        </Flex>
+      </Link>
+    )
+  }
   return (
-    <Box>
-      <Text>Listings</Text>
-    </Box>
+    <React.Suspense fallback={<LoadSpinner />}>
+      <ListingsGrid listings={data.me.listings} />
+    </React.Suspense>
   )
 }
 
@@ -95,7 +140,7 @@ const UserInfoTabs = () => {
     <Box m="1em">
       <Tabs isFitted variant="enclosed">
         <TabList>
-          <Tab fontWeight="semibold">Listings</Tab>
+          <Tab fontWeight="semibold">My Listings</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>

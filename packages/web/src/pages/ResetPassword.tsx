@@ -43,7 +43,6 @@ export const ResetPassword: React.FC<RouteComponentProps> = () => {
     typeof searchParams.token === "string" ? searchParams.token : ""
 
   const onSubmit = async ({ password }: { password: string }) => {
-    console.log("onSubmit", password, token)
     const res = await forgotPassword({
       variables: {
         data: {

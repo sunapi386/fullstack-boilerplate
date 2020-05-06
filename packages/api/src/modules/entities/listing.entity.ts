@@ -1,4 +1,4 @@
-import { Entity } from "typeorm"
+import { Entity, JoinColumn, ManyToOne } from "typeorm"
 import { Field, ObjectType } from "type-graphql"
 
 import { BaseEntity } from "../shared/base.entity"
@@ -10,7 +10,8 @@ import { RelationColumn } from "../shared/helpers"
 @Entity()
 export class Listing extends BaseEntity<Listing> {
   // user can have multiple listing
-  @Field(type => User)
+  @ManyToOne(type => User)
+  @JoinColumn({name: 'authorId'})
   author: User
   @RelationColumn()
   authorId: string

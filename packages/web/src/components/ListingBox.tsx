@@ -9,15 +9,15 @@ import {
 } from "@chakra-ui/core/dist"
 import { Link } from "./shared/Link"
 
-export type ListingShortAd = {
+export interface ListingShortAd {
   imageUrl: string
   imageAlt: string
   beds: number
   baths: number
   title: string
   price: string
-  reviewCount: number
-  rating: number
+  reviews: number
+  ratings: number
   id: string
 }
 
@@ -85,11 +85,11 @@ export const ListingBox = ({ property }: { property: ListingShortAd }) => {
                 <Icon
                   name="star"
                   key={i}
-                  color={i < property.rating ? "teal.500" : "gray.300"}
+                  color={i < property.ratings ? "teal.500" : "gray.300"}
                 />
               ))}
             <Box as="span" ml="2" color="gray.600" fontSize="sm">
-              {property.reviewCount} reviews
+              {property.reviews} reviews
             </Box>
           </Box>
         </Box>

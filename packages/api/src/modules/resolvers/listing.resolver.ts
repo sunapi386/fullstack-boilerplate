@@ -86,7 +86,7 @@ export class ListingResolver implements ResolverInterface<Listing> {
     return this.listingService.destroy(id)
   }
 
-  @FieldResolver()
+  @FieldResolver(type => User)
   async author(@Root() listing: Listing): Promise<User> {
     const user = await this.userRepository.findById(listing.authorId, {
       cache: 1000,
