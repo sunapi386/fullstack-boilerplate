@@ -10,12 +10,14 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Flex,
   FormLabel,
   Input,
   Stack,
   useDisclosure,
 } from "@chakra-ui/core/dist"
 import { MeFragment } from "../lib/graphql"
+import { GoVerified } from "react-icons/all"
 
 // https://github.com/bl00mber/react-phone-input-2
 // https://gitlab.com/catamphetamine/react-phone-number-input
@@ -29,23 +31,31 @@ export const ValidateUser = ({ user }: { user: MeFragment }) => {
   const btnRef = React.useRef()
 
   return (
-    <Box>
-      <Button ref={btnRef} leftIcon="add" variantColor="teal" onClick={onOpen}>
-        Validate Me
+    <Flex m={1} justifyContent="center" justify="center">
+      <Button
+        ref={btnRef}
+        leftIcon={GoVerified}
+        variantColor="green"
+        onClick={onOpen}
+      >
+        Verify Account Identity
       </Button>
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader borderBottomWidth="1px">
-            Create a new account
+            Verify Account Identity
           </DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">
               <Box>
-                <FormLabel htmlFor="username">Name</FormLabel>
-                <Input id="username" placeholder="Please enter user name" />
+                You must verify your identity in order to post listings.
+              </Box>
+              <Box>
+                <FormLabel htmlFor="phone">Phone Number</FormLabel>
+                <Input id="phone" placeholder="Please enter phone number" />
               </Box>
             </Stack>
           </DrawerBody>
@@ -54,10 +64,10 @@ export const ValidateUser = ({ user }: { user: MeFragment }) => {
             <Button variant="outline" mr={3} onClick={onClose}>
               Cancel
             </Button>
-            <Button variantColor="blue">Submit</Button>
+            <Button variantColor="blue">Verify</Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
-    </Box>
+    </Flex>
   )
 }

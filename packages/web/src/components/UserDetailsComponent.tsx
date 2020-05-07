@@ -16,7 +16,6 @@ import { Page } from "./shared/Page"
 import { ListingsGrid } from "./ListingsResults"
 import { Link } from "./shared/Link"
 import { UserProfileCard } from "./shared/Card"
-import { ValidateUser } from "./ValidateUser"
 import { useMe } from "./providers/MeProvider"
 import { MeFragment } from "../lib/graphql"
 
@@ -104,7 +103,6 @@ export const UserDetailsComponent: FC<RouteComponentProps> = () => {
   const me = useMe()
   return (
     <Box w="100%">
-      <ValidateUser user={me} />
       <UserProfileCard userId={params.userId} />
       <UserInfoTabs user={me} />
     </Box>
