@@ -20,6 +20,7 @@ import Moment from "moment"
 import { useMe } from "../components/providers/MeProvider"
 import { Link } from "../components/shared/Link"
 import { TiStar } from "react-icons/all"
+import { useToast } from "../lib/hooks/useToast"
 
 export const FIND_LISTING = gql`
   query GetListingById($id: String!) {
@@ -47,10 +48,12 @@ export const FIND_LISTING = gql`
 export const ListingDetails: FC<RouteComponentProps> = () => {
   // User Profile
   const params = useParams()
+  const me = useMe()
+  const toast = useToast()
+
   const { loading, error, data } = useQuery(FIND_LISTING, {
     variables: { id: params.listingId },
   })
-  const me = useMe()
 
   if (loading)
     return (
@@ -66,6 +69,23 @@ export const ListingDetails: FC<RouteComponentProps> = () => {
     )
   }
   const editable = data.findListing.author.id === me.id
+
+  const editListing = () => {
+    toast({
+      status: "error",
+      duration: 3000,
+      description: "Edit listing not implemented yet",
+    })
+  }
+
+  const bookNow = () => {
+    toast({
+      status: "error",
+      duration: 3000,
+      description: "Book listing not implemented yet",
+    })
+  }
+
   return (
     <Page>
       <Stack spacing={2} p={"1em"}>
@@ -110,7 +130,11 @@ export const ListingDetails: FC<RouteComponentProps> = () => {
               <StatHelpText />
             </Stat>
 
-            <Button m="1em" variantColor="teal">
+            <Button
+              m="1em"
+              variant="outline"
+              onClick={editable ? editListing : bookNow}
+            >
               {editable ? "Edit listing" : "Book now"}
             </Button>
           </Stack>
