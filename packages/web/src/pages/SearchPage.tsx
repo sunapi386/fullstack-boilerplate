@@ -1,15 +1,15 @@
 import React, { FC } from "react"
 import { RouteComponentProps } from "@reach/router"
 import { Page } from "../components/shared/Page"
-import { ListingBox } from "../components/listing/ListingBox"
+import { ListingCard } from "../components/listing/ListingCard"
 import { WorldMap } from "../components/WorldMap"
 
 export const SearchPage: FC<RouteComponentProps> = () => {
   return (
     <Page>
       <WorldMap />
-      {/*<ListingBox />*/}
-      {/*<ListingBox />*/}
+      {/*<ListingCard />*/}
+      {/*<ListingCard />*/}
     </Page>
   )
 }

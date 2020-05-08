@@ -62,9 +62,15 @@ export const UserProfileCard = ({ userId }: { userId: string }) => {
     return <LoadSpinner />
   }
   const fullName = `${data.user.firstName} ${data.user.lastName}`
+  const Phone =
+    data.user.phone !== undefined ? (
+      <PeopleSmallBox title={"Phone"} text={data.user.phone} />
+    ) : (
+      ""
+    )
   return (
     <Box m={4} justifyContent="center">
-      <Card title={"User Profile"}>
+      <Card title="">
         <SimpleGrid minChildWidth="100px" spacing="1em" m="1em" w="90%">
           <Flex align="center" justify="center">
             <Avatar
@@ -76,10 +82,8 @@ export const UserProfileCard = ({ userId }: { userId: string }) => {
               size="xl"
             />
           </Flex>
-
-          <PeopleSmallBox title={"Name"} text={fullName} />
-          <PeopleSmallBox title={"Email"} text={data.user.email} />
-          <PeopleSmallBox title={"Phone"} text={data.user.phone} />
+          <PeopleSmallBox title={fullName} text={data.user.email} />
+          {Phone}
         </SimpleGrid>
       </Card>
     </Box>

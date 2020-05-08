@@ -5,13 +5,10 @@ import {
   Box,
   Button,
   Flex,
+  Icon,
   Image,
   SimpleGrid,
   Stack,
-  Stat,
-  StatHelpText,
-  StatLabel,
-  StatNumber,
   Text,
 } from "@chakra-ui/core/dist"
 import { gql, useQuery } from "@apollo/client"
@@ -19,7 +16,6 @@ import { LoadSpinner } from "../components/shared/LoadSpinner"
 import Moment from "moment"
 import { useMe } from "../components/providers/MeProvider"
 import { Link } from "../components/shared/Link"
-import { TiStar } from "react-icons/all"
 import { useToast } from "../lib/hooks/useToast"
 
 export const FIND_LISTING = gql`
@@ -68,7 +64,8 @@ export const ListingDetails: FC<RouteComponentProps> = () => {
       </Page>
     )
   }
-  const editable = data.findListing.author.id === me.id
+  const listing = data.findListing
+  const editable = listing.author.id === me.id
 
   const editListing = () => {
     toast({
@@ -90,49 +87,58 @@ export const ListingDetails: FC<RouteComponentProps> = () => {
     <Page>
       <Stack spacing={2} p={"1em"}>
         <SimpleGrid
+          borderRadius="4px"
+          mb="1em"
           minChildWidth="200px"
           spacing="1em"
-          m="1em"
-          w="90%"
           shadow="md"
           borderWidth="1px"
+          p={2}
         >
           <Image
-            src={data.findListing.imageUrl}
-            alt={data.findListing.imageAlt}
+            src={listing.imageUrl}
+            alt={listing.imageAlt}
+            borderRadius="4px"
           />
 
-          <Stack>
-            <Text fontSize="lg">{data.findListing.title}</Text>
-            <Text mt={4}>{data.findListing.description}</Text>
-            <Link to={"/u/" + data.findListing.author.id}>
-              Hosted by {data.findListing.author.firstName}{" "}
-              {data.findListing.author.lastName}
+          <Stack spacing={2} m="1px" p="1em">
+            <Box d="flex" mt="2" alignItems="center">
+              {Array(5)
+                .fill("")
+                .map((_, i) => (
+                  <Icon
+                    name="star"
+                    key={i}
+                    color={i < listing.ratings ? "teal.500" : "gray.300"}
+                  />
+                ))}
+              <Box as="span" ml="2" color="gray.600" fontSize="sm">
+                {listing.reviews} reviews
+              </Box>
+            </Box>
+            <Flex alignContent="center">
+              $ {listing.price} per night {listing.beds} bed {listing.baths}{" "}
+              bath
+            </Flex>{" "}
+            <Text fontSize="lg" textTransform="uppercase">
+              {listing.title}
+            </Text>
+            <Text mt={4}>{listing.description}</Text>
+            <Link to={"/u/" + listing.author.id}>
+              <Text fontStyle="italic">
+                Hosted by {listing.author.firstName} {listing.author.lastName}
+              </Text>
             </Link>
-            <Box>Listed {Moment(data.findListing.createdAt).fromNow()}</Box>
             <Box>
-              Last updated {Moment(data.findListing.updatedAt).fromNow()}
+              Listed {Moment(listing.createdAt).fromNow()} and updated{" "}
+              {Moment(listing.updatedAt).fromNow()}
             </Box>
           </Stack>
 
           <Stack>
-            <Box>
-              {data.findListing.beds} bed {data.findListing.baths} baths
-            </Box>
-            <Box>$ {data.findListing.price} / night</Box>
-            <Stat>
-              <StatLabel>Reviews</StatLabel>
-              <Flex>
-                <StatNumber>{data.findListing.ratings}</StatNumber>
-                <Box m={1} as={TiStar} size="28px" />
-                <Text>from {data.findListing.ratings} ratings</Text>
-              </Flex>
-              <StatHelpText />
-            </Stat>
-
             <Button
               m="1em"
-              variant="outline"
+              variant={editable ? "outline" : "solid"}
               onClick={editable ? editListing : bookNow}
             >
               {editable ? "Edit listing" : "Book now"}

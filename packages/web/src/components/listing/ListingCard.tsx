@@ -10,7 +10,7 @@ import {
 import { Link } from "../shared/Link"
 import { ListingProps } from "./ListingProps"
 
-export const ListingBox = ({ property }: { property: ListingProps }) => {
+export const ListingCard = ({ property }: { property: ListingProps }) => {
   return (
     <Link
       to={"/listing/" + property.id}
@@ -25,6 +25,7 @@ export const ListingBox = ({ property }: { property: ListingProps }) => {
         overflow="hidden"
         maxH="sm"
         m="1em"
+        shadow="md"
       >
         <AspectRatioBox maxW="400px" ratio={4 / 3}>
           <Image
@@ -34,7 +35,7 @@ export const ListingBox = ({ property }: { property: ListingProps }) => {
           />
         </AspectRatioBox>
 
-        <Box p="6">
+        <Box m={2}>
           <Box d="flex" alignItems="baseline">
             <Badge rounded="full" px="2" variantColor="teal">
               New
