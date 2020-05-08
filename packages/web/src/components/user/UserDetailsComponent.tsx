@@ -1,19 +1,8 @@
 import React, { FC } from "react"
-import {
-  Box,
-  Button,
-  Flex,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from "@chakra-ui/core/dist"
+import { Box, Button, Flex } from "@chakra-ui/core/dist"
 import { RouteComponentProps, useParams } from "@reach/router"
 import { gql, useQuery } from "@apollo/client"
-import { UserProfileCard } from "../shared/Card"
-import { useMe } from "../providers/MeProvider"
-import { MeFragment } from "../../lib/graphql"
+import { Card, UserProfileCard } from "../shared/Card"
 import { Page } from "../shared/Page"
 import { LoadSpinner } from "../shared/LoadSpinner"
 import { Link } from "../shared/Link"
@@ -48,23 +37,6 @@ export const MY_LISTINGS = gql`
   }
 `
 
-const UserInfoTabs = ({ user }: { user: MeFragment }) => {
-  return (
-    <Box m="1em">
-      <Tabs isFitted variant="enclosed">
-        <TabList>
-          <Tab fontWeight="semibold">Listings by {user.firstName}</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <UserListings />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </Box>
-  )
-}
-
 export const UserListings: FC = () => {
   const { loading, error, data } = useQuery(MY_LISTINGS)
   if (loading)
@@ -92,7 +64,9 @@ export const UserListings: FC = () => {
   }
   return (
     <React.Suspense fallback={<LoadSpinner />}>
-      <ListingsGrid listings={data.me.listings} />
+      <Card title="My Listings">
+        <ListingsGrid listings={data.me.listings} />
+      </Card>
     </React.Suspense>
   )
 }
@@ -100,11 +74,9 @@ export const UserListings: FC = () => {
 // Need user object to be passed here
 export const UserDetailsComponent: FC<RouteComponentProps> = () => {
   const params = useParams()
-  const me = useMe()
   return (
     <Box w="100%">
       <UserProfileCard userId={params.userId} />
-      <UserInfoTabs user={me} />
     </Box>
   )
 }

@@ -5,7 +5,7 @@ import { ListingBox } from "./ListingBox"
 
 export const ListingsGrid = ({ listings }: { listings: [ListingProps] }) => {
   return (
-    <SimpleGrid minChildWidth="260px" spacing="1em" m="1em" w="90%" h="80vh">
+    <SimpleGrid minChildWidth="260px" spacing="1em" m="1em" w="90%">
       {listings.map((listingAd, key) => (
         <ListingBox key={key} property={listingAd} />
       ))}

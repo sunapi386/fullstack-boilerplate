@@ -13,7 +13,7 @@ import { ListingProps } from "./ListingProps"
 export const ListingBox = ({ property }: { property: ListingProps }) => {
   return (
     <Link
-      to={"listing/" + property.id}
+      to={"/listing/" + property.id}
       _hover={{ outline: "none" }}
       _focus={{ outline: "none" }}
     >

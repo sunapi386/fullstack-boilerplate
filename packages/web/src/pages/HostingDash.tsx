@@ -19,6 +19,7 @@ import { TiStar } from "react-icons/all"
 import { Link } from "../components/shared/Link"
 import { Card } from "../components/shared/Card"
 import { WorldMap } from "../components/WorldMap"
+import { UserListings } from "../components/user/UserDetailsComponent"
 
 const HorizontalBar = () => {
   return (
@@ -40,10 +41,7 @@ const HorizontalBar = () => {
 
 const RequestsCard = () => {
   return (
-    <Card>
-      <Box>
-        <Heading fontSize="lg">Requests</Heading>
-      </Box>
+    <Card title="Requests">
       <Box>
         <Text color="gray.500">
           Nothing you need to do right now - all set!
@@ -55,46 +53,43 @@ const RequestsCard = () => {
 
 const StatsCard = () => {
   return (
-    <Card>
-      <Box>
-        <Heading fontSize="lg">Stats</Heading>
-      </Box>
+    <Card title="Stats">
       <Box p={2}>
         <SimpleGrid columns={3} spacing={2} p={2}>
           <Stat>
             <StatLabel>Overall rating</StatLabel>
             <Flex>
-              <StatNumber>0</StatNumber>
+              <StatNumber>4</StatNumber>
               <Box m={1} as={TiStar} size="28px" />
             </Flex>
             <StatHelpText />
           </Stat>
           <Stat>
             <StatLabel>Total reviews</StatLabel>
-            <StatNumber>0</StatNumber>
+            <StatNumber>20</StatNumber>
             <StatHelpText />
           </Stat>
           <Stat>
-            <StatLabel> Response rate</StatLabel>
-            <StatNumber>0 %</StatNumber>
-            <StatHelpText />
+            <StatLabel>Avg response time </StatLabel>
+            <StatNumber>9 min</StatNumber>
+            <StatHelpText>Responds within this time on average</StatHelpText>
           </Stat>
         </SimpleGrid>
         <Divider />
         <SimpleGrid columns={3} spacing={2} p={2}>
           <Stat>
             <StatLabel>April earnings</StatLabel>
-            <StatNumber>$ 0</StatNumber>
+            <StatNumber>$ 2100</StatNumber>
             <StatHelpText />
           </Stat>
           <Stat>
             <StatLabel>30-day views</StatLabel>
-            <StatNumber>0</StatNumber>
+            <StatNumber>20</StatNumber>
             <StatHelpText />
           </Stat>
           <Stat>
             <StatLabel>30-day bookings</StatLabel>
-            <StatNumber>0</StatNumber>
+            <StatNumber>40</StatNumber>
             <StatHelpText />
           </Stat>
         </SimpleGrid>
@@ -105,10 +100,7 @@ const StatsCard = () => {
 
 const ReservationsCard = () => {
   return (
-    <Card>
-      <Box>
-        <Heading fontSize="lg">Reservations</Heading>
-      </Box>
+    <Card title="Reservations">
       <Box>No upcoming reservations</Box>
     </Card>
   )
@@ -116,10 +108,7 @@ const ReservationsCard = () => {
 
 const NotificationCard = () => {
   return (
-    <Card>
-      <Box>
-        <Heading fontSize="lg">Notifications</Heading>
-      </Box>
+    <Card title="Notifications">
       <Box>No messages</Box>
     </Card>
   )
@@ -144,7 +133,10 @@ export const HostingDash: FC<RouteComponentProps> = () => {
           <HorizontalBar />
           <Divider m={2} />
           <StackOfInterest />
-          <WorldMap />
+          <UserListings />
+          <Card title="Listings Map">
+            <WorldMap />
+          </Card>
         </Stack>
       </Box>
     </Page>

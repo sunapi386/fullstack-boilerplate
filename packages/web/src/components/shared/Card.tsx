@@ -1,8 +1,9 @@
-import React, { FC } from "react"
+import React from "react"
 import {
   Avatar,
   Box,
   Flex,
+  Heading,
   SimpleGrid,
   useColorMode,
 } from "@chakra-ui/core/dist"
@@ -10,10 +11,16 @@ import { useQuery } from "@apollo/client"
 import { LoadSpinner } from "./LoadSpinner"
 import { PUBLIC_USER } from "../user/UserDetailsComponent"
 
-export const Card: FC = ({ children }) => {
+interface CardProps {
+  title: string
+}
+export const Card: React.FC<CardProps> = props => {
   return (
-    <Box p={5} shadow="sm" borderWidth="1px">
-      {children}
+    <Box p={5} shadow="sm" mb="1em" borderRadius="4px" borderWidth="1px">
+      <Box>
+        <Heading fontSize="lg">{props.title}</Heading>
+      </Box>
+      {props.children}
     </Box>
   )
 }
@@ -57,7 +64,7 @@ export const UserProfileCard = ({ userId }: { userId: string }) => {
   const fullName = `${data.user.firstName} ${data.user.lastName}`
   return (
     <Box m={4} justifyContent="center">
-      <Card>
+      <Card title={"User Profile"}>
         <SimpleGrid minChildWidth="100px" spacing="1em" m="1em" w="90%">
           <Flex align="center" justify="center">
             <Avatar
@@ -72,7 +79,7 @@ export const UserProfileCard = ({ userId }: { userId: string }) => {
 
           <PeopleSmallBox title={"Name"} text={fullName} />
           <PeopleSmallBox title={"Email"} text={data.user.email} />
-          {/*<PeopleSmallBox title={"Phone"} text={data.user.phone} />*/}
+          <PeopleSmallBox title={"Phone"} text={data.user.phone} />
         </SimpleGrid>
       </Card>
     </Box>
