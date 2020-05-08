@@ -27,7 +27,7 @@ export const DatePickerPopover = ({ handleDateSelection }: DatePickerProps) => {
           align="center"
           justify="center"
         >
-          Pick Date
+          Dates
         </Flex>
       </PopoverTrigger>
       <PopoverContent zIndex={4}>

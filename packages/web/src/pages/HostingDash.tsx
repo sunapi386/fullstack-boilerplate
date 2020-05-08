@@ -67,7 +67,7 @@ const StatsCard = () => {
           <Stat>
             <StatLabel>Total reviews</StatLabel>
             <StatNumber>20</StatNumber>
-            <StatHelpText />
+            <StatHelpText>From 27 stays</StatHelpText>
           </Stat>
           <Stat>
             <StatLabel>Avg response time </StatLabel>
@@ -78,8 +78,8 @@ const StatsCard = () => {
         <Divider />
         <SimpleGrid columns={3} spacing={2} p={2}>
           <Stat>
-            <StatLabel>April earnings</StatLabel>
-            <StatNumber>$ 2100</StatNumber>
+            <StatLabel>April Earnings</StatLabel>
+            <StatNumber>$2100</StatNumber>
             <StatHelpText />
           </Stat>
           <Stat>
