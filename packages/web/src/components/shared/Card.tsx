@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/core/dist"
 import { useQuery } from "@apollo/client"
 import { LoadSpinner } from "./LoadSpinner"
-import { PUBLIC_USER } from "../UserDetailsComponent"
+import { PUBLIC_USER } from "../user/UserDetailsComponent"
 
 export const Card: FC = ({ children }) => {
   return (

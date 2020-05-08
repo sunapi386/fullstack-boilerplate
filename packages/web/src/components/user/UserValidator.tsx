@@ -16,7 +16,7 @@ import {
   Stack,
   useDisclosure,
 } from "@chakra-ui/core/dist"
-import { MeFragment } from "../lib/graphql"
+import { MeFragment } from "../../lib/graphql"
 import { GoVerified } from "react-icons/all"
 
 // https://github.com/bl00mber/react-phone-input-2
@@ -26,7 +26,7 @@ import { GoVerified } from "react-icons/all"
 // and have twilo text the number to confirm
 // also email validator
 
-export const ValidateUser = ({ user }: { user: MeFragment }) => {
+export const UserValidator = ({ user }: { user: MeFragment }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
 

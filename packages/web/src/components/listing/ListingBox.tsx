@@ -7,21 +7,10 @@ import {
   Image,
   PseudoBox,
 } from "@chakra-ui/core/dist"
-import { Link } from "./shared/Link"
+import { Link } from "../shared/Link"
+import { ListingProps } from "./ListingProps"
 
-export interface ListingShortAd {
-  imageUrl: string
-  imageAlt: string
-  beds: number
-  baths: number
-  title: string
-  price: string
-  reviews: number
-  ratings: number
-  id: string
-}
-
-export const ListingBox = ({ property }: { property: ListingShortAd }) => {
+export const ListingBox = ({ property }: { property: ListingProps }) => {
   return (
     <Link
       to={"listing/" + property.id}

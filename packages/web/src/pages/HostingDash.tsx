@@ -18,44 +18,7 @@ import {
 import { TiStar } from "react-icons/all"
 import { Link } from "../components/shared/Link"
 import { Card } from "../components/shared/Card"
-
-// const TabsBoard = () => {
-//   return (
-//     <Tabs w="100vw">
-//       <TabList>
-//         <Tab _selected={{ color: "black", bg: "#e6fffa" }} fontWeight="600">
-//           World Map
-//         </Tab>
-//         <Tab _selected={{ color: "black", bg: "#e6fffa" }} fontWeight="600">
-//           License Plate
-//         </Tab>
-//         <Tab _selected={{ color: "black", bg: "#e6fffa" }} fontWeight="600">
-//           Complaints
-//         </Tab>
-//         <Tab _selected={{ color: "black", bg: "#e6fffa" }} fontWeight="600">
-//           Users
-//         </Tab>
-//       </TabList>
-//
-//       <TabPanels>
-//         <TabPanel>
-//           <Box>
-//             <WorldMap />
-//           </Box>
-//         </TabPanel>
-//         <TabPanel>
-//           <LicensePlates />
-//         </TabPanel>
-//         <TabPanel>
-//           <Complaints />
-//         </TabPanel>
-//         <TabPanel>
-//           <UserDetailsComponent />
-//         </TabPanel>
-//       </TabPanels>
-//     </Tabs>
-//   )
-// }
+import { WorldMap } from "../components/WorldMap"
 
 const HorizontalBar = () => {
   return (
@@ -179,8 +142,9 @@ export const HostingDash: FC<RouteComponentProps> = () => {
       <Box w="95%">
         <Stack m={2}>
           <HorizontalBar />
-          <Divider />
+          <Divider m={2} />
           <StackOfInterest />
+          <WorldMap />
         </Stack>
       </Box>
     </Page>

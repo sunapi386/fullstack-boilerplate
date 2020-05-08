@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react"
-import { MeFragment } from "../lib/graphql"
+import { MeFragment } from "../../lib/graphql"
 import AvatarEditor from "react-avatar-editor"
 import { Button, Checkbox, Slider } from "@chakra-ui/core"
 import {

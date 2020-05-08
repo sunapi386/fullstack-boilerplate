@@ -11,13 +11,13 @@ import {
 } from "@chakra-ui/core/dist"
 import { RouteComponentProps, useParams } from "@reach/router"
 import { gql, useQuery } from "@apollo/client"
-import { LoadSpinner } from "./shared/LoadSpinner"
-import { Page } from "./shared/Page"
-import { ListingsGrid } from "./ListingsResults"
-import { Link } from "./shared/Link"
-import { UserProfileCard } from "./shared/Card"
-import { useMe } from "./providers/MeProvider"
-import { MeFragment } from "../lib/graphql"
+import { UserProfileCard } from "../shared/Card"
+import { useMe } from "../providers/MeProvider"
+import { MeFragment } from "../../lib/graphql"
+import { Page } from "../shared/Page"
+import { LoadSpinner } from "../shared/LoadSpinner"
+import { Link } from "../shared/Link"
+import { ListingsGrid } from "../listing/ListingsGrid"
 
 export const PUBLIC_USER = gql`
   query GetPublicUser($id: String!) {
@@ -48,7 +48,24 @@ export const MY_LISTINGS = gql`
   }
 `
 
-const UserListings: FC = () => {
+const UserInfoTabs = ({ user }: { user: MeFragment }) => {
+  return (
+    <Box m="1em">
+      <Tabs isFitted variant="enclosed">
+        <TabList>
+          <Tab fontWeight="semibold">Listings by {user.firstName}</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <UserListings />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </Box>
+  )
+}
+
+export const UserListings: FC = () => {
   const { loading, error, data } = useQuery(MY_LISTINGS)
   if (loading)
     return (
@@ -77,23 +94,6 @@ const UserListings: FC = () => {
     <React.Suspense fallback={<LoadSpinner />}>
       <ListingsGrid listings={data.me.listings} />
     </React.Suspense>
-  )
-}
-
-const UserInfoTabs = ({ user }: { user: MeFragment }) => {
-  return (
-    <Box m="1em">
-      <Tabs isFitted variant="enclosed">
-        <TabList>
-          <Tab fontWeight="semibold">Listings by {user.firstName}</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <UserListings />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </Box>
   )
 }
 
