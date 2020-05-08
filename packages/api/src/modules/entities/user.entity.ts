@@ -1,4 +1,4 @@
-import { BeforeInsert, BeforeUpdate, Entity, OneToMany } from "typeorm"
+import { BeforeInsert, BeforeUpdate, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm"
 import { Field, ObjectType } from "type-graphql"
 import bcrypt from "bcryptjs"
 
@@ -6,6 +6,7 @@ import { BaseEntity } from "../shared/base.entity"
 import { BooleanField, StringField } from "../shared/fields"
 import { Complaint } from "./complaint.entity"
 import { Listing } from "./listing.entity"
+import { Address } from "./address.entity"
 
 @ObjectType()
 @Entity()
@@ -53,6 +54,10 @@ export class User extends BaseEntity<User> {
     { lazy: true, cascade: ["update"] },
   )
   listings: Listing[]
+
+  @OneToOne(() => Address, (address: Address) => address.user)
+  @JoinColumn()
+  address: Address;
 
   @BeforeInsert()
   @BeforeUpdate()

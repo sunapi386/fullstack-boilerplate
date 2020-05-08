@@ -13,6 +13,20 @@ export type Scalars = {
   DateTime: any
 }
 
+export type Address = {
+  __typename?: "Address"
+  id: Scalars["ID"]
+  createdAt: Scalars["DateTime"]
+  updatedAt: Scalars["DateTime"]
+  unit?: Maybe<Scalars["String"]>
+  street: Scalars["String"]
+  city: Scalars["String"]
+  country: Scalars["String"]
+  zipcode: Scalars["String"]
+  lat?: Maybe<Scalars["Float"]>
+  lng?: Maybe<Scalars["Float"]>
+}
+
 export type AuthResponse = {
   __typename?: "AuthResponse"
   user: User
@@ -247,26 +261,15 @@ export type User = {
   listings: Array<Listing>
 }
 
-export type ListingsForBoxQueryVariables = {}
+export type MeFragment = { __typename?: "User" } & Pick<
+  User,
+  "id" | "firstName" | "lastName" | "email" | "avatarUrl"
+>
 
-export type ListingsForBoxQuery = { __typename?: "Query" } & {
-  listings: Array<
-    { __typename?: "Listing" } & Pick<
-      Listing,
-      | "id"
-      | "description"
-      | "title"
-      | "price"
-      | "baths"
-      | "beds"
-      | "reviews"
-      | "ratings"
-      | "imageAlt"
-      | "imageUrl"
-    > & {
-        author: { __typename?: "User" } & Pick<User, "firstName" | "lastName">
-      }
-  >
+export type MeQueryVariables = {}
+
+export type MeQuery = { __typename?: "Query" } & {
+  me?: Maybe<{ __typename?: "User" } & MeFragment>
 }
 
 export type GetPublicUserQueryVariables = {
@@ -305,17 +308,6 @@ export type MyListingsQuery = { __typename?: "Query" } & {
   >
 }
 
-export type MeFragment = { __typename?: "User" } & Pick<
-  User,
-  "id" | "firstName" | "lastName" | "email" | "avatarUrl"
->
-
-export type MeQueryVariables = {}
-
-export type MeQuery = { __typename?: "Query" } & {
-  me?: Maybe<{ __typename?: "User" } & MeFragment>
-}
-
 export type AddNewListingMutationVariables = {
   data: CreateListingInput
 }
@@ -335,6 +327,28 @@ export type RequestUploadUrlQuery = { __typename?: "Query" } & Pick<
   Query,
   "generateListingAssetUploadUrl"
 >
+
+export type ListingsForBoxQueryVariables = {}
+
+export type ListingsForBoxQuery = { __typename?: "Query" } & {
+  listings: Array<
+    { __typename?: "Listing" } & Pick<
+      Listing,
+      | "id"
+      | "description"
+      | "title"
+      | "price"
+      | "baths"
+      | "beds"
+      | "reviews"
+      | "ratings"
+      | "imageAlt"
+      | "imageUrl"
+    > & {
+        author: { __typename?: "User" } & Pick<User, "firstName" | "lastName">
+      }
+  >
+}
 
 export type ForgotPasswordMutationVariables = {
   email: Scalars["String"]
@@ -409,73 +423,54 @@ export const MeFragmentDoc = gql`
     avatarUrl
   }
 `
-export const ListingsForBoxDocument = gql`
-  query listingsForBox {
-    listings {
-      id
-      description
-      title
-      author {
-        firstName
-        lastName
-      }
-      price
-      baths
-      beds
-      reviews
-      ratings
-      imageAlt
-      imageUrl
+export const MeDocument = gql`
+  query Me {
+    me {
+      ...Me
     }
   }
+  ${MeFragmentDoc}
 `
 
 /**
- * __useListingsForBoxQuery__
+ * __useMeQuery__
  *
- * To run a query within a React component, call `useListingsForBoxQuery` and pass it any options that fit your needs.
- * When your component renders, `useListingsForBoxQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useListingsForBoxQuery({
+ * const { data, loading, error } = useMeQuery({
  *   variables: {
  *   },
  * });
  */
-export function useListingsForBoxQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    ListingsForBoxQuery,
-    ListingsForBoxQueryVariables
-  >,
+export function useMeQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<MeQuery, MeQueryVariables>,
 ) {
-  return ApolloReactHooks.useQuery<
-    ListingsForBoxQuery,
-    ListingsForBoxQueryVariables
-  >(ListingsForBoxDocument, baseOptions)
+  return ApolloReactHooks.useQuery<MeQuery, MeQueryVariables>(
+    MeDocument,
+    baseOptions,
+  )
 }
-export function useListingsForBoxLazyQuery(
+export function useMeLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    ListingsForBoxQuery,
-    ListingsForBoxQueryVariables
+    MeQuery,
+    MeQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
-    ListingsForBoxQuery,
-    ListingsForBoxQueryVariables
-  >(ListingsForBoxDocument, baseOptions)
+  return ApolloReactHooks.useLazyQuery<MeQuery, MeQueryVariables>(
+    MeDocument,
+    baseOptions,
+  )
 }
-export type ListingsForBoxQueryHookResult = ReturnType<
-  typeof useListingsForBoxQuery
->
-export type ListingsForBoxLazyQueryHookResult = ReturnType<
-  typeof useListingsForBoxLazyQuery
->
-export type ListingsForBoxQueryResult = ApolloReactCommon.QueryResult<
-  ListingsForBoxQuery,
-  ListingsForBoxQueryVariables
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>
+export type MeQueryResult = ApolloReactCommon.QueryResult<
+  MeQuery,
+  MeQueryVariables
 >
 export const GetPublicUserDocument = gql`
   query GetPublicUser($id: String!) {
@@ -599,55 +594,6 @@ export type MyListingsQueryResult = ApolloReactCommon.QueryResult<
   MyListingsQuery,
   MyListingsQueryVariables
 >
-export const MeDocument = gql`
-  query Me {
-    me {
-      ...Me
-    }
-  }
-  ${MeFragmentDoc}
-`
-
-/**
- * __useMeQuery__
- *
- * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
- * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMeQuery({
- *   variables: {
- *   },
- * });
- */
-export function useMeQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<MeQuery, MeQueryVariables>,
-) {
-  return ApolloReactHooks.useQuery<MeQuery, MeQueryVariables>(
-    MeDocument,
-    baseOptions,
-  )
-}
-export function useMeLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    MeQuery,
-    MeQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<MeQuery, MeQueryVariables>(
-    MeDocument,
-    baseOptions,
-  )
-}
-export type MeQueryHookResult = ReturnType<typeof useMeQuery>
-export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>
-export type MeQueryResult = ApolloReactCommon.QueryResult<
-  MeQuery,
-  MeQueryVariables
->
 export const AddNewListingDocument = gql`
   mutation AddNewListing($data: CreateListingInput!) {
     createListing(data: $data) {
@@ -752,6 +698,74 @@ export type RequestUploadUrlLazyQueryHookResult = ReturnType<
 export type RequestUploadUrlQueryResult = ApolloReactCommon.QueryResult<
   RequestUploadUrlQuery,
   RequestUploadUrlQueryVariables
+>
+export const ListingsForBoxDocument = gql`
+  query listingsForBox {
+    listings {
+      id
+      description
+      title
+      author {
+        firstName
+        lastName
+      }
+      price
+      baths
+      beds
+      reviews
+      ratings
+      imageAlt
+      imageUrl
+    }
+  }
+`
+
+/**
+ * __useListingsForBoxQuery__
+ *
+ * To run a query within a React component, call `useListingsForBoxQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListingsForBoxQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListingsForBoxQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListingsForBoxQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    ListingsForBoxQuery,
+    ListingsForBoxQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    ListingsForBoxQuery,
+    ListingsForBoxQueryVariables
+  >(ListingsForBoxDocument, baseOptions)
+}
+export function useListingsForBoxLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    ListingsForBoxQuery,
+    ListingsForBoxQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    ListingsForBoxQuery,
+    ListingsForBoxQueryVariables
+  >(ListingsForBoxDocument, baseOptions)
+}
+export type ListingsForBoxQueryHookResult = ReturnType<
+  typeof useListingsForBoxQuery
+>
+export type ListingsForBoxLazyQueryHookResult = ReturnType<
+  typeof useListingsForBoxLazyQuery
+>
+export type ListingsForBoxQueryResult = ApolloReactCommon.QueryResult<
+  ListingsForBoxQuery,
+  ListingsForBoxQueryVariables
 >
 export const ForgotPasswordDocument = gql`
   mutation ForgotPassword($email: String!) {

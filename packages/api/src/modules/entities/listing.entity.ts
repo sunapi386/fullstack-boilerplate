@@ -1,10 +1,11 @@
-import { Entity, JoinColumn, ManyToOne } from "typeorm"
-import { Field, ObjectType } from "type-graphql"
+import { Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm"
+import { ObjectType } from "type-graphql"
 
 import { BaseEntity } from "../shared/base.entity"
 import { IntField, StringField } from "../shared/fields"
 import { User } from "./user.entity"
 import { RelationColumn } from "../shared/helpers"
+import { Address } from "./address.entity"
 
 @ObjectType()
 @Entity()
@@ -44,4 +45,8 @@ export class Listing extends BaseEntity<Listing> {
 
   @IntField({ nullable: true })
   ratings: number
+
+  @OneToOne(type => Address)
+  @JoinColumn()
+  address: Address
 }
