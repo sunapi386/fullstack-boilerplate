@@ -1,37 +1,26 @@
 import { Service } from "typedi"
-import {
-  FULL_WEB_URL,
-  EMAIL_CO_NAME,
-  SENDGRID_RESET_TEMPLATE_ID,
-  SENDGRID_WELCOME_TEMPLATE_ID,
-} from "../../lib/config"
+import { FULL_WEB_URL } from "../../lib/config"
 import { User } from "../entities/user.entity"
-import { Mailer } from "../../lib/mailer"
+import { mgsend } from "../../lib/mailgun-mailer"
 
 @Service()
-export class UserMailer extends Mailer {
+export class UserMailer {
   sendWelcomeEmail(user: User) {
     console.log("sendWelcomeEmail", user.email)
-    this.send({
-      templateId: SENDGRID_WELCOME_TEMPLATE_ID,
+    mgsend({
       to: user.email,
-      variables: {
-        firstName: user.firstName,
-        companyName: EMAIL_CO_NAME,
-      },
+      subject: "Welcome",
+      body: "Thank you for registering.",
     })
   }
 
   sendResetPasswordLink(user: User, token: string) {
-    console.log("sendResetPasswordLink", user.email)
-    this.send({
-      templateId: SENDGRID_RESET_TEMPLATE_ID,
+    const link = `${FULL_WEB_URL()}/reset-password?token=${token}`
+    console.log("sendResetPasswordLink", user.email, link)
+    mgsend({
       to: user.email,
-      variables: {
-        firstName: `${user.firstName}`,
-        companyName: EMAIL_CO_NAME,
-        resetLink: `${FULL_WEB_URL()}/reset-password?token=${token}`,
-      },
+      subject: "Reset link",
+      body: `<a href="${link}">${link}</a>`,
     })
   }
 }
