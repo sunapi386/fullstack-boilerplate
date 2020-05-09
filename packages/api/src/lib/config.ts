@@ -22,7 +22,7 @@ export const {
   TWILIO_ACCOUNT_SID = "",
   TWILIO_AUTH_TOKEN = "",
   TWILIO_FROM_NUMBER = "",
-  WEB_URL = "localhost:3000",
+  WEB_URL = "",
 } = process.env
 
 // IS PRODUCTION
