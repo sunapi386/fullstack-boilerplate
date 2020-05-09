@@ -45,7 +45,7 @@ export const ForgotPassword: React.FC<RouteComponentProps> = () => {
       {success ? (
         <Box w={["100%", 400]}>
           <Text mb={4}>
-            Check your email for password reset link (expires in 24h).
+            Password reset link has been sent, if that email has an account.
           </Text>
           <Flex justify="space-between" align="center" mt={4}>
             <Link to="/login">Login</Link>

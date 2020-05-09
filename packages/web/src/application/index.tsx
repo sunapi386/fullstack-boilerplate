@@ -1,5 +1,5 @@
 import React, { Suspense } from "react"
-import { Router } from "@reach/router"
+import { Redirect, Router } from "@reach/router"
 
 import { AppProvider } from "../components/providers/AppProvider"
 import { HostingDash } from "../pages/HostingDash"
@@ -32,6 +32,7 @@ export function Application() {
             <CreateListing path="hosting/create_listing" />
             <ListingDetails path="listing/:listingId" />
 
+            <Redirect from="register" to="/" />
             <NotFound default />
           </Router>
         </CheckAuth>
