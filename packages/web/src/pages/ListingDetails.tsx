@@ -14,7 +14,7 @@ import {
 import { gql, useQuery } from "@apollo/client"
 import { LoadSpinner } from "../components/shared/LoadSpinner"
 import Moment from "moment"
-import { useMe } from "../components/providers/MeProvider"
+import { useMe, useUser } from "../components/providers/MeProvider"
 import { Link } from "../components/shared/Link"
 import { useToast } from "../lib/hooks/useToast"
 
@@ -41,11 +41,40 @@ export const FIND_LISTING = gql`
   }
 `
 
+const EditOrBookButton = ({ listingAuthorId }: { listingAuthorId: string }) => {
+  const user = useUser()
+  const toast = useToast()
+
+  const editable = user && listingAuthorId === user.id
+  const editListing = () => {
+    toast({
+      status: "error",
+      duration: 3000,
+      description: "Edit listing not implemented yet",
+    })
+  }
+
+  const bookNow = () => {
+    toast({
+      status: "error",
+      duration: 3000,
+      description: user ? "Book listing not implemented yet" : "Please login",
+    })
+  }
+  return (
+    <Button
+      m="1em"
+      variant={editable ? "outline" : "solid"}
+      onClick={editable ? editListing : bookNow}
+    >
+      {editable ? "Edit listing" : "Book now"}
+    </Button>
+  )
+}
+
 export const ListingDetails: FC<RouteComponentProps> = () => {
   // User Profile
   const params = useParams()
-  const me = useMe()
-  const toast = useToast()
 
   const { loading, error, data } = useQuery(FIND_LISTING, {
     variables: { id: params.listingId },
@@ -65,23 +94,6 @@ export const ListingDetails: FC<RouteComponentProps> = () => {
     )
   }
   const listing = data.findListing
-  const editable = listing.author.id === me.id
-
-  const editListing = () => {
-    toast({
-      status: "error",
-      duration: 3000,
-      description: "Edit listing not implemented yet",
-    })
-  }
-
-  const bookNow = () => {
-    toast({
-      status: "error",
-      duration: 3000,
-      description: "Book listing not implemented yet",
-    })
-  }
 
   return (
     <Page>
@@ -136,13 +148,7 @@ export const ListingDetails: FC<RouteComponentProps> = () => {
           </Stack>
 
           <Stack>
-            <Button
-              m="1em"
-              variant={editable ? "outline" : "solid"}
-              onClick={editable ? editListing : bookNow}
-            >
-              {editable ? "Edit listing" : "Book now"}
-            </Button>
+            <EditOrBookButton listingAuthorId={listing.author.id} />
           </Stack>
         </SimpleGrid>
       </Stack>

@@ -7,7 +7,6 @@ import { About } from "../pages/About"
 import { UserProfile } from "../pages/UserProfile"
 import { NotFound } from "../pages/NotFound"
 import { CreateListing } from "../pages/CreateListing"
-import { ListingDetails } from "../pages/ListingDetails"
 import { RentingDash } from "../pages/Dashboard"
 import { LoadSpinner } from "../components/shared/LoadSpinner"
 
@@ -30,9 +29,13 @@ export function Application() {
 
             {/* Can't figure out how to nest CreateListing inside HostingDash */}
             <CreateListing path="hosting/create_listing" />
-            <ListingDetails path="listing/:listingId" />
 
-            <Redirect from="register" to="/" />
+            {/* If logged in, don't show these pages */}
+            <Redirect from="/reset-password" to="/" />
+            <Redirect from="/forgot-password" to="/" />
+            <Redirect from="/login" to="/" />
+            <Redirect from="/register" to="/" />
+
             <NotFound default />
           </Router>
         </CheckAuth>

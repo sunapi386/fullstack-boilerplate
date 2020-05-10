@@ -6,6 +6,7 @@ import {
   Flex,
   Grid,
   Heading,
+  Icon,
   Menu,
   MenuButton,
   MenuDivider,
@@ -13,18 +14,19 @@ import {
   MenuList,
   SimpleGrid,
   Switch,
-  useColorMode,
   Text,
+  useColorMode,
 } from "@chakra-ui/core/dist"
-import { useMe } from "../providers/MeProvider"
+import { useMe, useUser } from "../providers/MeProvider"
 import { useLogout } from "../../lib/hooks/useLogout"
 
 import { useLocalStorage } from "@noquarter/hooks"
 import {
   FaHome,
+  FaUserCircle,
   FiCalendar,
-  IoIosArrowDropdown,
   IoIosLogOut,
+  IoMdLogOut,
   WiMoonAltWaningCrescent2,
 } from "react-icons/all"
 import { useLocation } from "@reach/router"
@@ -85,11 +87,12 @@ const DropDownMenu = ({ menubuttoncolor }: { menubuttoncolor: string }) => {
     toggleColorMode()
   }
   const logout = useLogout()
-
+  const colorAction = colorMode === "light" ? "Light" : "Dark"
+  const rotation = colorMode === "light" ? "" : "rotate(180deg)"
   return (
     <Menu>
       <MenuButton p="2" _hover={{ color: "blue.500" }}>
-        <Box as={IoIosArrowDropdown} size="32px" color={menubuttoncolor} />
+        <Box as={FaUserCircle} size="32px" color={menubuttoncolor} />
       </MenuButton>
       <MenuList>
         <MenuItem>
@@ -97,18 +100,18 @@ const DropDownMenu = ({ menubuttoncolor }: { menubuttoncolor: string }) => {
         </MenuItem>
         <MenuDivider />
         <MenuItem onClick={toggleColor}>
-          <Box as={WiMoonAltWaningCrescent2} size="32px" />
-          <Box ml={1}>Dark</Box>
+          <Box transform={rotation} as={WiMoonAltWaningCrescent2} size="32px" />
+          <Box ml={1}>{colorAction}</Box>
           <Flex w="70%" direction="row-reverse">
             <Switch
               onChange={toggleColor}
-              isChecked={colorMode !== "light"}
+              isChecked={colorMode === "dark"}
               size="lg"
             />
           </Flex>
         </MenuItem>
         <MenuItem onClick={logout}>
-          <Box as={IoIosLogOut} size="32px" />
+          <Box as={IoMdLogOut} size="32px" />
           <Box ml={1}>Logout</Box>
         </MenuItem>
       </MenuList>
@@ -124,8 +127,9 @@ const RightNav = () => {
   const isHosting = pathname.includes("hosting")
   const isProfile = pathname.includes("/u/")
   const isDash = isProfile !== isHosting
+  const user = useUser()
 
-  return (
+  return user ? (
     <Flex justifyContent={"flex-end"} m={1}>
       <Link to="/" p="2" _hover={{ color: "blue.500" }}>
         <Box as={FaHome} size="32px" color={isDash ? "" : "blue.500"} />
@@ -134,6 +138,12 @@ const RightNav = () => {
         <Box as={FiCalendar} size="32px" color={isHosting ? "blue.500" : ""} />
       </Link>
       <DropDownMenu menubuttoncolor={isProfile ? "blue.500" : ""} />
+    </Flex>
+  ) : (
+    <Flex justifyContent={"flex-end"} m={1}>
+      <Link to="/login" p="2" _hover={{ color: "blue.500" }}>
+        <Icon name="unlock" size="32px" /> Login
+      </Link>
     </Flex>
   )
 }

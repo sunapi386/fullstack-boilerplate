@@ -1,11 +1,13 @@
 import React from "react"
-import { Router, Redirect, RouteComponentProps } from "@reach/router"
+import { Router } from "@reach/router"
 
 import { useUser } from "../providers/MeProvider"
 import { Login } from "../../pages/Login"
 import { Register } from "../../pages/Register"
 import { ForgotPassword } from "../../pages/ForgotPassword"
 import { ResetPassword } from "../../pages/ResetPassword"
+import { RentingDash } from "../../pages/Dashboard"
+import { ListingDetails } from "../../pages/ListingDetails"
 
 export const CheckAuth: React.FC = ({ children }) => {
   const user = useUser()
@@ -13,15 +15,14 @@ export const CheckAuth: React.FC = ({ children }) => {
     <>{children}</>
   ) : (
     <Router>
-      <Login path="/" />
+      {/* If not logged in, show just these pages */}
+      <RentingDash default={true} path="/" />
+      <ListingDetails path="listing/:listingId" />
+
+      <Login path="/login" />
       <Register path="/register" />
       <ForgotPassword path="/forgot-password" />
       <ResetPassword path="/reset-password" />
-      <RedirectToLogin default={true} />
     </Router>
   )
-}
-
-const RedirectToLogin: React.FC<RouteComponentProps> = () => {
-  return <Redirect noThrow to="/" />
 }
