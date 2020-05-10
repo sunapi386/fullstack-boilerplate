@@ -9,6 +9,7 @@ import { NotFound } from "../pages/NotFound"
 import { CreateListing } from "../pages/CreateListing"
 import { RentingDash } from "../pages/Dashboard"
 import { LoadSpinner } from "../components/shared/LoadSpinner"
+import { ListingDetails } from "../pages/ListingDetails"
 
 const CheckAuth = React.lazy(() =>
   import("../components/shared/CheckAuth").then(({ CheckAuth }) => ({
@@ -26,6 +27,7 @@ export function Application() {
             <About path="about" />
             <UserProfile path="u/:userId" />
             <HostingDash path="hosting" />
+            <ListingDetails path="listing/:listingId" />
 
             {/* Can't figure out how to nest CreateListing inside HostingDash */}
             <CreateListing path="hosting/create_listing" />

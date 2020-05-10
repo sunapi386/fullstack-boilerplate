@@ -11,6 +11,8 @@
   "scripts": {
     "build:api": "cd packages/api && yarn build",
     "build:web": "cd packages/web && yarn build",
+    "upload:api": "cd packages/api && yarn upload",
+    "upload:web": "cd packages/web && yarn upload",
     "test": "lerna run test",
     "typecheck": "lerna run typecheck",
     "lint": "lerna run lint",

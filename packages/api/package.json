@@ -15,6 +15,7 @@
     "db:rollback": "yarn typeorm migration:revert",
     "seed": "ts-node src/seed.ts",
     "build": "rimraf dist && tsc --build",
+    "upload": "rsync --delete --stats -avt dist/* sanfran:/var/www/fancystack/api",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --fix --cache --ext .ts,.tsx src",
     "prettify": "prettier --write './src/**/*.ts'",
