@@ -22,7 +22,7 @@ export class AssetResolver {
   @Query(() => Asset)
   @Authorized()
   async getAssets(
-    @Args() id: string
+    @Arg("id") id: string
   ): Promise<Asset> {
     return await Asset.findOneOrFail(id)
   }

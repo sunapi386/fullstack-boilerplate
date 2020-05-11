@@ -27,6 +27,17 @@ export type Address = {
   lng?: Maybe<Scalars["Float"]>
 }
 
+export type Asset = {
+  __typename?: "Asset"
+  id: Scalars["ID"]
+  createdAt: Scalars["DateTime"]
+  updatedAt: Scalars["DateTime"]
+  author: User
+  filename: Scalars["String"]
+  contentType: Scalars["String"]
+  url: Scalars["String"]
+}
+
 export type AuthResponse = {
   __typename?: "AuthResponse"
   user: User
@@ -51,31 +62,11 @@ export type Complaint = {
   title: Scalars["String"]
 }
 
-export type CreateComplaintInput = {
+export type ComplaintInput = {
   description?: Maybe<Scalars["String"]>
   title: Scalars["String"]
   plate_serial: Scalars["String"]
   state: Scalars["String"]
-}
-
-export type CreateListingInput = {
-  title: Scalars["String"]
-  description: Scalars["String"]
-  imageUrl?: Maybe<Scalars["String"]>
-  imageAlt?: Maybe<Scalars["String"]>
-  price: Scalars["Int"]
-  beds?: Maybe<Scalars["Int"]>
-  baths?: Maybe<Scalars["Int"]>
-}
-
-export type Fileurl = {
-  __typename?: "Fileurl"
-  id: Scalars["ID"]
-  createdAt: Scalars["DateTime"]
-  updatedAt: Scalars["DateTime"]
-  author: User
-  description: Scalars["String"]
-  url: Scalars["String"]
 }
 
 export type Listing = {
@@ -95,6 +86,16 @@ export type Listing = {
   author: User
 }
 
+export type ListingInput = {
+  title: Scalars["String"]
+  description: Scalars["String"]
+  imageUrl?: Maybe<Scalars["String"]>
+  imageAlt?: Maybe<Scalars["String"]>
+  price: Scalars["Int"]
+  beds?: Maybe<Scalars["Int"]>
+  baths?: Maybe<Scalars["Int"]>
+}
+
 export type LoginInput = {
   email: Scalars["String"]
   password: Scalars["String"]
@@ -102,6 +103,7 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: "Mutation"
+  deleteAssetNumber: Scalars["Boolean"]
   createComplaint?: Maybe<Complaint>
   deleteComplaintNumber: Scalars["Boolean"]
   createListing?: Maybe<Listing>
@@ -115,8 +117,12 @@ export type Mutation = {
   resetPassword: Scalars["Boolean"]
 }
 
+export type MutationDeleteAssetNumberArgs = {
+  id: Scalars["String"]
+}
+
 export type MutationCreateComplaintArgs = {
-  data: CreateComplaintInput
+  data: ComplaintInput
 }
 
 export type MutationDeleteComplaintNumberArgs = {
@@ -124,7 +130,7 @@ export type MutationDeleteComplaintNumberArgs = {
 }
 
 export type MutationCreateListingArgs = {
-  data: CreateListingInput
+  data: ListingInput
 }
 
 export type MutationDeleteListingNumberArgs = {
@@ -171,11 +177,13 @@ export type PublicUserResponse = {
   firstName: Scalars["String"]
   lastName: Scalars["String"]
   avatarUrl?: Maybe<Scalars["String"]>
+  avatarAssetId?: Maybe<Scalars["String"]>
   phone?: Maybe<Scalars["String"]>
 }
 
 export type Query = {
   __typename?: "Query"
+  getAssets: Asset
   getComplaints: Array<Complaint>
   findComplaintsFor: Array<Complaint>
   listings: Array<Listing>
@@ -186,6 +194,10 @@ export type Query = {
   findByPlateSerialAndState: Plate
   user?: Maybe<PublicUserResponse>
   me?: Maybe<User>
+}
+
+export type QueryGetAssetsArgs = {
+  id: Scalars["String"]
 }
 
 export type QueryFindComplaintsForArgs = {
@@ -243,6 +255,7 @@ export type UpdateUserInput = {
   email?: Maybe<Scalars["String"]>
   password?: Maybe<Scalars["String"]>
   avatarUrl?: Maybe<Scalars["String"]>
+  avatarAssetId?: Maybe<Scalars["String"]>
 }
 
 export type User = {
@@ -253,6 +266,7 @@ export type User = {
   email: Scalars["String"]
   firstName: Scalars["String"]
   lastName: Scalars["String"]
+  avatar?: Maybe<Scalars["String"]>
   avatarUrl?: Maybe<Scalars["String"]>
   phone?: Maybe<Scalars["String"]>
   phoneValidated: Scalars["Boolean"]
@@ -324,7 +338,7 @@ export type UpdateUserPhotoMutation = { __typename?: "Mutation" } & {
 }
 
 export type AddNewListingMutationVariables = {
-  data: CreateListingInput
+  data: ListingInput
 }
 
 export type AddNewListingMutation = { __typename?: "Mutation" } & {
@@ -659,7 +673,7 @@ export type UpdateUserPhotoMutationOptions = ApolloReactCommon.BaseMutationOptio
   UpdateUserPhotoMutationVariables
 >
 export const AddNewListingDocument = gql`
-  mutation AddNewListing($data: CreateListingInput!) {
+  mutation AddNewListing($data: ListingInput!) {
     createListing(data: $data) {
       createdAt
       id

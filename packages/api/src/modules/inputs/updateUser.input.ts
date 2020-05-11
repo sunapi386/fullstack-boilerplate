@@ -1,6 +1,7 @@
 import { InputType, Field } from "type-graphql"
 import { IsNotEmpty } from "class-validator"
 import { User } from "../entities/user.entity"
+import { Asset } from "../entities/asset.entity"
 
 @InputType()
 export class UpdateUserInput implements Partial<User> {
@@ -22,5 +23,10 @@ export class UpdateUserInput implements Partial<User> {
 
   @IsNotEmpty()
   @Field({ nullable: true })
-  avatarUrlId?: File
+  avatarUrl?: string
+
+  // id can be provided if the asset was already created
+  @IsNotEmpty()
+  @Field({ nullable: true })
+  avatarAssetId?: string
 }

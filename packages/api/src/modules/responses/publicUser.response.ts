@@ -15,7 +15,10 @@ export class PublicUserResponse implements Partial<User> {
   lastName: string
 
   @Field({nullable: true})
-  avatar: Asset
+  avatarUrl: string
+
+  @Field({nullable: true})
+  avatarAssetId: string
 
   @Field({nullable: true})
   phone: string

@@ -30,6 +30,9 @@ export class User extends BaseEntity<User> {
   avatar: Asset
 
   @StringField({nullable: true})
+  avatarAssetId: string
+
+  @StringField({nullable: true})
   avatarUrl: string
 
  // this should be validated by sms
