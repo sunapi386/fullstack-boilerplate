@@ -1,7 +1,7 @@
 import { Inject, Service } from "typedi"
 
 import { Complaint } from "../entities/complaint.entity"
-import { CreateComplaintInput } from "../inputs/createcomplaint.input"
+import { ComplaintInput } from "../inputs/complaint.input"
 import { UserInputError } from "apollo-server-express"
 import { PlateService } from "./plate.service"
 
@@ -10,7 +10,7 @@ export class ComplaintService {
   @Inject(type => PlateService)
   plateService: PlateService
 
-  async create(currentUserId: string, data: CreateComplaintInput) {
+  async create(currentUserId: string, data: ComplaintInput) {
     const complaint = Complaint.create(data)
     complaint.authorId = currentUserId
 

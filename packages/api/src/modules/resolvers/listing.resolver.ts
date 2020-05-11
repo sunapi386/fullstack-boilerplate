@@ -14,7 +14,7 @@ import { Listing } from "../entities/listing.entity"
 import { ListingService } from "../services/listing.service"
 import { CurrentUser } from "../shared/context/currentUser"
 import { User } from "../entities/user.entity"
-import { CreateListingInput } from "../inputs/createlisting.input"
+import { ListingInput } from "../inputs/listing.input"
 import { UserInputError } from "apollo-server-express"
 import { UserRepository } from "../repositories/user.repository"
 import { generatePreSignedUrl, signedDownloadUrl } from "../../lib/s3"
@@ -49,7 +49,7 @@ export class ListingResolver implements ResolverInterface<Listing> {
   async createListing(
     // @Ctx() { req }: ResolverContext,
     @CurrentUser() currentUser: User,
-    @Arg("data") input: CreateListingInput,
+    @Arg("data") input: ListingInput,
   ): Promise<Listing> {
     const listing = await this.listingService.create(currentUser.id, input)
     if (currentUser.phoneValidated) {

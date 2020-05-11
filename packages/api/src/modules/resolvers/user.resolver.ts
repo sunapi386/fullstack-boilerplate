@@ -15,7 +15,6 @@ import { RegisterInput } from "../inputs/register.input"
 import { AuthResponse } from "../responses/auth.response"
 import { LoginInput } from "../inputs/login.input"
 import { PublicUserResponse } from "../responses/publicUser.response"
-import { generatePreSignedUrl } from "../../lib/s3"
 
 @Resolver(() => User)
 export class UserResolver {

@@ -1,7 +1,7 @@
 import { Field, InputType } from "type-graphql"
 
 @InputType()
-export class CreateReservationInput {
+export class ReservationInput {
   @Field({ nullable: true })
   description?: string
 }

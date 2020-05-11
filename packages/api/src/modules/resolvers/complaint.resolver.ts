@@ -4,7 +4,7 @@ import { Inject } from "typedi"
 import { Complaint } from "../entities/complaint.entity"
 import { ComplaintService } from "../services/complaint.service"
 import { UserInputError } from "apollo-server-express"
-import { CreateComplaintInput } from "../inputs/createcomplaint.input"
+import { ComplaintInput } from "../inputs/complaint.input"
 import { User } from "../entities/user.entity"
 import { CurrentUser } from "../shared/context/currentUser"
 
@@ -39,7 +39,7 @@ export class ComplaintResolver {
   async createComplaint(
     // @Ctx() { req }: ResolverContext,
     @CurrentUser() currentUser: User,
-    @Arg("data") input: CreateComplaintInput,
+    @Arg("data") input: ComplaintInput,
   ): Promise<Complaint> {
     return this.complaintService.create(currentUser.id, input)
   }

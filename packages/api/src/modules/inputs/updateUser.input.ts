@@ -22,5 +22,5 @@ export class UpdateUserInput implements Partial<User> {
 
   @IsNotEmpty()
   @Field({ nullable: true })
-  avatarUrl?: string
+  avatarUrlId?: File
 }

@@ -1,13 +1,13 @@
 import { Service } from "typedi"
 
 import { Plate } from "../entities/plate.entity"
-import { CreatePlateInput } from "../inputs/createplate.input"
+import { PlateInput } from "../inputs/plate.input"
 import { UserInputError } from "apollo-server-express"
 import { GetPlateArgs } from "../inputs/getplate.args"
 
 @Service()
 export class PlateService {
-  async createPlate(data: CreatePlateInput) {
+  async createPlate(data: PlateInput) {
     await this.checkPlateExists(data)
     const plate = Plate.create(data)
     plate.complaints = []

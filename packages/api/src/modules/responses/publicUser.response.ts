@@ -1,5 +1,6 @@
 import { User } from "../entities/user.entity"
 import { ObjectType, Field } from "type-graphql"
+import { Asset } from "../entities/asset.entity"
 
 // returns unauthenticated user data
 @ObjectType()
@@ -14,7 +15,7 @@ export class PublicUserResponse implements Partial<User> {
   lastName: string
 
   @Field({nullable: true})
-  avatarUrl: string
+  avatar: Asset
 
   @Field({nullable: true})
   phone: string

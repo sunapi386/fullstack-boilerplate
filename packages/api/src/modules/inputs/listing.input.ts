@@ -3,7 +3,7 @@ import { IntField, StringField } from "../shared/fields"
 import { Listing } from "../entities/listing.entity"
 
 @InputType()
-export class CreateListingInput implements Partial<Listing> {
+export class ListingInput implements Partial<Listing> {
   @StringField()
   title: string
 

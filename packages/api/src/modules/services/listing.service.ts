@@ -1,6 +1,6 @@
 import { Service } from "typedi"
 import { Listing } from "../entities/listing.entity"
-import { CreateListingInput } from "../inputs/createlisting.input"
+import { ListingInput } from "../inputs/listing.input"
 import { UserInputError } from "apollo-server-express"
 import { S3_URL } from "../../lib/config"
 
@@ -11,7 +11,7 @@ export class ListingService {
   }
 
   // returns the id
-  async create(id: string, input: CreateListingInput): Promise<Listing> {
+  async create(id: string, input: ListingInput): Promise<Listing> {
     const listing = await Listing.create(input)
     listing.authorId = id
     // todo: remove this prepend url, do it on client end by returning proper struct access url

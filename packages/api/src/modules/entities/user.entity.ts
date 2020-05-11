@@ -7,6 +7,7 @@ import { BooleanField, StringField } from "../shared/fields"
 import { Complaint } from "./complaint.entity"
 import { Listing } from "./listing.entity"
 import { Address } from "./address.entity"
+import { Asset } from "./asset.entity"
 
 @ObjectType()
 @Entity()
@@ -26,7 +27,7 @@ export class User extends BaseEntity<User> {
   lastName: string
 
   @StringField({nullable: true})
-  avatarUrl: string
+  avatar: Asset
 
  // this should be validated by sms
   @StringField({nullable: true})
@@ -58,6 +59,9 @@ export class User extends BaseEntity<User> {
   @OneToOne(() => Address, (address: Address) => address.user)
   @JoinColumn()
   address: Address;
+
+  @OneToMany(()=>Asset, asset => asset.author)
+  assets: Asset[]
 
   @BeforeInsert()
   @BeforeUpdate()
