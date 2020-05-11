@@ -10,6 +10,9 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Editable,
+  EditableInput,
+  EditablePreview,
   Flex,
   FormLabel,
   Input,
@@ -26,6 +29,44 @@ import { GoVerified } from "react-icons/all"
 // and have twilo text the number to confirm
 // also email validator
 
+export const PhoneVerifier = ({ user }: { user: MeFragment }) => {
+  if (!user.phoneValidated) {
+    return (
+      <Box>
+        Your phone {user.phone} is already verified <Box as={GoVerified} />
+        <FormLabel htmlFor="phone">Phone Number</FormLabel>
+        <Editable defaultValue="408 555 0428">
+          <EditablePreview />
+          <EditableInput id="phone" />
+        </Editable>
+      </Box>
+    )
+  }
+
+  return (
+    <Box mb="4px">
+      <FormLabel htmlFor="phone">Phone Number</FormLabel>
+      <Box fontSize="sm">SMS text message will be sent</Box>
+      <Input id="phone" placeholder="Please enter phone number" />
+      <Flex m="4px" justify="center">
+        <Button>
+          <Box as={GoVerified} /> Verify Phone
+        </Button>
+      </Flex>
+    </Box>
+  )
+}
+export const EmailVerifier = ({ user }: { user: MeFragment }) => {
+  return (
+    <Box>
+      <Box>Your email is {user.emailValidated ? "" : "not"} validated</Box>
+      <Editable defaultValue={user.email}>
+        <EditablePreview />
+        <EditableInput id="phone" />
+      </Editable>
+    </Box>
+  )
+}
 export const UserValidator = ({ user }: { user: MeFragment }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
@@ -35,7 +76,7 @@ export const UserValidator = ({ user }: { user: MeFragment }) => {
       <Button
         ref={btnRef}
         leftIcon={GoVerified}
-        variantColor="green"
+        variant="outline"
         onClick={onOpen}
       >
         Verify Account Identity
@@ -53,10 +94,8 @@ export const UserValidator = ({ user }: { user: MeFragment }) => {
               <Box>
                 You must verify your identity in order to post listings.
               </Box>
-              <Box>
-                <FormLabel htmlFor="phone">Phone Number</FormLabel>
-                <Input id="phone" placeholder="Please enter phone number" />
-              </Box>
+              <PhoneVerifier user={user} />
+              <EmailVerifier user={user} />
             </Stack>
           </DrawerBody>
 

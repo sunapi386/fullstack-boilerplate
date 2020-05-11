@@ -14,6 +14,7 @@ export class ListingService {
   async create(id: string, input: CreateListingInput): Promise<Listing> {
     const listing = await Listing.create(input)
     listing.authorId = id
+    // todo: remove this prepend url, do it on client end by returning proper struct access url
     // if the imageUrl contains a value,
     // we prepend the url to it
     if (input.imageUrl) {

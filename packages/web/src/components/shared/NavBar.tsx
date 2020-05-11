@@ -25,7 +25,6 @@ import {
   FaHome,
   FaUserCircle,
   FiCalendar,
-  IoIosLogOut,
   IoMdLogOut,
   WiMoonAltWaningCrescent2,
 } from "react-icons/all"
@@ -89,10 +88,19 @@ const DropDownMenu = ({ menubuttoncolor }: { menubuttoncolor: string }) => {
   const logout = useLogout()
   const colorAction = colorMode === "light" ? "Light" : "Dark"
   const rotation = colorMode === "light" ? "" : "rotate(180deg)"
+
+  const ProfilePictureOrGenericAvatar = () => {
+    const me = useMe()
+    if (me.avatarUrl) {
+      return <Avatar src={me.avatarUrl} size="sm" showBorder={true} />
+    }
+    return <Box as={FaUserCircle} size="32px" color={menubuttoncolor} />
+  }
+
   return (
     <Menu>
       <MenuButton p="2" _hover={{ color: "blue.500" }}>
-        <Box as={FaUserCircle} size="32px" color={menubuttoncolor} />
+        <ProfilePictureOrGenericAvatar />
       </MenuButton>
       <MenuList>
         <MenuItem>

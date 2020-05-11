@@ -14,7 +14,7 @@ import {
 import { gql, useQuery } from "@apollo/client"
 import { LoadSpinner } from "../components/shared/LoadSpinner"
 import Moment from "moment"
-import { useMe, useUser } from "../components/providers/MeProvider"
+import { useUser } from "../components/providers/MeProvider"
 import { Link } from "../components/shared/Link"
 import { useToast } from "../lib/hooks/useToast"
 

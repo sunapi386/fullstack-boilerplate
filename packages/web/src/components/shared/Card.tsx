@@ -75,7 +75,10 @@ export const UserProfileCard = ({ userId }: { userId: string }) => {
           <Flex align="center" justify="center">
             <Avatar
               onClick={() => {
-                console.log("click")
+                // todo: open up userprofilepictureuploadeditor
+                console.log(
+                  "UserProfileCard Avatar click, open userprofilepictureuploadeditor",
+                )
               }}
               name={fullName}
               src={data.user.avatarUrl}

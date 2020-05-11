@@ -6,6 +6,7 @@ import { User } from "../entities/user.entity"
 
 import { UserRepository } from "../repositories/user.repository"
 import { createAuthToken } from "../../lib/jwt"
+import { S3_URL } from "../../lib/config"
 
 @Service()
 export class UserService {
@@ -30,6 +31,10 @@ export class UserService {
     const user = await this.userRepository.findById(userId)
     if (data.email && user.email !== data.email.toLowerCase().trim()) {
       await this.checkUserExists({ email: data.email })
+    }
+    // todo: remove this
+    if (data.avatarUrl) {
+      data.avatarUrl = `${S3_URL}${data.avatarUrl}`
     }
     return user.update(data)
   }

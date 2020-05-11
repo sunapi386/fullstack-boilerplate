@@ -14,13 +14,85 @@ import {
 } from "@chakra-ui/core/dist"
 import { MdGraphicEq } from "react-icons/all"
 import Dropzone from "react-dropzone"
+import {
+  ApolloQueryResult,
+  FetchResult,
+  gql,
+  MutationFunctionOptions,
+  OperationVariables,
+  useMutation,
+} from "@apollo/client"
+import useImperativeQuery from "../shared/useImperativeQuery"
+import { REQUEST_UPLOAD_URL } from "../../pages/CreateListing"
+
+export const UPDATE_USER_PHOTO = gql`
+  mutation UpdateUserPhoto($avatarUrl: String!) {
+    updateMe(data: { avatarUrl: $avatarUrl }) {
+      avatarUrl
+    }
+  }
+`
+
+function getOnDrop(
+  userId: string,
+  getSignedUrl: (
+    variables?: OperationVariables,
+  ) => Promise<ApolloQueryResult<any>>,
+  uploadPhoto: (options?: MutationFunctionOptions) => Promise<FetchResult<any>>,
+) {
+  return async (acceptedFiles: File[]) => {
+    const file = acceptedFiles[0]
+    console.log("first new photo", acceptedFiles)
+    console.log(acceptedFiles)
+    console.log("process (uploading)", file)
+    const fileKey = userId + file.lastModified + file.name
+    const { data } = await getSignedUrl({
+      filename: fileKey,
+      contentType: file.type,
+    })
+    console.log("getSignedUrl data", data)
+    const destination = data.generateListingAssetUploadUrl
+    console.log("destination", destination)
+
+    // https://pqina.nl/filepond/docs/patterns/api/server/#advanced
+
+    // fieldName is the name of the input field
+    // file is the actual file object to send
+    const request = new XMLHttpRequest()
+    request.open("PUT", destination)
+    request.setRequestHeader("Content-Type", file.type)
+    request.setRequestHeader(
+      "Content-Disposition",
+      `inline; filename=${file.name}`,
+    )
+    request.upload.onprogress = e => {
+      // progress(e.lengthComputable, e.loaded, e.total)
+      console.log(e.lengthComputable, e.loaded, e.total)
+    }
+
+    request.onload = async () => {
+      if (request.status >= 200 && request.status < 300) {
+        // the load method accepts either a string (id) or an object
+        console.log("avatarUrl key", fileKey)
+        await uploadPhoto({
+          variables: { avatarUrl: fileKey },
+        }).then(() => {
+          window.location.reload()
+        })
+      } else {
+        // Can call the error method if something is wrong, should exit after
+        console.log("we failed")
+      }
+    }
+    request.send(file)
+  }
+}
 
 export const UserProfilePictureUploadEditor = ({
   user,
 }: {
   user: MeFragment
 }) => {
-  const imageUrl: string = user.avatarUrl ? user.avatarUrl : ""
   const { colorMode } = useColorMode()
   const white = [255, 255, 255, 0.8] // RGBA
   const black = [0, 0, 0, 0.6]
@@ -34,6 +106,8 @@ export const UserProfilePictureUploadEditor = ({
   const [zoom, setZoom] = useState<number>(1)
   const [rotate, setRotate] = useState<number>(0)
   const imageRef = useRef<AvatarEditor>(null)
+  const getSignedUrl = useImperativeQuery(REQUEST_UPLOAD_URL)
+  const [uploadPhoto] = useMutation(UPDATE_USER_PHOTO)
 
   const onUploadNewPhoto = () => {
     console.log("clicked uploadNewPhoto")
@@ -45,16 +119,49 @@ export const UserProfilePictureUploadEditor = ({
       return
     }
     const canvas = imageRef.current.getImage()
-    const medQuality = canvas.toDataURL("image/jpeg", 0.5)
+
+    // Uncaught DOMException: Failed to execute 'toDataURL' on 'HTMLCanvasElement': Tainted canvases may not be
+    // exported.
+    // const medQuality = canvas.toDataURL("image/jpeg", 0.5)
+
     // upload image
     console.log("clicked saved", canvas)
-    console.log("image", medQuality)
+    // console.log("image", medQuality)
   }
   const onClickCancel = () => {
     console.log("clicked cancel")
   }
 
   const size = 250
+
+  if (!user.avatarUrl) {
+    return (
+      <Stack>
+        <Flex justify="center" onClick={onUploadNewPhoto}>
+          <Dropzone
+            multiple={false}
+            onDrop={getOnDrop(user.id, getSignedUrl, uploadPhoto)}
+          >
+            {({ getRootProps, getInputProps }) => (
+              <Flex {...getRootProps()}>
+                <input {...getInputProps()} />
+                <Flex
+                  as={Button}
+                  height="120px"
+                  textAlign="justify"
+                  justify="center"
+                >
+                  Drop profile photo here or select one
+                </Flex>
+              </Flex>
+            )}
+          </Dropzone>
+        </Flex>
+      </Stack>
+    )
+  }
+  const imageUrl: string = user.avatarUrl
+
   return (
     <Stack>
       <Flex align="center" justify="center">
@@ -116,17 +223,17 @@ export const UserProfilePictureUploadEditor = ({
         </SliderThumb>
       </Slider>
 
-      <Button bg="blue.500" type="submit" onClick={onSave}>
-        Save
+      <Button isDisabled={true} bg="blue.500" type="submit" onClick={onSave}>
+        Save (not available, work in progress)
       </Button>
-      <Button variant="outline" onClick={onClickCancel}>
+      <Button isDisabled={true} variant="outline" onClick={onClickCancel}>
         Cancel
       </Button>
 
       <Flex justify="center" onClick={onUploadNewPhoto}>
         <Dropzone
           multiple={false}
-          onDrop={acceptedFiles => console.log(acceptedFiles)}
+          onDrop={getOnDrop(user.id, getSignedUrl, uploadPhoto)}
         >
           {({ getRootProps, getInputProps }) => (
             <Flex {...getRootProps()}>

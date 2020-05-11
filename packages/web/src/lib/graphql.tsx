@@ -263,7 +263,14 @@ export type User = {
 
 export type MeFragment = { __typename?: "User" } & Pick<
   User,
-  "id" | "firstName" | "lastName" | "email" | "avatarUrl"
+  | "id"
+  | "firstName"
+  | "lastName"
+  | "avatarUrl"
+  | "email"
+  | "emailValidated"
+  | "phone"
+  | "phoneValidated"
 >
 
 export type MeQueryVariables = {}
@@ -306,6 +313,14 @@ export type MyListingsQuery = { __typename?: "Query" } & {
       >
     }
   >
+}
+
+export type UpdateUserPhotoMutationVariables = {
+  avatarUrl: Scalars["String"]
+}
+
+export type UpdateUserPhotoMutation = { __typename?: "Mutation" } & {
+  updateMe?: Maybe<{ __typename?: "User" } & Pick<User, "avatarUrl">>
 }
 
 export type AddNewListingMutationVariables = {
@@ -419,8 +434,11 @@ export const MeFragmentDoc = gql`
     id
     firstName
     lastName
-    email
     avatarUrl
+    email
+    emailValidated
+    phone
+    phoneValidated
   }
 `
 export const MeDocument = gql`
@@ -593,6 +611,52 @@ export type MyListingsLazyQueryHookResult = ReturnType<
 export type MyListingsQueryResult = ApolloReactCommon.QueryResult<
   MyListingsQuery,
   MyListingsQueryVariables
+>
+export const UpdateUserPhotoDocument = gql`
+  mutation UpdateUserPhoto($avatarUrl: String!) {
+    updateMe(data: { avatarUrl: $avatarUrl }) {
+      avatarUrl
+    }
+  }
+`
+
+/**
+ * __useUpdateUserPhotoMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserPhotoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserPhotoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserPhotoMutation, { data, loading, error }] = useUpdateUserPhotoMutation({
+ *   variables: {
+ *      avatarUrl: // value for 'avatarUrl'
+ *   },
+ * });
+ */
+export function useUpdateUserPhotoMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    UpdateUserPhotoMutation,
+    UpdateUserPhotoMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    UpdateUserPhotoMutation,
+    UpdateUserPhotoMutationVariables
+  >(UpdateUserPhotoDocument, baseOptions)
+}
+export type UpdateUserPhotoMutationHookResult = ReturnType<
+  typeof useUpdateUserPhotoMutation
+>
+export type UpdateUserPhotoMutationResult = ApolloReactCommon.MutationResult<
+  UpdateUserPhotoMutation
+>
+export type UpdateUserPhotoMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  UpdateUserPhotoMutation,
+  UpdateUserPhotoMutationVariables
 >
 export const AddNewListingDocument = gql`
   mutation AddNewListing($data: CreateListingInput!) {

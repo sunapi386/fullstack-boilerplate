@@ -8,8 +8,11 @@ export const ME_FRAGMENT = gql`
     id
     firstName
     lastName
-    email
     avatarUrl
+    email
+    emailValidated
+    phone
+    phoneValidated
   }
 `
 
