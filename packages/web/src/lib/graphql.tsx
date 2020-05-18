@@ -62,11 +62,29 @@ export type Complaint = {
   title: Scalars["String"]
 }
 
-export type ComplaintInput = {
+export type CreateAddressInput = {
+  unit?: Maybe<Scalars["String"]>
+  street: Scalars["String"]
+  city: Scalars["String"]
+  country: Scalars["String"]
+  zipcode: Scalars["String"]
+}
+
+export type CreateComplaintInput = {
   description?: Maybe<Scalars["String"]>
   title: Scalars["String"]
   plate_serial: Scalars["String"]
   state: Scalars["String"]
+}
+
+export type CreateListingInput = {
+  title: Scalars["String"]
+  description: Scalars["String"]
+  imageUrl?: Maybe<Scalars["String"]>
+  imageAlt?: Maybe<Scalars["String"]>
+  price: Scalars["Int"]
+  beds?: Maybe<Scalars["Int"]>
+  baths?: Maybe<Scalars["Int"]>
 }
 
 export type Listing = {
@@ -86,16 +104,6 @@ export type Listing = {
   author: User
 }
 
-export type ListingInput = {
-  title: Scalars["String"]
-  description: Scalars["String"]
-  imageUrl?: Maybe<Scalars["String"]>
-  imageAlt?: Maybe<Scalars["String"]>
-  price: Scalars["Int"]
-  beds?: Maybe<Scalars["Int"]>
-  baths?: Maybe<Scalars["Int"]>
-}
-
 export type LoginInput = {
   email: Scalars["String"]
   password: Scalars["String"]
@@ -103,6 +111,9 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: "Mutation"
+  createAddress: Address
+  updateAddress: Address
+  destroyAddress: Scalars["Boolean"]
   deleteAssetNumber: Scalars["Boolean"]
   createComplaint?: Maybe<Complaint>
   deleteComplaintNumber: Scalars["Boolean"]
@@ -117,12 +128,25 @@ export type Mutation = {
   resetPassword: Scalars["Boolean"]
 }
 
+export type MutationCreateAddressArgs = {
+  data: CreateAddressInput
+}
+
+export type MutationUpdateAddressArgs = {
+  data: UpdateAddressInput
+  addressId: Scalars["String"]
+}
+
+export type MutationDestroyAddressArgs = {
+  addressId: Scalars["String"]
+}
+
 export type MutationDeleteAssetNumberArgs = {
   id: Scalars["String"]
 }
 
 export type MutationCreateComplaintArgs = {
-  data: ComplaintInput
+  data: CreateComplaintInput
 }
 
 export type MutationDeleteComplaintNumberArgs = {
@@ -130,7 +154,7 @@ export type MutationDeleteComplaintNumberArgs = {
 }
 
 export type MutationCreateListingArgs = {
-  data: ListingInput
+  data: CreateListingInput
 }
 
 export type MutationDeleteListingNumberArgs = {
@@ -183,6 +207,7 @@ export type PublicUserResponse = {
 
 export type Query = {
   __typename?: "Query"
+  getAddresses: Array<Address>
   getAssets: Asset
   getComplaints: Array<Complaint>
   findComplaintsFor: Array<Complaint>
@@ -249,6 +274,14 @@ export type ResetPasswordInput = {
   token: Scalars["String"]
 }
 
+export type UpdateAddressInput = {
+  unit?: Maybe<Scalars["String"]>
+  street?: Maybe<Scalars["String"]>
+  city?: Maybe<Scalars["String"]>
+  country?: Maybe<Scalars["String"]>
+  zipcode?: Maybe<Scalars["String"]>
+}
+
 export type UpdateUserInput = {
   firstName?: Maybe<Scalars["String"]>
   lastName?: Maybe<Scalars["String"]>
@@ -267,6 +300,7 @@ export type User = {
   firstName: Scalars["String"]
   lastName: Scalars["String"]
   avatar?: Maybe<Scalars["String"]>
+  avatarAssetId?: Maybe<Scalars["String"]>
   avatarUrl?: Maybe<Scalars["String"]>
   phone?: Maybe<Scalars["String"]>
   phoneValidated: Scalars["Boolean"]
@@ -338,7 +372,7 @@ export type UpdateUserPhotoMutation = { __typename?: "Mutation" } & {
 }
 
 export type AddNewListingMutationVariables = {
-  data: ListingInput
+  data: CreateListingInput
 }
 
 export type AddNewListingMutation = { __typename?: "Mutation" } & {
@@ -673,7 +707,7 @@ export type UpdateUserPhotoMutationOptions = ApolloReactCommon.BaseMutationOptio
   UpdateUserPhotoMutationVariables
 >
 export const AddNewListingDocument = gql`
-  mutation AddNewListing($data: ListingInput!) {
+  mutation AddNewListing($data: CreateListingInput!) {
     createListing(data: $data) {
       createdAt
       id

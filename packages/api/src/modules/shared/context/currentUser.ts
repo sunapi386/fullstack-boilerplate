@@ -1,7 +1,7 @@
 import { createParamDecorator } from "type-graphql"
 import { AuthenticationError } from "apollo-server-express"
 import { ResolverContext } from "./resolver"
-import { User } from "../../entities/user.entity"
+import { User } from "../../user/user.entity"
 
 export function CurrentUser() {
   return createParamDecorator<ResolverContext>(async ({ context }) => {

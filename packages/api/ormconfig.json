@@ -7,7 +7,7 @@
     "database": "fancystackdb",
     "synchronize": false,
     "logging": true,
-    "entities": ["src/modules/entities/*.entity.ts"],
+    "entities": ["src/modules/**/*.entity.ts"],
     "migrations": ["src/db/migrations/*.ts"],
     "cli": { "migrationsDir": "src/db/migrations" }
   },
@@ -17,8 +17,8 @@
     "synchronize": false,
     "logging": true,
     "entities": [
-      "packages/api/dist/modules/entities/*.entity.js",
-      "modules/entities/*.entity.js"
+      "packages/api/dist/modules/**/*.entity.js",
+      "modules/**/*.entity.js"
     ],
     "migrations": [
       "packages/api/dist/db/migrations/*.js",

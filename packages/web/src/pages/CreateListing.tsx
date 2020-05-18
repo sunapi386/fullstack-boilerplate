@@ -6,7 +6,7 @@ import { Form } from "../components/shared/Form"
 import { Input } from "../components/shared/Input"
 import { FormError } from "../components/shared/FormError"
 import { useForm } from "../lib/hooks/useForm"
-import { ListingInput } from "../lib/graphql"
+import { CreateListingInput } from "../lib/graphql"
 import * as Yup from "yup"
 import { gql, useMutation } from "@apollo/client"
 import { Upload } from "../components/shared/Upload"
@@ -17,7 +17,7 @@ import { Textarea } from "../components/shared/Textarea"
 // A page to create new listing
 
 export const CREATE_LISTING = gql`
-  mutation AddNewListing($data: ListingInput!) {
+  mutation AddNewListing($data: CreateListingInput!) {
     createListing(data: $data) {
       createdAt
       id
@@ -25,7 +25,7 @@ export const CREATE_LISTING = gql`
   }
 `
 
-const ListingSchema = Yup.object().shape<ListingInput>({
+const ListingSchema = Yup.object().shape<CreateListingInput>({
   imageUrl: Yup.string().required("Required"),
   title: Yup.string().required("Required"),
   description: Yup.string().required("Required"),
@@ -53,9 +53,9 @@ export const CreateListing: FC<RouteComponentProps> = () => {
   const getSignedUrl = useImperativeQuery(REQUEST_UPLOAD_URL)
 
   const [createListing] = useMutation(CREATE_LISTING)
-  const form = useForm<ListingInput>({ validationSchema: ListingSchema })
+  const form = useForm<CreateListingInput>({ validationSchema: ListingSchema })
 
-  const onSubmit = async (newListingData: ListingInput) => {
+  const onSubmit = async (newListingData: CreateListingInput) => {
     const res = await createListing({
       variables: { data: newListingData },
     })
