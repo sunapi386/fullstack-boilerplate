@@ -45,7 +45,7 @@
     "@types/react-daterange-picker": "^2.0.4",
     "@types/react-dropzone": "^5.1.0",
     "@types/react-filepond": "^5.0.5",
-    "dayjs": "1.8.26",
+    "dayjs": "1.8.27",
     "emotion-theming": "10.0.27",
     "filepond": "^4.13.5",
     "filepond-plugin-image-exif-orientation": "^1.0.8",
