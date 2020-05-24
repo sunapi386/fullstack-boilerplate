@@ -6,11 +6,14 @@ import { User } from "./user.entity"
 
 import { UserRepository } from "./user.repository"
 import { createAuthToken } from "../../lib/jwt"
+import { S3Service } from "../s3/s3.service"
 
 @Service()
 export class UserService {
   @Inject(() => UserRepository)
   userRepository: UserRepository
+  @Inject(() => S3Service)
+  s3Service: S3Service
 
   async login(data: { email: string; password: string }): Promise<User> {
     const user = await this.userRepository.findByEmail(data.email)
@@ -30,6 +33,10 @@ export class UserService {
     const user = await this.userRepository.findById(userId)
     if (data.email && user.email !== data.email.toLowerCase().trim()) {
       await this.checkUserExists({ email: data.email })
+    }
+    if (data.avatarKey === "" && user.avatarKey) {
+      // the avatar was deleted, remove from s3
+      await this.s3Service.destroy(user.avatarKey)
     }
     return user.update(data)
   }

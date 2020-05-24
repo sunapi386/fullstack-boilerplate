@@ -5,7 +5,6 @@ import { Avatar, Button, Checkbox, Slider } from "@chakra-ui/core"
 import {
   Box,
   Flex,
-  Heading,
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
@@ -35,9 +34,6 @@ export const UserProfilePictureUploadEditor = ({
   const black = [0, 0, 0, 0.6]
   const color = colorMode === "dark" ? black : white
 
-  // https://github.com/react-dropzone/react-dropzone
-  // https://github.com/mosch/react-avatar-editor
-
   // make another component just for a popup modal viewer
   const [allowZoomOut, setCheckedZoom] = useState<boolean>(false)
   const [zoom, setZoom] = useState<number>(1)
@@ -45,13 +41,14 @@ export const UserProfilePictureUploadEditor = ({
   const imageRef = useRef<AvatarEditor>(null)
   const [updateUserAvatar] = useUpdateUserAvatarMutation()
 
-  const onUploadNewPhoto = () => {
-    console.log("clicked uploadNewPhoto")
-  }
-
   const handleUpdateImage = async (avatarKey: string) => {
     return updateUserAvatar({
       variables: { data: { avatarKey } },
+    })
+  }
+  const onDeletePhoto = async () => {
+    return updateUserAvatar({
+      variables: { data: { avatarKey: "" } },
     })
   }
 
@@ -70,16 +67,13 @@ export const UserProfilePictureUploadEditor = ({
     console.log("clicked saved", canvas)
     // console.log("image", medQuality)
   }
-  const onClickCancel = () => {
-    console.log("clicked cancel")
-  }
 
   const size = 250
 
   if (!user.avatarUrl) {
     return (
       <Stack>
-        <Flex justify="center" onClick={onUploadNewPhoto}>
+        <Flex justify="center">
           <ImageUploader
             onSubmit={handleUpdateImage}
             path={`user/avatar/${user.id}`}
@@ -95,13 +89,10 @@ export const UserProfilePictureUploadEditor = ({
       </Stack>
     )
   }
-  const imageUrl: string = user.avatarUrl
 
+  const imageUrl: string = user.avatarUrl
   return (
     <Stack>
-      <Flex align="center" justify="center">
-        <Heading fontSize="2xl"> Edit Photo</Heading>
-      </Flex>
       <Flex align="center" justify="center">
         <AvatarEditor
           ref={imageRef}
@@ -159,10 +150,10 @@ export const UserProfilePictureUploadEditor = ({
       </Slider>
 
       <Button isDisabled={true} bg="blue.500" type="submit" onClick={onSave}>
-        Save (not available, work in progress)
+        Save (work in progress)
       </Button>
-      <Button isDisabled={true} variant="outline" onClick={onClickCancel}>
-        Cancel
+      <Button variantColor="red" onClick={onDeletePhoto}>
+        Delete Photo!
       </Button>
     </Stack>
   )

@@ -1,5 +1,10 @@
 import React from "react"
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Avatar,
   Box,
   Flex,
@@ -10,6 +15,7 @@ import {
 import { useQuery } from "@apollo/client"
 import { LoadSpinner } from "./LoadSpinner"
 import { PUBLIC_USER } from "../user/UserDetailsComponent"
+import { UserProfilePictureUploadEditor } from "../user/UserProfilePictureUploadEditor"
 
 interface CardProps {
   title: string
@@ -57,17 +63,25 @@ const PeopleSmallBox = ({
 
 export const UserProfileCard = ({ userId }: { userId: string }) => {
   const result = useQuery(PUBLIC_USER, { variables: { id: userId } })
+
+  // alertdialog
+  const [isOpen, setIsOpen] = React.useState(false)
+  const onClose = () => setIsOpen(false)
+  const cancelRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
+
   const { loading, data } = result
   if (loading) {
     return <LoadSpinner />
   }
-  const fullName = `${data.user.firstName} ${data.user.lastName}`
+  const user = data.user
+  const fullName = `${user.firstName} ${user.lastName}`
   const Phone =
     data.user.phone !== undefined ? (
       <PeopleSmallBox title={"Phone"} text={data.user.phone} />
     ) : (
       ""
     )
+
   return (
     <Box m={4} justifyContent="center">
       <Card title="">
@@ -75,15 +89,33 @@ export const UserProfileCard = ({ userId }: { userId: string }) => {
           <Flex align="center" justify="center">
             <Avatar
               onClick={() => {
-                // todo: open up userprofilepictureuploadeditor
                 console.log(
                   "UserProfileCard Avatar click, open userprofilepictureuploadeditor",
                 )
+                setIsOpen(true)
               }}
               name={fullName}
               src={data.user.avatarUrl}
               size="xl"
+              mb="4"
             />
+
+            <AlertDialog
+              isOpen={isOpen}
+              leastDestructiveRef={cancelRef}
+              onClose={onClose}
+            >
+              <AlertDialogOverlay />
+              <AlertDialogContent>
+                <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                  Edit Photo
+                </AlertDialogHeader>
+
+                <AlertDialogBody>
+                  <UserProfilePictureUploadEditor user={user} />
+                </AlertDialogBody>
+              </AlertDialogContent>
+            </AlertDialog>
           </Flex>
           <PeopleSmallBox title={fullName} text={data.user.email} />
           {Phone}
