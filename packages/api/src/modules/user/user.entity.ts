@@ -1,4 +1,11 @@
-import { BeforeInsert, BeforeUpdate, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm"
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+} from "typeorm"
 import { Field, ObjectType } from "type-graphql"
 import bcrypt from "bcryptjs"
 
@@ -7,7 +14,7 @@ import { BooleanField, StringField } from "../shared/fields"
 import { Complaint } from "../complaint/complaint.entity"
 import { Listing } from "../listing/listing.entity"
 import { Address } from "../address/address.entity"
-import { Asset } from "../asset/asset.entity"
+import { S3_URL } from "../../lib/config"
 
 @ObjectType()
 @Entity()
@@ -26,22 +33,20 @@ export class User extends BaseEntity<User> {
   @StringField()
   lastName: string
 
-  @StringField({nullable: true})
-  avatar: Asset
+  @StringField({ graphql: false, nullable: true })
+  avatarKey: string | null
 
-  @StringField({nullable: true})
-  avatarUrl: string
-
- // this should be validated by sms
-  @StringField({nullable: true})
+  // this should be validated by sms
+  @StringField({ nullable: true })
   phone: string
 
-  @BooleanField({default: false})
+  @BooleanField({ default: false })
   phoneValidated: boolean
 
-  @BooleanField({default: false})
+  @BooleanField({ default: false })
   emailValidated: boolean
 
+  // todo rename complaint to reviews and attach it to the listing entity instead of user
   // user may have written many complaints
   @Field(type => [Complaint])
   @OneToMany(
@@ -59,16 +64,25 @@ export class User extends BaseEntity<User> {
   )
   listings: Listing[]
 
-  @OneToOne(() => Address, (address: Address) => address.user)
+  @OneToOne(
+    () => Address,
+    (address: Address) => address.user,
+  )
   @JoinColumn()
-  address: Address;
+  address: Address
 
-  @OneToMany(()=>Asset, asset => asset.author)
-  assets: Asset[]
-
+  // HOOKS
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10)
+  }
+
+  // HELPERS
+  @Field(() => String, { nullable: true })
+  avatarUrl() {
+    if (this.avatarKey) {
+      return S3_URL + this.avatarKey
+    }
   }
 }

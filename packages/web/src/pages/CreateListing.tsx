@@ -6,11 +6,10 @@ import { Form } from "../components/shared/Form"
 import { Input } from "../components/shared/Input"
 import { FormError } from "../components/shared/FormError"
 import { useForm } from "../lib/hooks/useForm"
-import { CreateListingInput } from "../lib/graphql"
+import { CreateListingInput, useGetSignedUrlMutation } from "../lib/graphql"
 import * as Yup from "yup"
 import { gql, useMutation } from "@apollo/client"
 import { Upload } from "../components/shared/Upload"
-import useImperativeQuery from "../components/shared/useImperativeQuery"
 import { useMe } from "../components/providers/MeProvider"
 import { Textarea } from "../components/shared/Textarea"
 
@@ -39,18 +38,10 @@ const ListingSchema = Yup.object().shape<CreateListingInput>({
     .notRequired()
     .min(0),
 })
-export const REQUEST_UPLOAD_URL = gql`
-  query RequestUploadUrl($filename: String!, $contentType: String!) {
-    generateListingAssetUploadUrl(
-      filename: $filename
-      contentType: $contentType
-    )
-  }
-`
 
 export const CreateListing: FC<RouteComponentProps> = () => {
   const me = useMe()
-  const getSignedUrl = useImperativeQuery(REQUEST_UPLOAD_URL)
+  const [getSignedS3Url] = useGetSignedUrlMutation()
 
   const [createListing] = useMutation(CREATE_LISTING)
   const form = useForm<CreateListingInput>({ validationSchema: ListingSchema })
@@ -116,11 +107,19 @@ export const CreateListing: FC<RouteComponentProps> = () => {
                   ) => {
                     console.log("process (uploading)", file)
                     const fileKey = me.id + file.lastModified + file.name
-                    const { data } = await getSignedUrl({
-                      filename: fileKey,
-                      contentType: file.type,
+                    const { data } = await getSignedS3Url({
+                      variables: {
+                        data: {
+                          key: fileKey,
+                          fileType: file.type,
+                        },
+                      },
                     })
-                    const destination = data.generateListingAssetUploadUrl
+                    if (!data || !data.getSignedS3Url) {
+                      console.log("failed to get s3 url")
+                      return
+                    }
+                    const destination = data.getSignedS3Url
                     console.log("destination", destination)
 
                     // https://pqina.nl/filepond/docs/patterns/api/server/#advanced

@@ -31,10 +31,6 @@ export class UserService {
     if (data.email && user.email !== data.email.toLowerCase().trim()) {
       await this.checkUserExists({ email: data.email })
     }
-    // // todo: remove this
-    // if (data.avatarUrl) {
-    //   data.avatarUrl = `${S3_URL}${data.avatarUrl}`
-    // }
     return user.update(data)
   }
 

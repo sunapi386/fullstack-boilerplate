@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react"
-import { MeFragment } from "../../lib/graphql"
+import { MeFragment, useUpdateUserAvatarMutation } from "../../lib/graphql"
 import AvatarEditor from "react-avatar-editor"
-import { Button, Checkbox, Slider } from "@chakra-ui/core"
+import { Avatar, Button, Checkbox, Slider } from "@chakra-ui/core"
 import {
   Box,
   Flex,
@@ -13,80 +13,17 @@ import {
   useColorMode,
 } from "@chakra-ui/core/dist"
 import { MdGraphicEq } from "react-icons/all"
-import Dropzone from "react-dropzone"
-import {
-  ApolloQueryResult,
-  FetchResult,
-  gql,
-  MutationFunctionOptions,
-  OperationVariables,
-  useMutation,
-} from "@apollo/client"
-import useImperativeQuery from "../shared/useImperativeQuery"
-import { REQUEST_UPLOAD_URL } from "../../pages/CreateListing"
+import { gql } from "@apollo/client"
+import { ImageUploader } from "../ImageUploader"
 
-export const UPDATE_USER_PHOTO = gql`
-  mutation UpdateUserPhoto($avatarUrl: String!) {
-    updateMe(data: { avatarUrl: $avatarUrl }) {
+export const UPDATE_USER_AVATAR = gql`
+  mutation UpdateUserAvatar($data: UpdateUserInput!) {
+    updateMe(data: $data) {
+      id
       avatarUrl
     }
   }
 `
-
-function getOnDrop(
-  userId: string,
-  getSignedUrl: (
-    variables?: OperationVariables,
-  ) => Promise<ApolloQueryResult<any>>,
-  uploadPhoto: (options?: MutationFunctionOptions) => Promise<FetchResult<any>>,
-) {
-  return async (acceptedFiles: File[]) => {
-    const file = acceptedFiles[0]
-    console.log("first new photo", acceptedFiles)
-    console.log(acceptedFiles)
-    console.log("process (uploading)", file)
-    const fileKey = userId + file.lastModified + file.name
-    const { data } = await getSignedUrl({
-      filename: fileKey,
-      contentType: file.type,
-    })
-    console.log("getSignedUrl data", data)
-    const destination = data.generateListingAssetUploadUrl
-    console.log("destination", destination)
-
-    // https://pqina.nl/filepond/docs/patterns/api/server/#advanced
-
-    // fieldName is the name of the input field
-    // file is the actual file object to send
-    const request = new XMLHttpRequest()
-    request.open("PUT", destination)
-    request.setRequestHeader("Content-Type", file.type)
-    request.setRequestHeader(
-      "Content-Disposition",
-      `inline; filename=${file.name}`,
-    )
-    request.upload.onprogress = e => {
-      // progress(e.lengthComputable, e.loaded, e.total)
-      console.log(e.lengthComputable, e.loaded, e.total)
-    }
-
-    request.onload = async () => {
-      if (request.status >= 200 && request.status < 300) {
-        // the load method accepts either a string (id) or an object
-        console.log("avatarUrl key", fileKey)
-        await uploadPhoto({
-          variables: { avatarUrl: fileKey },
-        }).then(() => {
-          window.location.reload()
-        })
-      } else {
-        // Can call the error method if something is wrong, should exit after
-        console.log("we failed")
-      }
-    }
-    request.send(file)
-  }
-}
 
 export const UserProfilePictureUploadEditor = ({
   user,
@@ -106,11 +43,16 @@ export const UserProfilePictureUploadEditor = ({
   const [zoom, setZoom] = useState<number>(1)
   const [rotate, setRotate] = useState<number>(0)
   const imageRef = useRef<AvatarEditor>(null)
-  const getSignedUrl = useImperativeQuery(REQUEST_UPLOAD_URL)
-  const [uploadPhoto] = useMutation(UPDATE_USER_PHOTO)
+  const [updateUserAvatar] = useUpdateUserAvatarMutation()
 
   const onUploadNewPhoto = () => {
     console.log("clicked uploadNewPhoto")
+  }
+
+  const handleUpdateImage = async (avatarKey: string) => {
+    return updateUserAvatar({
+      variables: { data: { avatarKey } },
+    })
   }
 
   const onSave = () => {
@@ -138,24 +80,17 @@ export const UserProfilePictureUploadEditor = ({
     return (
       <Stack>
         <Flex justify="center" onClick={onUploadNewPhoto}>
-          <Dropzone
-            multiple={false}
-            onDrop={getOnDrop(user.id, getSignedUrl, uploadPhoto)}
+          <ImageUploader
+            onSubmit={handleUpdateImage}
+            path={`user/avatar/${user.id}`}
           >
-            {({ getRootProps, getInputProps }) => (
-              <Flex {...getRootProps()}>
-                <input {...getInputProps()} />
-                <Flex
-                  as={Button}
-                  height="120px"
-                  textAlign="justify"
-                  justify="center"
-                >
-                  Drop profile photo here or select one
-                </Flex>
-              </Flex>
-            )}
-          </Dropzone>
+            <Avatar
+              size="xl"
+              name={user.firstName + " " + user.lastName}
+              src={user.avatarUrl || undefined}
+              mb="4"
+            />
+          </ImageUploader>
         </Flex>
       </Stack>
     )
@@ -229,27 +164,6 @@ export const UserProfilePictureUploadEditor = ({
       <Button isDisabled={true} variant="outline" onClick={onClickCancel}>
         Cancel
       </Button>
-
-      <Flex justify="center" onClick={onUploadNewPhoto}>
-        <Dropzone
-          multiple={false}
-          onDrop={getOnDrop(user.id, getSignedUrl, uploadPhoto)}
-        >
-          {({ getRootProps, getInputProps }) => (
-            <Flex {...getRootProps()}>
-              <input {...getInputProps()} />
-              <Flex
-                as={Button}
-                height="120px"
-                textAlign="justify"
-                justify="center"
-              >
-                Drag 'n' drop a new photo here, or click to select
-              </Flex>
-            </Flex>
-          )}
-        </Dropzone>
-      </Flex>
     </Stack>
   )
 }

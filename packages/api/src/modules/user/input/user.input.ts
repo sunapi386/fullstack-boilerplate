@@ -20,12 +20,39 @@ export class UpdateUserInput implements Partial<User> {
   @Field({ nullable: true })
   password?: string
 
-  @IsNotEmpty()
   @Field({ nullable: true })
-  avatarUrl?: string
+  avatarKey?: string
+}
 
-  // id can be provided if the asset was already created
-  @IsNotEmpty()
-  @Field({ nullable: true })
-  avatarAssetId?: string
+@InputType()
+export class ResetPasswordInput implements Partial<User> {
+  @Field()
+  password: string
+
+  @Field()
+  token: string
+}
+
+@InputType()
+export class RegisterInput implements Partial<User> {
+  @Field()
+  firstName: string
+
+  @Field()
+  lastName: string
+
+  @Field()
+  email: string
+
+  @Field()
+  password: string
+}
+
+@InputType()
+export class LoginInput implements Partial<User> {
+  @Field()
+  email: string
+
+  @Field()
+  password: string
 }

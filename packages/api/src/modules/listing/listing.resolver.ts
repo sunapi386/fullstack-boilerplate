@@ -62,24 +62,6 @@ export class ListingResolver implements ResolverInterface<Listing> {
     return listing
   }
 
-  @Authorized()
-  @Query(() => String)
-  async generateListingAssetUploadUrl(
-    @Arg("filename") filename: string,
-    @Arg("contentType") contentType: string,
-  ): Promise<string> {
-    return generatePreSignedUrl(filename, contentType)
-  }
-
-  @Authorized()
-  @Query(() => String)
-  async signedDownloadUrl(
-    @CurrentUser() currentUser: User,
-    @Arg("filename") filename: string,
-  ): Promise<string> {
-    return await signedDownloadUrl(filename)
-  }
-
   @Authorized("ADMIN") // only admin can delete stuff
   @Mutation(() => Boolean)
   async deleteListingNumber(@Arg("id") id: string): Promise<boolean> {

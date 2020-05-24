@@ -22,12 +22,7 @@ export const Upload = ({ label, ...props }: Props) => {
   return (
     <FormControl isInvalid={!!fieldError} mb={4} isRequired={props.isRequired}>
       <FormLabel htmlFor={props.name}>{label}</FormLabel>
-      <Controller
-        as={FilePond}
-        name={props.name}
-        control={control}
-        {...props}
-      />
+      <Controller as={FilePond} control={control} {...props} />
       <InputError error={fieldError} />
     </FormControl>
   )

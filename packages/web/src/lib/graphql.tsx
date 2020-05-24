@@ -27,17 +27,6 @@ export type Address = {
   lng?: Maybe<Scalars["Float"]>
 }
 
-export type Asset = {
-  __typename?: "Asset"
-  id: Scalars["ID"]
-  createdAt: Scalars["DateTime"]
-  updatedAt: Scalars["DateTime"]
-  author: User
-  filename: Scalars["String"]
-  contentType: Scalars["String"]
-  url: Scalars["String"]
-}
-
 export type AuthResponse = {
   __typename?: "AuthResponse"
   user: User
@@ -114,12 +103,12 @@ export type Mutation = {
   createAddress: Address
   updateAddress: Address
   destroyAddress: Scalars["Boolean"]
-  deleteAssetNumber: Scalars["Boolean"]
   createComplaint?: Maybe<Complaint>
   deleteComplaintNumber: Scalars["Boolean"]
   createListing?: Maybe<Listing>
   deleteListingNumber: Scalars["Boolean"]
   deletePlateNumber: Scalars["Boolean"]
+  getSignedS3Url?: Maybe<Scalars["String"]>
   updateMe?: Maybe<User>
   login: AuthResponse
   register: AuthResponse
@@ -141,10 +130,6 @@ export type MutationDestroyAddressArgs = {
   addressId: Scalars["String"]
 }
 
-export type MutationDeleteAssetNumberArgs = {
-  id: Scalars["String"]
-}
-
 export type MutationCreateComplaintArgs = {
   data: CreateComplaintInput
 }
@@ -163,6 +148,10 @@ export type MutationDeleteListingNumberArgs = {
 
 export type MutationDeletePlateNumberArgs = {
   id: Scalars["String"]
+}
+
+export type MutationGetSignedS3UrlArgs = {
+  data: S3SignedUrlInput
 }
 
 export type MutationUpdateMeArgs = {
@@ -195,34 +184,17 @@ export type Plate = {
   complaints: Array<Complaint>
 }
 
-export type PublicUserResponse = {
-  __typename?: "PublicUserResponse"
-  email: Scalars["String"]
-  firstName: Scalars["String"]
-  lastName: Scalars["String"]
-  avatarUrl?: Maybe<Scalars["String"]>
-  avatarAssetId?: Maybe<Scalars["String"]>
-  phone?: Maybe<Scalars["String"]>
-}
-
 export type Query = {
   __typename?: "Query"
   getAddresses: Array<Address>
-  getAssets: Asset
   getComplaints: Array<Complaint>
   findComplaintsFor: Array<Complaint>
   listings: Array<Listing>
   findListing: Listing
-  generateListingAssetUploadUrl: Scalars["String"]
-  signedDownloadUrl: Scalars["String"]
   getPlates: Array<Plate>
   findByPlateSerialAndState: Plate
-  user?: Maybe<PublicUserResponse>
+  user?: Maybe<User>
   me?: Maybe<User>
-}
-
-export type QueryGetAssetsArgs = {
-  id: Scalars["String"]
 }
 
 export type QueryFindComplaintsForArgs = {
@@ -232,15 +204,6 @@ export type QueryFindComplaintsForArgs = {
 
 export type QueryFindListingArgs = {
   id: Scalars["String"]
-}
-
-export type QueryGenerateListingAssetUploadUrlArgs = {
-  contentType: Scalars["String"]
-  filename: Scalars["String"]
-}
-
-export type QuerySignedDownloadUrlArgs = {
-  filename: Scalars["String"]
 }
 
 export type QueryFindByPlateSerialAndStateArgs = {
@@ -274,6 +237,11 @@ export type ResetPasswordInput = {
   token: Scalars["String"]
 }
 
+export type S3SignedUrlInput = {
+  key: Scalars["String"]
+  fileType: Scalars["String"]
+}
+
 export type UpdateAddressInput = {
   unit?: Maybe<Scalars["String"]>
   street?: Maybe<Scalars["String"]>
@@ -287,8 +255,7 @@ export type UpdateUserInput = {
   lastName?: Maybe<Scalars["String"]>
   email?: Maybe<Scalars["String"]>
   password?: Maybe<Scalars["String"]>
-  avatarUrl?: Maybe<Scalars["String"]>
-  avatarAssetId?: Maybe<Scalars["String"]>
+  avatarKey?: Maybe<Scalars["String"]>
 }
 
 export type User = {
@@ -299,15 +266,22 @@ export type User = {
   email: Scalars["String"]
   firstName: Scalars["String"]
   lastName: Scalars["String"]
-  avatar?: Maybe<Scalars["String"]>
-  avatarAssetId?: Maybe<Scalars["String"]>
-  avatarUrl?: Maybe<Scalars["String"]>
   phone?: Maybe<Scalars["String"]>
   phoneValidated: Scalars["Boolean"]
   emailValidated: Scalars["Boolean"]
   complaints: Array<Complaint>
   listings: Array<Listing>
+  avatarUrl?: Maybe<Scalars["String"]>
 }
+
+export type GetSignedUrlMutationVariables = {
+  data: S3SignedUrlInput
+}
+
+export type GetSignedUrlMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "getSignedS3Url"
+>
 
 export type MeFragment = { __typename?: "User" } & Pick<
   User,
@@ -333,8 +307,8 @@ export type GetPublicUserQueryVariables = {
 
 export type GetPublicUserQuery = { __typename?: "Query" } & {
   user?: Maybe<
-    { __typename?: "PublicUserResponse" } & Pick<
-      PublicUserResponse,
+    { __typename?: "User" } & Pick<
+      User,
       "firstName" | "lastName" | "email" | "avatarUrl"
     >
   >
@@ -363,12 +337,12 @@ export type MyListingsQuery = { __typename?: "Query" } & {
   >
 }
 
-export type UpdateUserPhotoMutationVariables = {
-  avatarUrl: Scalars["String"]
+export type UpdateUserAvatarMutationVariables = {
+  data: UpdateUserInput
 }
 
-export type UpdateUserPhotoMutation = { __typename?: "Mutation" } & {
-  updateMe?: Maybe<{ __typename?: "User" } & Pick<User, "avatarUrl">>
+export type UpdateUserAvatarMutation = { __typename?: "Mutation" } & {
+  updateMe?: Maybe<{ __typename?: "User" } & Pick<User, "id" | "avatarUrl">>
 }
 
 export type AddNewListingMutationVariables = {
@@ -380,16 +354,6 @@ export type AddNewListingMutation = { __typename?: "Mutation" } & {
     { __typename?: "Listing" } & Pick<Listing, "createdAt" | "id">
   >
 }
-
-export type RequestUploadUrlQueryVariables = {
-  filename: Scalars["String"]
-  contentType: Scalars["String"]
-}
-
-export type RequestUploadUrlQuery = { __typename?: "Query" } & Pick<
-  Query,
-  "generateListingAssetUploadUrl"
->
 
 export type ListingsForBoxQueryVariables = {}
 
@@ -489,6 +453,50 @@ export const MeFragmentDoc = gql`
     phoneValidated
   }
 `
+export const GetSignedUrlDocument = gql`
+  mutation GetSignedUrl($data: S3SignedUrlInput!) {
+    getSignedS3Url(data: $data)
+  }
+`
+
+/**
+ * __useGetSignedUrlMutation__
+ *
+ * To run a mutation, you first call `useGetSignedUrlMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGetSignedUrlMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [getSignedUrlMutation, { data, loading, error }] = useGetSignedUrlMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useGetSignedUrlMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    GetSignedUrlMutation,
+    GetSignedUrlMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    GetSignedUrlMutation,
+    GetSignedUrlMutationVariables
+  >(GetSignedUrlDocument, baseOptions)
+}
+export type GetSignedUrlMutationHookResult = ReturnType<
+  typeof useGetSignedUrlMutation
+>
+export type GetSignedUrlMutationResult = ApolloReactCommon.MutationResult<
+  GetSignedUrlMutation
+>
+export type GetSignedUrlMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  GetSignedUrlMutation,
+  GetSignedUrlMutationVariables
+>
 export const MeDocument = gql`
   query Me {
     me {
@@ -660,51 +668,52 @@ export type MyListingsQueryResult = ApolloReactCommon.QueryResult<
   MyListingsQuery,
   MyListingsQueryVariables
 >
-export const UpdateUserPhotoDocument = gql`
-  mutation UpdateUserPhoto($avatarUrl: String!) {
-    updateMe(data: { avatarUrl: $avatarUrl }) {
+export const UpdateUserAvatarDocument = gql`
+  mutation UpdateUserAvatar($data: UpdateUserInput!) {
+    updateMe(data: $data) {
+      id
       avatarUrl
     }
   }
 `
 
 /**
- * __useUpdateUserPhotoMutation__
+ * __useUpdateUserAvatarMutation__
  *
- * To run a mutation, you first call `useUpdateUserPhotoMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateUserPhotoMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateUserAvatarMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserAvatarMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateUserPhotoMutation, { data, loading, error }] = useUpdateUserPhotoMutation({
+ * const [updateUserAvatarMutation, { data, loading, error }] = useUpdateUserAvatarMutation({
  *   variables: {
- *      avatarUrl: // value for 'avatarUrl'
+ *      data: // value for 'data'
  *   },
  * });
  */
-export function useUpdateUserPhotoMutation(
+export function useUpdateUserAvatarMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    UpdateUserPhotoMutation,
-    UpdateUserPhotoMutationVariables
+    UpdateUserAvatarMutation,
+    UpdateUserAvatarMutationVariables
   >,
 ) {
   return ApolloReactHooks.useMutation<
-    UpdateUserPhotoMutation,
-    UpdateUserPhotoMutationVariables
-  >(UpdateUserPhotoDocument, baseOptions)
+    UpdateUserAvatarMutation,
+    UpdateUserAvatarMutationVariables
+  >(UpdateUserAvatarDocument, baseOptions)
 }
-export type UpdateUserPhotoMutationHookResult = ReturnType<
-  typeof useUpdateUserPhotoMutation
+export type UpdateUserAvatarMutationHookResult = ReturnType<
+  typeof useUpdateUserAvatarMutation
 >
-export type UpdateUserPhotoMutationResult = ApolloReactCommon.MutationResult<
-  UpdateUserPhotoMutation
+export type UpdateUserAvatarMutationResult = ApolloReactCommon.MutationResult<
+  UpdateUserAvatarMutation
 >
-export type UpdateUserPhotoMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  UpdateUserPhotoMutation,
-  UpdateUserPhotoMutationVariables
+export type UpdateUserAvatarMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  UpdateUserAvatarMutation,
+  UpdateUserAvatarMutationVariables
 >
 export const AddNewListingDocument = gql`
   mutation AddNewListing($data: CreateListingInput!) {
@@ -752,64 +761,6 @@ export type AddNewListingMutationResult = ApolloReactCommon.MutationResult<
 export type AddNewListingMutationOptions = ApolloReactCommon.BaseMutationOptions<
   AddNewListingMutation,
   AddNewListingMutationVariables
->
-export const RequestUploadUrlDocument = gql`
-  query RequestUploadUrl($filename: String!, $contentType: String!) {
-    generateListingAssetUploadUrl(
-      filename: $filename
-      contentType: $contentType
-    )
-  }
-`
-
-/**
- * __useRequestUploadUrlQuery__
- *
- * To run a query within a React component, call `useRequestUploadUrlQuery` and pass it any options that fit your needs.
- * When your component renders, `useRequestUploadUrlQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useRequestUploadUrlQuery({
- *   variables: {
- *      filename: // value for 'filename'
- *      contentType: // value for 'contentType'
- *   },
- * });
- */
-export function useRequestUploadUrlQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    RequestUploadUrlQuery,
-    RequestUploadUrlQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<
-    RequestUploadUrlQuery,
-    RequestUploadUrlQueryVariables
-  >(RequestUploadUrlDocument, baseOptions)
-}
-export function useRequestUploadUrlLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    RequestUploadUrlQuery,
-    RequestUploadUrlQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    RequestUploadUrlQuery,
-    RequestUploadUrlQueryVariables
-  >(RequestUploadUrlDocument, baseOptions)
-}
-export type RequestUploadUrlQueryHookResult = ReturnType<
-  typeof useRequestUploadUrlQuery
->
-export type RequestUploadUrlLazyQueryHookResult = ReturnType<
-  typeof useRequestUploadUrlLazyQuery
->
-export type RequestUploadUrlQueryResult = ApolloReactCommon.QueryResult<
-  RequestUploadUrlQuery,
-  RequestUploadUrlQueryVariables
 >
 export const ListingsForBoxDocument = gql`
   query listingsForBox {

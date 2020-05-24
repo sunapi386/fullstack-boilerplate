@@ -9,7 +9,7 @@ import { Link } from "../components/shared/Link"
 import { Form } from "../components/shared/Form"
 import { FormError } from "../components/shared/FormError"
 import { Input } from "../components/shared/Input"
-import Yup from "../lib/yup"
+import * as Yup from "yup"
 
 export const FORGOT_PASSWORD = gql`
   mutation ForgotPassword($email: String!) {

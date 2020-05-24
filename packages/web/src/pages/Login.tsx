@@ -35,7 +35,9 @@ const LoginSchema = Yup.object().shape<LoginInput>({
   email: Yup.string()
     .email("Invalid email")
     .required("Required"),
-  password: Yup.string().min(8, "Must be at least 8 characters"),
+  password: Yup.string()
+    .min(8, "Must be at least 8 characters")
+    .required("Required"),
 })
 
 export const Login: React.FC<RouteComponentProps> = () => {

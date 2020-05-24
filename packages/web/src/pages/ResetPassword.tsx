@@ -8,7 +8,7 @@ import { Link } from "../components/shared/Link"
 import { Form } from "../components/shared/Form"
 import { FormError } from "../components/shared/FormError"
 import { Input } from "../components/shared/Input"
-import Yup from "../lib/yup"
+import * as Yup from "yup"
 import { parse } from "query-string"
 import { useResetPasswordMutation } from "../lib/graphql"
 
@@ -24,13 +24,17 @@ const ResetSchema = Yup.object().shape<{
 }>({
   password: Yup.string()
     .min(8, "Must be at least 8 characters")
-    .max(128, "Must be less than 128 characters"),
-  confirmPassword: Yup.string().when("password", {
-    is: val => val && val.length > 0,
-    then: Yup.string()
-      .oneOf([Yup.ref("password")], "Passwords need to match")
-      .required("Required"),
-  }),
+    .max(128, "Must be less than 128 characters")
+    .required("Required"),
+  confirmPassword: Yup.string()
+    .required("Required")
+    .when("password", {
+      is: val => val && val.length > 0,
+      then: Yup.string().oneOf(
+        [Yup.ref("password")],
+        "Passwords need to match",
+      ),
+    }),
 })
 
 export const ResetPassword: React.FC<RouteComponentProps> = () => {

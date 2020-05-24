@@ -7,14 +7,15 @@ import { User } from "./user.entity"
 import { UserService } from "./user.service"
 import { UserMailer } from "./user.mailer"
 
-import { UpdateUserInput } from "./input/updateUser.input"
-import { ResetPasswordInput } from "./input/resetPassword.input"
+import {
+  UpdateUserInput,
+  LoginInput,
+  RegisterInput,
+  ResetPasswordInput,
+} from "./input/user.input"
 import { UserRepository } from "./user.repository"
 import { CurrentUser } from "../shared/context/currentUser"
-import { RegisterInput } from "./input/register.input"
-import { AuthResponse } from "./auth.response"
-import { LoginInput } from "./input/login.input"
-import { PublicUserResponse } from "./publicUser.response"
+import { AuthResponse } from "./user.response"
 
 @Resolver(() => User)
 export class UserResolver {
@@ -26,8 +27,8 @@ export class UserResolver {
   userRepository: UserRepository
 
   // public user details
-  @Query(() => PublicUserResponse, { nullable: true })
-  async user(@Arg("id") userId: string): Promise<PublicUserResponse> {
+  @Query(() => User, { nullable: true })
+  async user(@Arg("id") userId: string): Promise<User> {
     return this.userRepository.findById(userId)
   }
 
