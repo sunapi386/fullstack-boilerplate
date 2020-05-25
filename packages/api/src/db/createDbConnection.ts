@@ -32,17 +32,20 @@ export const createDbConnection = async () => {
       // despite the db having the relationship table
       url: DATABASE_URL,
     })
+    console.log("Migrations cwd at", __dirname)
     const entity_names = connection.entityMetadatas.map(entity => entity.name)
-    console.log("connection.entities", entity_names)
-    console.log("connection.migrations", connection.migrations)
-    console.log("Migrations..., cwd is ", __dirname)
+    console.log(entity_names.length, "Entities", entity_names)
+    const migration_names = connection.migrations.map(
+      migration => migration.name,
+    )
+    console.log(migration_names.length, "Migrations", migration_names)
 
     // Run migrations in production
     // don't migrate databases automatically, race condition when 1+ servers
     // https://blog.staffjoy.com/dont-migrate-databases-automatically-5039ab061365
     if (IS_PRODUCTION || IS_STAGING) {
       await connection.runMigrations()
-      console.log("migrations done.")
+      console.log("Run migrations done.")
     }
   } catch (err) {
     // Sentry
