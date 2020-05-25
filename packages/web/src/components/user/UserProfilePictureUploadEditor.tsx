@@ -1,17 +1,7 @@
-import React, { useRef, useState } from "react"
+import React from "react"
 import { MeFragment, useUpdateUserAvatarMutation } from "../../lib/graphql"
-import AvatarEditor from "react-avatar-editor"
-import { Avatar, Button, Checkbox, Slider } from "@chakra-ui/core"
-import {
-  Box,
-  Flex,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderTrack,
-  Stack,
-  useColorMode,
-} from "@chakra-ui/core/dist"
-import { MdGraphicEq } from "react-icons/all"
+import { Avatar, Button } from "@chakra-ui/core"
+import { Flex, Stack } from "@chakra-ui/core/dist"
 import { gql } from "@apollo/client"
 import { ImageUploader } from "../ImageUploader"
 
@@ -29,20 +19,11 @@ export const UserProfilePictureUploadEditor = ({
 }: {
   user: MeFragment
 }) => {
-  const { colorMode } = useColorMode()
-  const white = [255, 255, 255, 0.8] // RGBA
-  const black = [0, 0, 0, 0.6]
-  const color = colorMode === "dark" ? black : white
-
   // make another component just for a popup modal viewer
-  const [allowZoomOut, setCheckedZoom] = useState<boolean>(false)
-  const [zoom, setZoom] = useState<number>(1)
-  const [rotate, setRotate] = useState<number>(0)
-  const imageRef = useRef<AvatarEditor>(null)
   const [updateUserAvatar] = useUpdateUserAvatarMutation()
 
   const handleUpdateImage = async (avatarKey: string) => {
-    return updateUserAvatar({
+    return await updateUserAvatar({
       variables: { data: { avatarKey } },
     })
   }
@@ -52,109 +33,28 @@ export const UserProfilePictureUploadEditor = ({
     })
   }
 
-  const onSave = () => {
-    if (!imageRef || !imageRef.current) {
-      console.log("Save failed, no imageRef")
-      return
-    }
-    const canvas = imageRef.current.getImage()
-
-    // Uncaught DOMException: Failed to execute 'toDataURL' on 'HTMLCanvasElement': Tainted canvases may not be
-    // exported.
-    // const medQuality = canvas.toDataURL("image/jpeg", 0.5)
-
-    // upload image
-    console.log("clicked saved", canvas)
-    // console.log("image", medQuality)
-  }
-
-  const size = 250
-
-  if (!user.avatarUrl) {
-    return (
-      <Stack>
-        <Flex justify="center">
-          <ImageUploader
-            onSubmit={handleUpdateImage}
-            path={`user/avatar/${user.id}`}
-          >
-            <Avatar
-              size="xl"
-              name={user.firstName + " " + user.lastName}
-              src={user.avatarUrl || undefined}
-              mb="4"
-            />
-          </ImageUploader>
-        </Flex>
-      </Stack>
-    )
-  }
-
-  const imageUrl: string = user.avatarUrl
   return (
     <Stack>
-      <Flex align="center" justify="center">
-        <AvatarEditor
-          ref={imageRef}
-          image={imageUrl}
-          width={size}
-          height={size}
-          border={50}
-          color={color}
-          scale={zoom}
-          rotate={rotate}
-          borderRadius={size}
-        />
+      <Flex justify="center">
+        <ImageUploader
+          onSubmit={handleUpdateImage}
+          path={`user/avatar/${user.id}`}
+        >
+          <Avatar
+            size="xl"
+            name={user.firstName + " " + user.lastName}
+            src={user.avatarUrl ? user.avatarUrl : ""}
+            mb="4"
+          />
+        </ImageUploader>
       </Flex>
-
-      <Box>Zoom</Box>
-      <Slider
-        defaultValue={zoom}
-        min={allowZoomOut ? 0.5 : 1}
-        max={2}
-        step={0.01}
-        onChange={value => {
-          setZoom(value)
-        }}
-      >
-        <SliderTrack bg="blue.100" />
-        <SliderFilledTrack bg="blue.500" />
-        <SliderThumb size={6}>
-          <Box color="blue.500" as={MdGraphicEq} />
-        </SliderThumb>
-      </Slider>
-
-      <Checkbox
-        isChecked={allowZoomOut}
-        onChange={() => {
-          setCheckedZoom(!allowZoomOut)
-        }}
-      >
-        Allow zoom out
-      </Checkbox>
-
-      <Box>Rotate</Box>
-      <Slider
-        defaultValue={rotate}
-        min={-180}
-        max={180}
-        onChange={value => {
-          setRotate(value)
-        }}
-      >
-        <SliderTrack bg="blue.100" />
-        <SliderFilledTrack bg="blue.500" />
-        <SliderThumb size={6}>
-          <Box color="blue.500" as={MdGraphicEq} />
-        </SliderThumb>
-      </Slider>
-
-      <Button isDisabled={true} bg="blue.500" type="submit" onClick={onSave}>
-        Save (work in progress)
-      </Button>
-      <Button variantColor="red" onClick={onDeletePhoto}>
-        Delete Photo!
-      </Button>
+      {user.avatarUrl ? (
+        <Button variantColor="red" onClick={onDeletePhoto}>
+          Delete Photo!
+        </Button>
+      ) : (
+        ""
+      )}
     </Stack>
   )
 }
