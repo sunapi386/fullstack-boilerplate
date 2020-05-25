@@ -23,8 +23,8 @@ const ResetSchema = Yup.object().shape<{
   confirmPassword: string
 }>({
   password: Yup.string()
-    .min(8, "Must be at least 8 characters")
-    .max(128, "Must be less than 128 characters")
+    .min(3, "Must be at least 3 characters")
+    .max(32, "Must be less than 32 characters")
     .required("Required"),
   confirmPassword: Yup.string()
     .required("Required")

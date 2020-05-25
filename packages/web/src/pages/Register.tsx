@@ -38,8 +38,8 @@ const RegisterSchema = Yup.object().shape<RegisterInput>({
   firstName: Yup.string().required("Required"),
   lastName: Yup.string().required("Required"),
   password: Yup.string()
-    .min(8, "Must be at least 8 characters")
-    .max(128, "Must be less than 128 characters")
+    .min(3, "Must be at least 3 characters")
+    .max(32, "Must be less than 32 characters")
     .required("Required"),
 })
 
@@ -74,9 +74,9 @@ export const Register: React.FC<RouteComponentProps> = () => {
       <Heading pb={10}>Register</Heading>
       <Box w={["100%", 400]}>
         <Form onSubmit={onSubmit} {...form}>
-          <Input name="firstName" label="First name" placeholder="Jim" />
-          <Input name="lastName" label="Last name" placeholder="Bob" />
-          <Input name="email" label="Email" placeholder="jim@gmail.com" />
+          <Input name="firstName" label="First name" placeholder="John" />
+          <Input name="lastName" label="Last name" placeholder="Smith" />
+          <Input name="email" label="Email" placeholder="js@example.com" />
           <Input
             name="password"
             label="Password"
