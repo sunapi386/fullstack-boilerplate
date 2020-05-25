@@ -15,7 +15,7 @@
     "db:rollback": "yarn db migration:revert",
     "seed": "ts-node src/seed.ts",
     "build": "rimraf dist && tsc --build",
-    "upload": "rsync --delete --stats -avt dist/* sanfran:/var/www/fancystack/api/dist; ssh sanfran \"pm2 restart .env\"",
+    "upload": "rsync --stats -avt dist/* sanfran:/home/jason/fancystack/packages/api/dist; echo ssh sanfran \"pm2 restart .env\"",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --fix --cache --ext .ts,.tsx src",
     "prettify": "prettier --write './src/**/*.ts'",
