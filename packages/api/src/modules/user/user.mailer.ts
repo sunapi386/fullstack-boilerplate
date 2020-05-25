@@ -16,7 +16,7 @@ export class UserMailer {
   }
 
   sendResetPasswordLink(user: User, token: string) {
-    const link = `${FULL_WEB_URL()}/reset-password?token=${token}`
+    const link = `${FULL_WEB_URL()}/reset-password/${token}`
     console.log("sendResetPasswordLink", user.email, link)
     mgsend({
       to: user.email,

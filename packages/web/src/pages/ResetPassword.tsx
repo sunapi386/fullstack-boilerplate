@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import gql from "graphql-tag"
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/core"
-import { RouteComponentProps, useLocation } from "@reach/router"
+import { RouteComponentProps } from "@reach/router"
 
 import { useForm } from "../lib/hooks/useForm"
 import { Link } from "../components/shared/Link"
@@ -9,7 +9,6 @@ import { Form } from "../components/shared/Form"
 import { FormError } from "../components/shared/FormError"
 import { Input } from "../components/shared/Input"
 import * as Yup from "yup"
-import { parse } from "query-string"
 import { useResetPasswordMutation } from "../lib/graphql"
 
 export const FORGOT_PASSWORD = gql`
@@ -37,21 +36,23 @@ const ResetSchema = Yup.object().shape<{
     }),
 })
 
-export const ResetPassword: React.FC<RouteComponentProps> = () => {
+interface ResetPasswordProps extends RouteComponentProps {
+  token?: string
+}
+
+export const ResetPassword: React.FC<ResetPasswordProps> = props => {
   const form = useForm({ validationSchema: ResetSchema })
   const [success, setSuccess] = useState<boolean>(false)
   const [forgotPassword] = useResetPasswordMutation()
-  const location = useLocation()
-  const searchParams = parse(location.search)
-  const token: string =
-    typeof searchParams.token === "string" ? searchParams.token : ""
 
   const onSubmit = async ({ password }: { password: string }) => {
+    if (!password || !props.token) return
+
     const res = await forgotPassword({
       variables: {
         data: {
           password: password,
-          token: token,
+          token: props.token,
         },
       },
     })

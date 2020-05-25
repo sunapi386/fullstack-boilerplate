@@ -6,7 +6,7 @@ export const Page: React.FC = ({ children }) => {
   return (
     <>
       <NavBar />
-      <Flex h="93vh" w="100vw" align="top" justify="center">
+      <Flex align="top" justify="center">
         {children}
       </Flex>
     </>

@@ -22,7 +22,7 @@ export const CheckAuth: React.FC = ({ children }) => {
       <Login path="/login" />
       <Register path="/register" />
       <ForgotPassword path="/forgot-password" />
-      <ResetPassword path="/reset-password" />
+      <ResetPassword path="/reset-password/:token" />
     </Router>
   )
 }

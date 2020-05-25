@@ -51,7 +51,6 @@
     "filepond-plugin-image-exif-orientation": "^1.0.8",
     "filepond-plugin-image-preview": "^4.6.2",
     "google-map-react": "^1.1.7",
-    "query-string": "^6.12.1",
     "react": "16.13.1",
     "react-avatar-editor": "^11.0.9",
     "react-daterange-picker": "^2.0.1",
