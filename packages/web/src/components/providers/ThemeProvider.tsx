@@ -31,7 +31,7 @@ export const ThemeProvider: React.FC = ({ children }) => {
 const StyledBackground: React.FC = props => {
   const { colorMode } = useColorMode()
   return (
-    <Box bg={colorMode === "dark" ? "gray.900" : "white"}>{props.children}</Box>
+    <Box bg={colorMode === "dark" ? "gray" : "white"}>{props.children}</Box>
   )
 }
 

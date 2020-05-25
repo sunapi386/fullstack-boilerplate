@@ -39,17 +39,8 @@ const PeopleSmallBox = ({
   title: string
   text: string
 }) => {
-  // add a custom lighter grey color here
-  const { colorMode } = useColorMode()
-  const color = { light: "black", dark: "white" }
-
   return (
-    <Box
-      borderColor={color[colorMode]}
-      m="1em"
-      color={color[colorMode]}
-      {...params}
-    >
+    <Box m="1em" {...params}>
       <Box textAlign="center" overflow="auto" fontWeight="semibold">
         {title}
       </Box>
