@@ -69,8 +69,7 @@ export type CreateComplaintInput = {
 export type CreateListingInput = {
   title: Scalars["String"]
   description: Scalars["String"]
-  imageUrl?: Maybe<Scalars["String"]>
-  imageAlt?: Maybe<Scalars["String"]>
+  imageKeys?: Maybe<Array<Scalars["String"]>>
   price: Scalars["Int"]
   beds?: Maybe<Scalars["Int"]>
   baths?: Maybe<Scalars["Int"]>
@@ -83,13 +82,12 @@ export type Listing = {
   updatedAt: Scalars["DateTime"]
   description: Scalars["String"]
   title: Scalars["String"]
-  imageUrl?: Maybe<Scalars["String"]>
-  imageAlt?: Maybe<Scalars["String"]>
   beds?: Maybe<Scalars["Int"]>
   baths?: Maybe<Scalars["Int"]>
   price: Scalars["Int"]
   reviews?: Maybe<Scalars["Int"]>
   ratings?: Maybe<Scalars["Int"]>
+  imageUrls?: Maybe<Array<Scalars["String"]>>
   author: User
 }
 
@@ -106,6 +104,7 @@ export type Mutation = {
   createComplaint?: Maybe<Complaint>
   deleteComplaintNumber: Scalars["Boolean"]
   createListing?: Maybe<Listing>
+  updateListing?: Maybe<Listing>
   deleteListingNumber: Scalars["Boolean"]
   deletePlateNumber: Scalars["Boolean"]
   getSignedS3Url?: Maybe<Scalars["String"]>
@@ -140,6 +139,11 @@ export type MutationDeleteComplaintNumberArgs = {
 
 export type MutationCreateListingArgs = {
   data: CreateListingInput
+}
+
+export type MutationUpdateListingArgs = {
+  data: UpdateListingInput
+  listingId: Scalars["String"]
 }
 
 export type MutationDeleteListingNumberArgs = {
@@ -250,6 +254,15 @@ export type UpdateAddressInput = {
   zipcode?: Maybe<Scalars["String"]>
 }
 
+export type UpdateListingInput = {
+  title?: Maybe<Scalars["String"]>
+  description?: Maybe<Scalars["String"]>
+  imageKeys?: Maybe<Array<Scalars["String"]>>
+  price?: Maybe<Scalars["Int"]>
+  beds?: Maybe<Scalars["Int"]>
+  baths?: Maybe<Scalars["Int"]>
+}
+
 export type UpdateUserInput = {
   firstName?: Maybe<Scalars["String"]>
   lastName?: Maybe<Scalars["String"]>
@@ -322,8 +335,7 @@ export type MyListingsQuery = { __typename?: "Query" } & {
       listings: Array<
         { __typename?: "Listing" } & Pick<
           Listing,
-          | "imageUrl"
-          | "imageAlt"
+          | "imageUrls"
           | "beds"
           | "baths"
           | "title"
@@ -355,6 +367,15 @@ export type AddNewListingMutation = { __typename?: "Mutation" } & {
   >
 }
 
+export type UpdateListingMutationVariables = {
+  data: UpdateListingInput
+  listingId: Scalars["String"]
+}
+
+export type UpdateListingMutation = { __typename?: "Mutation" } & {
+  updateListing?: Maybe<{ __typename?: "Listing" } & Pick<Listing, "id">>
+}
+
 export type ListingsForBoxQueryVariables = {}
 
 export type ListingsForBoxQuery = { __typename?: "Query" } & {
@@ -369,8 +390,7 @@ export type ListingsForBoxQuery = { __typename?: "Query" } & {
       | "beds"
       | "reviews"
       | "ratings"
-      | "imageAlt"
-      | "imageUrl"
+      | "imageUrls"
     > & {
         author: { __typename?: "User" } & Pick<User, "firstName" | "lastName">
       }
@@ -397,8 +417,7 @@ export type GetListingByIdQuery = { __typename?: "Query" } & {
     | "updatedAt"
     | "description"
     | "title"
-    | "imageUrl"
-    | "imageAlt"
+    | "imageUrls"
     | "beds"
     | "baths"
     | "price"
@@ -609,8 +628,7 @@ export const MyListingsDocument = gql`
   query myListings {
     me {
       listings {
-        imageUrl
-        imageAlt
+        imageUrls
         beds
         baths
         title
@@ -762,6 +780,53 @@ export type AddNewListingMutationOptions = ApolloReactCommon.BaseMutationOptions
   AddNewListingMutation,
   AddNewListingMutationVariables
 >
+export const UpdateListingDocument = gql`
+  mutation UpdateListing($data: UpdateListingInput!, $listingId: String!) {
+    updateListing(data: $data, listingId: $listingId) {
+      id
+    }
+  }
+`
+
+/**
+ * __useUpdateListingMutation__
+ *
+ * To run a mutation, you first call `useUpdateListingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateListingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateListingMutation, { data, loading, error }] = useUpdateListingMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *      listingId: // value for 'listingId'
+ *   },
+ * });
+ */
+export function useUpdateListingMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    UpdateListingMutation,
+    UpdateListingMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    UpdateListingMutation,
+    UpdateListingMutationVariables
+  >(UpdateListingDocument, baseOptions)
+}
+export type UpdateListingMutationHookResult = ReturnType<
+  typeof useUpdateListingMutation
+>
+export type UpdateListingMutationResult = ApolloReactCommon.MutationResult<
+  UpdateListingMutation
+>
+export type UpdateListingMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  UpdateListingMutation,
+  UpdateListingMutationVariables
+>
 export const ListingsForBoxDocument = gql`
   query listingsForBox {
     listings {
@@ -777,8 +842,7 @@ export const ListingsForBoxDocument = gql`
       beds
       reviews
       ratings
-      imageAlt
-      imageUrl
+      imageUrls
     }
   }
 `
@@ -886,8 +950,7 @@ export const GetListingByIdDocument = gql`
         lastName
         id
       }
-      imageUrl
-      imageAlt
+      imageUrls
       beds
       baths
       price

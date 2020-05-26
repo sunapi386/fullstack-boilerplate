@@ -6,7 +6,11 @@ import { Form } from "../components/shared/Form"
 import { Input } from "../components/shared/Input"
 import { FormError } from "../components/shared/FormError"
 import { useForm } from "../lib/hooks/useForm"
-import { CreateListingInput, useGetSignedUrlMutation } from "../lib/graphql"
+import {
+  CreateListingInput,
+  UpdateListingInput,
+  useGetSignedUrlMutation,
+} from "../lib/graphql"
 import * as Yup from "yup"
 import { gql, useMutation } from "@apollo/client"
 import { Upload } from "../components/shared/Upload"
@@ -18,14 +22,21 @@ import { Textarea } from "../components/shared/Textarea"
 export const CREATE_LISTING = gql`
   mutation AddNewListing($data: CreateListingInput!) {
     createListing(data: $data) {
-      createdAt
+      id
+    }
+  }
+`
+
+export const UPDATE_LISTING = gql`
+  mutation UpdateListing($data: UpdateListingInput!, $listingId: String!) {
+    updateListing(data: $data, listingId: $listingId) {
       id
     }
   }
 `
 
 const ListingSchema = Yup.object().shape<CreateListingInput>({
-  imageUrl: Yup.string().required("Required"),
+  imageKeys: Yup.array().of(Yup.string().required()),
   title: Yup.string().required("Required"),
   description: Yup.string().required("Required"),
   price: Yup.number()
@@ -60,7 +71,7 @@ export const CreateListing: FC<RouteComponentProps> = () => {
   // const processUpload = async()
 
   // const fileItems: Asset[] = []
-  const { setValue } = form
+  const { getValues, setValue } = form
   return (
     <Page>
       <Flex
@@ -76,10 +87,10 @@ export const CreateListing: FC<RouteComponentProps> = () => {
           <Form onSubmit={onSubmit} {...form}>
             <Box>
               <Upload
-                name={"imageUrl"}
+                name={"imageKeys"}
                 label={"Photos"}
-                maxFiles={1}
-                allowMultiple={false}
+                maxFiles={8}
+                allowMultiple={true}
                 acceptedFileTypes={["image/*"]}
                 /** A file has been added or removed, receives a list of file items */
                 required={true}
@@ -90,6 +101,16 @@ export const CreateListing: FC<RouteComponentProps> = () => {
                     error: (errorText: string) => void,
                   ) => {
                     console.log("revert", uniqueFieldId)
+                    const values = getValues()
+                    const array = values["imageKeys"]
+                    if (array) {
+                      // remove uniqueFieldId from the keys
+                      setValue(
+                        "imageKeys",
+                        array.splice(array.indexOf(uniqueFieldId), 1),
+                      )
+                      // todo: when reverting uploaded, delete them off s3; otherwise file leaks
+                    }
                     if (error) {
                       // todo: add revert feature
                       console.log("revert error", error)
@@ -106,7 +127,7 @@ export const CreateListing: FC<RouteComponentProps> = () => {
                     abort,
                   ) => {
                     console.log("process (uploading)", file)
-                    const fileKey = me.id + file.lastModified + file.name
+                    const fileKey = `listing/${me.id}/${file.name}`
                     const { data } = await getSignedS3Url({
                       variables: {
                         data: {
@@ -142,7 +163,15 @@ export const CreateListing: FC<RouteComponentProps> = () => {
                         // the load method accepts either a string (id) or an object
                         console.log("imageUrl key", fileKey)
                         load(fileKey)
-                        setValue("imageUrl", fileKey)
+                        const values = getValues()
+                        const keys = values["imageKeys"]
+                        console.log("values", values)
+                        console.log("keys", keys)
+                        if (keys) {
+                          setValue("imageKeys", keys.concat(fileKey))
+                        } else {
+                          setValue("imageKeys", [fileKey])
+                        }
                       } else {
                         // Can call the error method if something is wrong, should exit after
                         console.log("error upload failed")

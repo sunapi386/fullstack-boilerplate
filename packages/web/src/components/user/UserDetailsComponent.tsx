@@ -23,8 +23,7 @@ export const MY_LISTINGS = gql`
   query myListings {
     me {
       listings {
-        imageUrl
-        imageAlt
+        imageUrls
         beds
         baths
         title

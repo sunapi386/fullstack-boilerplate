@@ -20,6 +20,7 @@ import { generatePreSignedUrl, signedDownloadUrl } from "../../lib/s3"
 import { sendSms } from "../../lib/sms"
 import { FULL_WEB_URL } from "../../lib/config"
 import { CreateListingInput } from "./input/createListing.input"
+import { UpdateListingInput } from "./input/updateListing.input"
 
 @Resolver(() => Listing)
 export class ListingResolver implements ResolverInterface<Listing> {
@@ -47,11 +48,10 @@ export class ListingResolver implements ResolverInterface<Listing> {
   @Authorized() // only logged in users can add listings
   @Mutation(() => Listing, { nullable: true })
   async createListing(
-    // @Ctx() { req }: ResolverContext,
     @CurrentUser() currentUser: User,
-    @Arg("data") input: CreateListingInput,
+    @Arg("data") data: CreateListingInput,
   ): Promise<Listing> {
-    const listing = await this.listingService.create(currentUser.id, input)
+    const listing = await this.listingService.create(data, currentUser.id)
     if (currentUser.phoneValidated) {
       const listingUrl = `${FULL_WEB_URL}/listing/${listing.id}`
       sendSms(
@@ -60,6 +60,15 @@ export class ListingResolver implements ResolverInterface<Listing> {
       )
     }
     return listing
+  }
+
+  @Authorized() // only logged in users can add listings
+  @Mutation(() => Listing, { nullable: true })
+  async updateListing(
+    @Arg("listingId") listingId: string,
+    @Arg("data") data: UpdateListingInput,
+  ): Promise<Listing> {
+    return this.listingService.update(listingId, data)
   }
 
   @Authorized("ADMIN") // only admin can delete stuff

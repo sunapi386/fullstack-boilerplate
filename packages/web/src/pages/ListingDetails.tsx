@@ -30,8 +30,7 @@ export const FIND_LISTING = gql`
         lastName
         id
       }
-      imageUrl
-      imageAlt
+      imageUrls
       beds
       baths
       price
@@ -94,7 +93,9 @@ export const ListingDetails: FC<RouteComponentProps> = () => {
     )
   }
   const listing = data.findListing
-
+  const images = listing.imageUrls.map((url: string, key: string) => {
+    return <Image key={key} src={url} objectFit="cover" borderRadius="4px" />
+  })
   return (
     <Page>
       <Stack spacing={2} p={"1em"}>
@@ -107,12 +108,7 @@ export const ListingDetails: FC<RouteComponentProps> = () => {
           borderWidth="1px"
           p={2}
         >
-          <Image
-            src={listing.imageUrl}
-            alt={listing.imageAlt}
-            borderRadius="4px"
-          />
-
+          {images}
           <Stack spacing={2} m="1px" p="1em">
             <Box d="flex" mt="2" alignItems="center">
               {Array(5)

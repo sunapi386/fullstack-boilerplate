@@ -24,8 +24,7 @@ export const ALL_LISTINGS = gql`
       beds
       reviews
       ratings
-      imageAlt
-      imageUrl
+      imageUrls
     }
   }
 `

@@ -43,7 +43,7 @@ export const UserProfilePictureUploadEditor = ({
           <Avatar
             size="xl"
             name={user.firstName + " " + user.lastName}
-            src={user.avatarUrl ? user.avatarUrl : ""}
+            src={user.avatarUrl || ""}
             mb="4"
           />
         </ImageUploader>

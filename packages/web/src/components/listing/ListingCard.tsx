@@ -29,8 +29,7 @@ export const ListingCard = ({ property }: { property: ListingProps }) => {
       >
         <AspectRatioBox maxW="400px" ratio={4 / 3}>
           <Image
-            src={property.imageUrl}
-            alt={property.imageAlt}
+            src={property.imageUrls.length > 0 ? property.imageUrls[0] : ""}
             objectFit="cover"
           />
         </AspectRatioBox>

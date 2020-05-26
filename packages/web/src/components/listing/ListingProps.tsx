@@ -1,8 +1,7 @@
 import React from "react"
 
 export interface ListingProps {
-  imageUrl: string
-  imageAlt: string
+  imageUrls: string[]
   beds: number
   baths: number
   title: string

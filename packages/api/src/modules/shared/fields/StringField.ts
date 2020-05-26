@@ -11,19 +11,22 @@ interface StringFieldOptions {
   unique?: boolean
   default?: string
   graphql?: boolean
+  array?: boolean
 }
 
 export function StringField(args: StringFieldOptions = {}): any {
   const nullableOption = args.nullable === true ? { nullable: true } : {}
   const maxLenOption = args.maxLength ? { length: args.maxLength } : {}
   const uniqueOption = args.unique ? { unique: true } : {}
-  const defaultOpion = args.default ? { default: args.default } : {}
+  const defaultOption = args.default ? { default: args.default } : {}
+  const arrayOption = args.array ? { array: args.array } : {}
 
   const factories = []
   if (args.graphql !== false) {
     factories.push(
       Field(() => String, {
         ...nullableOption,
+        ...arrayOption,
       }),
     )
   }
@@ -33,7 +36,8 @@ export function StringField(args: StringFieldOptions = {}): any {
       ...maxLenOption,
       ...nullableOption,
       ...uniqueOption,
-      ...defaultOpion,
+      ...defaultOption,
+      ...arrayOption,
     }) as MethodDecoratorFactory,
   )
 

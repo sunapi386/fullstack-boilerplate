@@ -1,18 +1,19 @@
 import { Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm"
-import { ObjectType } from "type-graphql"
+import { Field, ObjectType } from "type-graphql"
 
 import { BaseEntity } from "../shared/base.entity"
 import { IntField, StringField } from "../shared/fields"
 import { User } from "../user/user.entity"
 import { RelationColumn } from "../shared/helpers"
 import { Address } from "../address/address.entity"
+import { S3_URL } from "../../lib/config"
 
 @ObjectType()
 @Entity()
 export class Listing extends BaseEntity<Listing> {
   // user can have multiple listing
-  @ManyToOne(type => User)
-  @JoinColumn({name: 'authorId'})
+  @ManyToOne((type) => User)
+  @JoinColumn({ name: "authorId" })
   author: User
   @RelationColumn()
   authorId: string
@@ -23,12 +24,8 @@ export class Listing extends BaseEntity<Listing> {
   @StringField()
   title: string
 
-  // todo: add photo or video in S3
-  @StringField({ nullable: true })
-  imageUrl: string
-
-  @StringField({ nullable: true })
-  imageAlt: string
+  @StringField({ graphql: false, nullable: true, array: true })
+  imageKeys: string[]
 
   @IntField({ nullable: true })
   beds: number
@@ -46,7 +43,18 @@ export class Listing extends BaseEntity<Listing> {
   @IntField({ nullable: true })
   ratings: number
 
-  @OneToOne(type => Address)
+  @OneToOne((type) => Address)
   @JoinColumn()
   address: Address
+
+  // HELPERS
+  @Field(() => [String], { nullable: true })
+  imageUrls() {
+    if (this.imageKeys && Array.isArray(this.imageKeys)) {
+      return this.imageKeys.map((key) => S3_URL + key)
+    } else {
+      console.log(this.imageKeys, "not an array or missing")
+      return []
+    }
+  }
 }

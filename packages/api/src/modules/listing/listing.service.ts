@@ -2,26 +2,31 @@ import { Service } from "typedi"
 import { Listing } from "./listing.entity"
 import { CreateListingInput } from "./input/createListing.input"
 import { UserInputError } from "apollo-server-express"
-import { S3_URL } from "../../lib/config"
+import { UpdateListingInput } from "./input/updateListing.input"
 
 @Service()
 export class ListingService {
+  async findById(listingId: string): Promise<Listing> {
+    const listing = await Listing.findOne(listingId)
+    if (!listing) throw new Error("listing not found")
+    return listing
+  }
+
   async findAll(): Promise<Listing[]> {
     return await Listing.find()
   }
 
   // returns the id
-  async create(id: string, input: CreateListingInput): Promise<Listing> {
-    const listing = await Listing.create(input)
-    listing.authorId = id
-    // todo: remove this prepend url, do it on client end by returning proper struct access url
-    // if the imageUrl contains a value,
-    // we prepend the url to it
-    if (input.imageUrl) {
-      listing.imageUrl = `${S3_URL}${input.imageUrl}`
-    }
-    await listing.save()
-    return listing
+  async create(input: CreateListingInput, authorId: string): Promise<Listing> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const listing = await Listing.create({ ...input, authorId })
+        await listing.save()
+        resolve(listing)
+      } catch (error) {
+        reject(error)
+      }
+    })
   }
 
   async destroy(id: string): Promise<boolean> {
@@ -37,5 +42,19 @@ export class ListingService {
     } catch {
       throw new UserInputError("Listing not found")
     }
+  }
+
+  update(listingId: string, data: UpdateListingInput): Promise<Listing> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const listing = await this.findById(listingId)
+        if (!listing) throw new Error("listing not found")
+        Object.assign(listing, data)
+        await listing.save()
+        resolve(listing)
+      } catch (error) {
+        reject(error)
+      }
+    })
   }
 }

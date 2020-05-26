@@ -11,12 +11,8 @@ export class CreateListingInput implements Partial<Listing> {
   @StringField()
   description: string
 
-  // Images
-  @StringField({ nullable: true })
-  imageUrl: string
-
-  @StringField({ nullable: true })
-  imageAlt: string
+  @StringField({ array: true, nullable: true })
+  imageKeys: string[]
 
   @IntField()
   price: number
